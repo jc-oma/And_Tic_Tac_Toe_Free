@@ -7,7 +7,7 @@ class TicTacToeEngine internal constructor(
 ) {
     var endedGameListener: EndedGameListener = listener
 
-    private var playGround: MutableList<MutableList<MutableList<Int>>> = initializeBoard()
+    private var playGround: MutableList<MutableList<MutableList<Int>>> = MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
 
     private var currentPlayer = 1
 
@@ -20,8 +20,10 @@ class TicTacToeEngine internal constructor(
     //TODO in späteren Updates eventuell den Nutzer entscheiden lassen wieviele Spieler es sein sollen
     private val playerCount = 2
 
-    fun initializeBoard() =
+    fun initializeBoard() {
+        endedGameListener.onInitializeBoard()
         MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
+    }
 
     fun getCurrentPlayer(): Int {
         return currentPlayer
@@ -82,7 +84,7 @@ class TicTacToeEngine internal constructor(
         //Y Axis Straight
 
         //check for Draw
-        if (emptyCells == 0) {
+        if ((emptyCells == 0 && is3DBoard) || (emptyCells == 18 && !is3DBoard)) {
             endedGameListener.onDraw()
         }
     }

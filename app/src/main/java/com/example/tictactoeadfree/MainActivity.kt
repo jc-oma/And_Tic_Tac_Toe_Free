@@ -6,7 +6,7 @@ import com.example.tictactoeadfree.gameEngine.TicTacToeEngine
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), TicTacToeEngine.EndedGameListener {
-    val toe: TicTacToeEngine = TicTacToeEngine(listener = this)
+    private val toe: TicTacToeEngine = TicTacToeEngine(listener = this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,49 +23,59 @@ class MainActivity : AppCompatActivity(), TicTacToeEngine.EndedGameListener {
         one_one.setOnClickListener{
             toe.playerTurn(0,0)
             one_one.text = getCurrentPlayerPlayStone()
+            one_one.setOnClickListener{}
         }
 
         one_two.setOnClickListener{
             toe.playerTurn(0,1)
             one_two.text = getCurrentPlayerPlayStone()
+            one_two.setOnClickListener{}
         }
 
         one_three.setOnClickListener{
             toe.playerTurn(0,2)
             one_three.text = getCurrentPlayerPlayStone()
+            one_three.setOnClickListener{}
         }
 
         two_one.setOnClickListener{
             toe.playerTurn(1,0)
             two_one.text = getCurrentPlayerPlayStone()
+            two_one.setOnClickListener{}
         }
 
         two_two.setOnClickListener{
             toe.playerTurn(1,1)
             two_two.text = getCurrentPlayerPlayStone()
+            two_two.setOnClickListener{}
         }
 
         two_three.setOnClickListener{
             toe.playerTurn(1,2)
             two_three.text = getCurrentPlayerPlayStone()
+            two_three.setOnClickListener{}
         }
 
         three_one.setOnClickListener{
             toe.playerTurn(2,0)
             three_one.text = getCurrentPlayerPlayStone()
+            three_one.setOnClickListener{}
         }
 
         three_two.setOnClickListener{
             toe.playerTurn(2,1)
             three_two.text = getCurrentPlayerPlayStone()
+            three_two.setOnClickListener{}
         }
 
         three_three.setOnClickListener{
             toe.playerTurn(2,2)
             three_three.text = getCurrentPlayerPlayStone()
+            three_three.setOnClickListener{}
         }
 
         clear_board.setOnClickListener{
+            intializeBoardListener()
             toe.initializeBoard()
             one_one.text = ""
             one_two.text = ""
