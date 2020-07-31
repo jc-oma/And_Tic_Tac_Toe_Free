@@ -7,7 +7,8 @@ class TicTacToeEngine internal constructor(
 ) {
     var endedGameListener: EndedGameListener = listener
 
-    private var playGround: MutableList<MutableList<MutableList<Int>>> = MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
+    private var playGround: MutableList<MutableList<MutableList<Int>>> =
+        MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
 
     private var currentPlayer = 1
 
@@ -22,7 +23,7 @@ class TicTacToeEngine internal constructor(
 
     fun initializeBoard() {
         endedGameListener.onInitializeBoard()
-        MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
+        playGround = MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
     }
 
     fun getCurrentPlayer(): Int {
@@ -52,7 +53,7 @@ class TicTacToeEngine internal constructor(
         var playStoneCounterInYAxisStraight = 0
         var index = 0
         var emptyCells = 0
-        
+
         //X Axis Straight check
         for (squareCell in playGround) {
             for (linearCell in squareCell) {
@@ -66,10 +67,10 @@ class TicTacToeEngine internal constructor(
                         playStoneCounterInXAxisStraight = 0
                         currentObservedPlayer = 0
                     }
-                    if (cell == currentObservedPlayer) {
+                    if (cell == currentObservedPlayer && currentObservedPlayer != 0) {
                         playStoneCounterInXAxisStraight++
                     }
-                    if (playStoneCounterInXAxisStraight == rowAmountToWin){
+                    if (playStoneCounterInXAxisStraight == rowAmountToWin) {
                         endedGameListener.onPlayerWin()
                     }
                     if (cell == 0) {
@@ -84,7 +85,7 @@ class TicTacToeEngine internal constructor(
         //Y Axis Straight
 
         //check for Draw
-        if ((emptyCells == 0 && is3DBoard) || (emptyCells == 18 && !is3DBoard)) {
+        if ((emptyCells == 0 && is3DBoard) || (emptyCells == grid * grid * (grid - 1) && !is3DBoard)) {
             endedGameListener.onDraw()
         }
     }
