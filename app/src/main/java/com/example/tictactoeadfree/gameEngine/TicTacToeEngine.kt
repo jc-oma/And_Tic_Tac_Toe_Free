@@ -7,8 +7,7 @@ class TicTacToeEngine internal constructor(
 ) {
     var endedGameListener: EndedGameListener = listener
 
-    private var playGround: MutableList<MutableList<MutableList<Int>>> =
-        MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
+    private var playGround: MutableList<MutableList<MutableList<Int>>> = mutableList()
 
     private var currentPlayer = 1
 
@@ -23,7 +22,7 @@ class TicTacToeEngine internal constructor(
 
     fun initializeBoard() {
         endedGameListener.onInitializeBoard()
-        playGround = MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
+        playGround = mutableList()
     }
 
     fun getCurrentPlayer(): Int {
@@ -47,6 +46,8 @@ class TicTacToeEngine internal constructor(
         checkForWinCondition()
     }
 
+    private fun mutableList() = MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
+
     private fun checkForWinCondition() {
         var currentObservedPlayer = 0
         var playStoneCounterInXAxisStraight = 0
@@ -54,14 +55,14 @@ class TicTacToeEngine internal constructor(
         var index = 0
         var emptyCells = 0
 
-        //X Axis Straight check
+        //Y Axis Straight check
         for (squareCell in playGround) {
             for (linearCell in squareCell) {
                 for (cell in linearCell) {
                     //X Axis Straight
                     if (index % grid == 0) {
                         playStoneCounterInXAxisStraight = 0
-                        currentObservedPlayer = 0
+                        currentObservedPlayer = cell
                     }
                     if (cell != currentObservedPlayer) {
                         playStoneCounterInXAxisStraight = 0
@@ -82,7 +83,7 @@ class TicTacToeEngine internal constructor(
             }
         }
 
-        //Y Axis Straight
+        //TODO Z Axis
 
         //check for Draw
         if ((emptyCells == 0 && is3DBoard) || (emptyCells == grid * grid * (grid - 1) && !is3DBoard)) {
