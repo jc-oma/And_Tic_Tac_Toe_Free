@@ -3,7 +3,7 @@ package com.example.tictactoeadfree.gameEngine
 class TicTacToeEngine internal constructor(
     private val grid: Int = 3,
     private val is3DBoard: Boolean = false,
-    private var listener: EndedGameListener
+    listener: EndedGameListener
 ) {
     var endedGameListener: EndedGameListener = listener
 
