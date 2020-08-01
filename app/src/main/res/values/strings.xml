@@ -5,4 +5,5 @@
     <string name="draw">Unentschieden!</string>
     <string name="restart_game">Spiel neu Starten</string>
     <string name="get_it_started">Los Geht\'s!</string>
+    <string name="game_has_ended_hint">Das spiel wurde beendet. Bitte Spiel neu starten!</string>
 </resources>

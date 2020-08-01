@@ -28,6 +28,8 @@ class TwoDimensionsSimple @JvmOverloads constructor(context: Context, attrs: Att
         intializeBoardListener()
     }
 
+    private val groupIds = board_view_group.referencedIds
+
     private fun getCurrentPlayerPlayStone(): String {
         return if (toe.getCurrentPlayer() == 1) "X" else "O"
     }
@@ -111,14 +113,22 @@ class TwoDimensionsSimple @JvmOverloads constructor(context: Context, attrs: Att
         game_info.text = context.getString(R.string.won)
         game_end_overlay.isVisible = true
         game_end_overlay.onGameWon()
-        board_view_group.isEnabled = false
+        deleteBoardListener()
     }
 
     override fun onDraw() {
         game_info.text = context.getString(R.string.draw)
         game_end_overlay.isVisible = true
         game_end_overlay.onGameDraw()
-        board_view_group.isEnabled = false
+        deleteBoardListener()
+    }
+
+    private fun deleteBoardListener() {
+        groupIds.forEach { id ->
+            rootView.findViewById<View>(id).setOnClickListener {
+                game_info.text = context.getString(R.string.game_has_ended_hint)
+            }
+        }
     }
 
     override fun onSwitchPlayer(playerNumber: Int) {
