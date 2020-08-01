@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".module.home.MainActivity">
 
-    <com.example.tictactoeadfree.module.boardsUI.TwoDimensionsSimple
+    <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard.TwoDimensionsSimple
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"

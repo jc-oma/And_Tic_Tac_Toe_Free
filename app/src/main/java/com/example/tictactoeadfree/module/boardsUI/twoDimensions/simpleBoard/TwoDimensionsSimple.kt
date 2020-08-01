@@ -1,4 +1,4 @@
-package com.example.tictactoeadfree.module.boardsUI
+package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard
 
 import android.content.Context
 import android.util.AttributeSet
