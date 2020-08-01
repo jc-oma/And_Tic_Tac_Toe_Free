@@ -1,11 +1,11 @@
-package com.example.tictactoeadfree.gameEngine
+package com.example.tictactoeadfree.module.gameEngine
 
 class TicTacToeEngine internal constructor(
     private val grid: Int = 3,
     private val is3DBoard: Boolean = false,
-    listener: EndedGameListener
+    listener: GameListener
 ) {
-    var endedGameListener: EndedGameListener = listener
+    var gameListener: GameListener = listener
 
     private var playGround: MutableList<MutableList<MutableList<Int>>> = mutableList()
 
@@ -21,7 +21,7 @@ class TicTacToeEngine internal constructor(
     private val playerCount = 2
 
     fun initializeBoard() {
-        endedGameListener.onInitializeBoard()
+        gameListener.onInitializeBoard()
         playGround = mutableList()
     }
 
@@ -34,7 +34,7 @@ class TicTacToeEngine internal constructor(
             throw IllegalArgumentException("postionZ couldn't be calculated in 2D Game")
         }
 
-        endedGameListener.onSwitchPlayer(playerNumber = currentPlayer)
+        gameListener.onSwitchPlayer(playerNumber = currentPlayer)
 
         playGround[positionX][positionY][positionZ] = currentPlayer
 
@@ -65,7 +65,7 @@ class TicTacToeEngine internal constructor(
                 playStoneCounterInXAxisStraight = 0
             }
             if (rowAmountToWin == playStoneCounterInXAxisStraight) {
-                endedGameListener.onPlayerWin()
+                gameListener.onPlayerWin()
                 return
             }
         }
@@ -79,7 +79,7 @@ class TicTacToeEngine internal constructor(
                 playStoneCounterInYAxisStraight = 0
             }
             if (rowAmountToWin == playStoneCounterInYAxisStraight) {
-                endedGameListener.onPlayerWin()
+                gameListener.onPlayerWin()
                 return
             }
         }
@@ -93,7 +93,7 @@ class TicTacToeEngine internal constructor(
                 playStoneCounterInZAxisStraight = 0
             }
             if (rowAmountToWin == playStoneCounterInZAxisStraight) {
-                endedGameListener.onPlayerWin()
+                gameListener.onPlayerWin()
                 return
             }
         }
@@ -124,7 +124,7 @@ class TicTacToeEngine internal constructor(
             y++
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            endedGameListener.onPlayerWin()
+            gameListener.onPlayerWin()
             return
         }
 
@@ -155,7 +155,7 @@ class TicTacToeEngine internal constructor(
             y--
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            endedGameListener.onPlayerWin()
+            gameListener.onPlayerWin()
             return
         }
 
@@ -189,7 +189,7 @@ class TicTacToeEngine internal constructor(
             z++
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            endedGameListener.onPlayerWin()
+            gameListener.onPlayerWin()
             return
         }
 
@@ -210,17 +210,17 @@ class TicTacToeEngine internal constructor(
         x = positionX + 1
         z = positionZ + 1
         while (x < grid && z < grid && z >= 0) {
-            if (playGround[x][y][positionZ] == currentPlayer) {
+            if (playGround[x][positionY][z] == currentPlayer) {
                 playStoneCounterIsDiagonal++
             }
-            if (playGround[x][y][positionZ] != currentPlayer) {
+            if (playGround[x][positionY][z] != currentPlayer) {
                 break
             }
             x++
             z--
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            endedGameListener.onPlayerWin()
+            gameListener.onPlayerWin()
             return
         }
         // XZ end
@@ -239,11 +239,11 @@ class TicTacToeEngine internal constructor(
 
         //check for Draw
         if ((emptyCells == 0 && is3DBoard) || (emptyCells == grid * grid * (grid - 1) && !is3DBoard)) {
-            endedGameListener.onDraw()
+            gameListener.onDraw()
         }
     }
 
-    interface EndedGameListener {
+    interface GameListener {
         fun onPlayerWin()
         fun onDraw()
         fun onSwitchPlayer(playerNumber: Int)

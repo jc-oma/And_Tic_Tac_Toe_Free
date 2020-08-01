@@ -1,17 +1,29 @@
-package com.example.tictactoeadfree
+package com.example.tictactoeadfree.module.boardsUI
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.example.tictactoeadfree.gameEngine.TicTacToeEngine
-import kotlinx.android.synthetic.main.activity_main.*
+import android.content.Context
+import android.util.AttributeSet
+import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.tictactoeadfree.R
+import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
+import kotlinx.android.synthetic.main.board_two_dimensions_simple.view.*
 
-class MainActivity : AppCompatActivity(), TicTacToeEngine.EndedGameListener {
-    private val toe: TicTacToeEngine = TicTacToeEngine(listener = this)
+class TwoDimensionsSimple @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    init {
+        initView(context)
+    }
 
+    private fun initView(context: Context) {
+        View.inflate(context, R.layout.board_two_dimensions_simple, this)
+    }
+
+    private val toe: TicTacToeEngine =
+        TicTacToeEngine(listener = this)
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        onInitializeBoard()
         intializeBoardListener()
     }
 
