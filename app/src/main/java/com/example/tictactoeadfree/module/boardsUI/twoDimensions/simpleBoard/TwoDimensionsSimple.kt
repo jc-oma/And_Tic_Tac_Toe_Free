@@ -114,10 +114,10 @@ class TwoDimensionsSimple @JvmOverloads constructor(
         }
     }
 
-    override fun onPlayerWin() {
-        game_info.text = context.getString(R.string.won)
+    override fun onPlayerWin(wonPlayer: Int) {
+        game_info.text = context.getString(R.string.player_x_won, wonPlayer.toString())
         game_end_overlay.isVisible = true
-        game_end_overlay.onGameWon()
+        game_end_overlay.onGameWon(wonPlayer)
         deleteBoardListener()
     }
 

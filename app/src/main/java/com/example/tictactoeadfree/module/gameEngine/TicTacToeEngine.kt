@@ -65,7 +65,7 @@ class TicTacToeEngine internal constructor(
                 playStoneCounterInXAxisStraight = 0
             }
             if (rowAmountToWin == playStoneCounterInXAxisStraight) {
-                gameListener.onPlayerWin()
+                currentPlayerWinsGame()
                 return
             }
         }
@@ -79,7 +79,7 @@ class TicTacToeEngine internal constructor(
                 playStoneCounterInYAxisStraight = 0
             }
             if (rowAmountToWin == playStoneCounterInYAxisStraight) {
-                gameListener.onPlayerWin()
+                currentPlayerWinsGame()
                 return
             }
         }
@@ -93,7 +93,7 @@ class TicTacToeEngine internal constructor(
                 playStoneCounterInZAxisStraight = 0
             }
             if (rowAmountToWin == playStoneCounterInZAxisStraight) {
-                gameListener.onPlayerWin()
+                currentPlayerWinsGame()
                 return
             }
         }
@@ -124,7 +124,7 @@ class TicTacToeEngine internal constructor(
             y++
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            gameListener.onPlayerWin()
+            currentPlayerWinsGame()
             return
         }
 
@@ -143,7 +143,7 @@ class TicTacToeEngine internal constructor(
             y++
         }
         x = positionX + 1
-        y = positionY + 1
+        y = positionY - 1
         while (x < grid && y >= 0 && y < grid) {
             if (playGround[x][y][positionZ] == currentPlayer) {
                 playStoneCounterIsDiagonal++
@@ -155,7 +155,7 @@ class TicTacToeEngine internal constructor(
             y--
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            gameListener.onPlayerWin()
+            currentPlayerWinsGame()
             return
         }
 
@@ -189,7 +189,7 @@ class TicTacToeEngine internal constructor(
             z++
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            gameListener.onPlayerWin()
+            currentPlayerWinsGame()
             return
         }
 
@@ -220,7 +220,7 @@ class TicTacToeEngine internal constructor(
             z--
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            gameListener.onPlayerWin()
+            currentPlayerWinsGame()
             return
         }
         // XZ end
@@ -243,8 +243,12 @@ class TicTacToeEngine internal constructor(
         }
     }
 
+    private fun currentPlayerWinsGame() {
+        gameListener.onPlayerWin(currentPlayer)
+    }
+
     interface GameListener {
-        fun onPlayerWin()
+        fun onPlayerWin(wonPlayer: Int)
         fun onDraw()
         fun onSwitchPlayer(playerNumber: Int)
         fun onInitializeBoard()
