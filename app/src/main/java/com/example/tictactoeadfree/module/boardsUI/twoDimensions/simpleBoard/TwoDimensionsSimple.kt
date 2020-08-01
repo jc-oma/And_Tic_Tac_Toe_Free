@@ -3,13 +3,18 @@ package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
 import kotlinx.android.synthetic.main.board_two_dimensions_simple.view.*
 
-class TwoDimensionsSimple @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener {
+class TwoDimensionsSimple @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener {
 
     init {
         initView(context)
@@ -35,65 +40,65 @@ class TwoDimensionsSimple @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     private fun intializeBoardListener() {
-        game_end_overlay.setOnClickListener{
-          game_end_overlay.isVisible = false
+        game_end_overlay.setOnClickListener {
+            game_end_overlay.isVisible = false
         }
 
-        one_one.setOnClickListener{
-            toe.playerTurn(0,2)
+        one_one.setOnClickListener {
+            toe.playerTurn(0, 2)
             one_one.text = getCurrentPlayerPlayStone()
-            one_one.setOnClickListener{}
+            one_one.setOnClickListener {}
         }
 
-        one_two.setOnClickListener{
-            toe.playerTurn(1,2)
+        one_two.setOnClickListener {
+            toe.playerTurn(1, 2)
             one_two.text = getCurrentPlayerPlayStone()
-            one_two.setOnClickListener{}
+            one_two.setOnClickListener {}
         }
 
-        one_three.setOnClickListener{
-            toe.playerTurn(2,2)
+        one_three.setOnClickListener {
+            toe.playerTurn(2, 2)
             one_three.text = getCurrentPlayerPlayStone()
-            one_three.setOnClickListener{}
+            one_three.setOnClickListener {}
         }
 
-        two_one.setOnClickListener{
-            toe.playerTurn(0,1)
+        two_one.setOnClickListener {
+            toe.playerTurn(0, 1)
             two_one.text = getCurrentPlayerPlayStone()
-            two_one.setOnClickListener{}
+            two_one.setOnClickListener {}
         }
 
-        two_two.setOnClickListener{
-            toe.playerTurn(1,1)
+        two_two.setOnClickListener {
+            toe.playerTurn(1, 1)
             two_two.text = getCurrentPlayerPlayStone()
-            two_two.setOnClickListener{}
+            two_two.setOnClickListener {}
         }
 
-        two_three.setOnClickListener{
-            toe.playerTurn(2,1)
+        two_three.setOnClickListener {
+            toe.playerTurn(2, 1)
             two_three.text = getCurrentPlayerPlayStone()
-            two_three.setOnClickListener{}
+            two_three.setOnClickListener {}
         }
 
-        three_one.setOnClickListener{
-            toe.playerTurn(0,0)
+        three_one.setOnClickListener {
+            toe.playerTurn(0, 0)
             three_one.text = getCurrentPlayerPlayStone()
-            three_one.setOnClickListener{}
+            three_one.setOnClickListener {}
         }
 
-        three_two.setOnClickListener{
-            toe.playerTurn(1,0)
+        three_two.setOnClickListener {
+            toe.playerTurn(1, 0)
             three_two.text = getCurrentPlayerPlayStone()
-            three_two.setOnClickListener{}
+            three_two.setOnClickListener {}
         }
 
-        three_three.setOnClickListener{
-            toe.playerTurn(2,0)
+        three_three.setOnClickListener {
+            toe.playerTurn(2, 0)
             three_three.text = getCurrentPlayerPlayStone()
-            three_three.setOnClickListener{}
+            three_three.setOnClickListener {}
         }
 
-        restart_game.setOnClickListener{
+        restart_game.setOnClickListener {
             intializeBoardListener()
             board_view_group.isEnabled = true
             toe.initializeBoard()
@@ -127,6 +132,12 @@ class TwoDimensionsSimple @JvmOverloads constructor(context: Context, attrs: Att
         groupIds.forEach { id ->
             rootView.findViewById<View>(id).setOnClickListener {
                 game_info.text = context.getString(R.string.game_has_ended_hint)
+                restart_game.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        context,
+                        R.anim.shake_animation
+                    )
+                )
             }
         }
     }
