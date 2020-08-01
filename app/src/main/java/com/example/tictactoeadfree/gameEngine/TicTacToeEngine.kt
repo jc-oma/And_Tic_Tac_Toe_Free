@@ -50,30 +50,35 @@ class TicTacToeEngine internal constructor(
 
     private fun checkForWinCondition() {
         var currentObservedPlayer = 0
-        var playStoneCounterInXAxisStraight = 0
+        var playStoneCounterInXAxisStraight: MutableList<Int> = MutableList(grid) {0}
         var playStoneCounterInYAxisStraight = 0
         var index = 0
         var emptyCells = 0
 
-        //Y Axis Straight check
-        for (squareCell in playGround) {
-            for (linearCell in squareCell) {
-                for (cell in linearCell) {
-                    //X Axis Straight
+        for ((squareIndex,squareCell) in playGround.withIndex()) {
+            for ((linearIndex, linearCell) in squareCell.withIndex()) {
+                for ((cellIndex, cell) in linearCell.withIndex()) {
+                    //X Axis Straight check
+
+                    //Y Axis Straight check //TODO modulo Index eventuell entfernen
+                    if (index % (grid * grid) == 0) {
+                        playStoneCounterInYAxisStraight = 0
+                    }
+
                     if (index % grid == 0) {
-                        playStoneCounterInXAxisStraight = 0
-                        currentObservedPlayer = cell
+                        if (cell != currentObservedPlayer) {
+                            currentObservedPlayer = cell
+                            playStoneCounterInYAxisStraight = 0
+                        }
+                        if (cell == currentObservedPlayer && currentObservedPlayer != 0) {
+                            playStoneCounterInYAxisStraight++
+                        }
+                        if (playStoneCounterInYAxisStraight == rowAmountToWin) {
+                            endedGameListener.onPlayerWin()
+                        }
                     }
-                    if (cell != currentObservedPlayer) {
-                        playStoneCounterInXAxisStraight = 0
-                        currentObservedPlayer = 0
-                    }
-                    if (cell == currentObservedPlayer && currentObservedPlayer != 0) {
-                        playStoneCounterInXAxisStraight++
-                    }
-                    if (playStoneCounterInXAxisStraight == rowAmountToWin) {
-                        endedGameListener.onPlayerWin()
-                    }
+                    //Y Axis Straight end
+
                     if (cell == 0) {
                         emptyCells++
                     }
