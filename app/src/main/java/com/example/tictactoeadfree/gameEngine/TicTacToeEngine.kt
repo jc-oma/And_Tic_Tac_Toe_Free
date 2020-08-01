@@ -33,62 +33,209 @@ class TicTacToeEngine internal constructor(
         if (!is3DBoard && positionZ > 0) {
             throw IllegalArgumentException("postionZ couldn't be calculated in 2D Game")
         }
+
+        endedGameListener.onSwitchPlayer(playerNumber = currentPlayer)
+
         playGround[positionX][positionY][positionZ] = currentPlayer
+
+        checkForWinCondition(positionX, positionY, positionZ)
 
         if (currentPlayer == playerCount) {
             currentPlayer = 1
         } else {
             currentPlayer++
         }
-
-        endedGameListener.onSwitchPlayer(playerNumber = currentPlayer)
-
-        checkForWinCondition()
     }
 
     private fun mutableList() = MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
 
-    private fun checkForWinCondition() {
-        var currentObservedPlayer = 0
-        var playStoneCounterInXAxisStraight: MutableList<Int> = MutableList(grid) {0}
+    private fun checkForWinCondition(positionX: Int, positionY: Int, positionZ: Int) {
+        var playStoneCounterInXAxisStraight = 0
         var playStoneCounterInYAxisStraight = 0
-        var index = 0
+        var playStoneCounterInZAxisStraight = 0
+        var playStoneCounterIsDiagonal = 0
         var emptyCells = 0
 
-        for ((squareIndex,squareCell) in playGround.withIndex()) {
-            for ((linearIndex, linearCell) in squareCell.withIndex()) {
-                for ((cellIndex, cell) in linearCell.withIndex()) {
-                    //X Axis Straight check
-
-                    //Y Axis Straight check //TODO modulo Index eventuell entfernen
-                    if (index % (grid * grid) == 0) {
-                        playStoneCounterInYAxisStraight = 0
-                    }
-
-                    if (index % grid == 0) {
-                        if (cell != currentObservedPlayer) {
-                            currentObservedPlayer = cell
-                            playStoneCounterInYAxisStraight = 0
-                        }
-                        if (cell == currentObservedPlayer && currentObservedPlayer != 0) {
-                            playStoneCounterInYAxisStraight++
-                        }
-                        if (playStoneCounterInYAxisStraight == rowAmountToWin) {
-                            endedGameListener.onPlayerWin()
-                        }
-                    }
-                    //Y Axis Straight end
-
-                    if (cell == 0) {
-                        emptyCells++
-                    }
-
-                    index++
-                }
+        //X Straight
+        for (x in 0 until grid) {
+            if (playGround[x][positionY][positionZ] == currentPlayer) {
+                playStoneCounterInXAxisStraight++
+            }
+            if (playGround[x][positionY][positionZ] != currentPlayer) {
+                playStoneCounterInXAxisStraight = 0
+            }
+            if (rowAmountToWin == playStoneCounterInXAxisStraight) {
+                endedGameListener.onPlayerWin()
+                return
             }
         }
 
-        //TODO Z Axis
+        //Y Straight
+        for (y in 0 until grid) {
+            if (playGround[positionX][y][positionZ] == currentPlayer) {
+                playStoneCounterInYAxisStraight++
+            }
+            if (playGround[positionX][y][positionZ] != currentPlayer) {
+                playStoneCounterInYAxisStraight = 0
+            }
+            if (rowAmountToWin == playStoneCounterInYAxisStraight) {
+                endedGameListener.onPlayerWin()
+                return
+            }
+        }
+
+        //Z Straight
+        for (z in 0 until grid) {
+            if (playGround[positionX][positionY][z] == currentPlayer) {
+                playStoneCounterInZAxisStraight++
+            }
+            if (playGround[positionX][positionY][z] != currentPlayer) {
+                playStoneCounterInZAxisStraight = 0
+            }
+            if (rowAmountToWin == playStoneCounterInZAxisStraight) {
+                endedGameListener.onPlayerWin()
+                return
+            }
+        }
+
+        //XY diagonal
+        var x = positionX
+        var y = positionY
+        while (x >= 0 && y >= 0) {
+            if (playGround[x][y][positionZ] == currentPlayer) {
+                playStoneCounterIsDiagonal++
+            }
+            if (playGround[x][y][positionZ] != currentPlayer) {
+                break
+            }
+            x--
+            y--
+        }
+        x = positionX + 1
+        y = positionY + 1
+        while (x < grid && y < grid) {
+            if (playGround[x][y][positionZ] == currentPlayer) {
+                playStoneCounterIsDiagonal++
+            }
+            if (playGround[x][y][positionZ] != currentPlayer) {
+                break
+            }
+            x++
+            y++
+        }
+        if (rowAmountToWin == playStoneCounterIsDiagonal) {
+            endedGameListener.onPlayerWin()
+            return
+        }
+
+        playStoneCounterIsDiagonal = 0
+
+        x = positionX
+        y = positionY
+        while (x >= 0 && y < grid) {
+            if (playGround[x][y][positionZ] == currentPlayer) {
+                playStoneCounterIsDiagonal++
+            }
+            if (playGround[x][y][positionZ] != currentPlayer) {
+                break
+            }
+            x--
+            y++
+        }
+        x = positionX + 1
+        y = positionY + 1
+        while (x < grid && y >= 0 && y < grid) {
+            if (playGround[x][y][positionZ] == currentPlayer) {
+                playStoneCounterIsDiagonal++
+            }
+            if (playGround[x][y][positionZ] != currentPlayer) {
+                break
+            }
+            x++
+            y--
+        }
+        if (rowAmountToWin == playStoneCounterIsDiagonal) {
+            endedGameListener.onPlayerWin()
+            return
+        }
+
+        // XY diagonal end
+
+        playStoneCounterIsDiagonal = 0
+
+        // XZ diagonal
+        x = positionX
+        var z = positionZ
+        while (x >= 0 && z >= 0) {
+            if (playGround[x][positionY][z] == currentPlayer) {
+                playStoneCounterIsDiagonal++
+            }
+            if (playGround[x][positionY][z] != currentPlayer) {
+                break
+            }
+            x--
+            z--
+        }
+        x = positionX + 1
+        z = positionZ + 1
+        while (x < grid && z < grid) {
+            if (playGround[x][positionY][z] == currentPlayer) {
+                playStoneCounterIsDiagonal++
+            }
+            if (playGround[x][positionY][z] != currentPlayer) {
+                break
+            }
+            x++
+            z++
+        }
+        if (rowAmountToWin == playStoneCounterIsDiagonal) {
+            endedGameListener.onPlayerWin()
+            return
+        }
+
+        playStoneCounterIsDiagonal = 0
+
+        x = positionX
+        z = positionZ
+        while (x >= 0 && z < grid) {
+            if (playGround[x][positionY][z] == currentPlayer) {
+                playStoneCounterIsDiagonal++
+            }
+            if (playGround[x][positionY][z] != currentPlayer) {
+                break
+            }
+            x--
+            z++
+        }
+        x = positionX + 1
+        z = positionZ + 1
+        while (x < grid && z < grid && z >= 0) {
+            if (playGround[x][y][positionZ] == currentPlayer) {
+                playStoneCounterIsDiagonal++
+            }
+            if (playGround[x][y][positionZ] != currentPlayer) {
+                break
+            }
+            x++
+            z--
+        }
+        if (rowAmountToWin == playStoneCounterIsDiagonal) {
+            endedGameListener.onPlayerWin()
+            return
+        }
+        // XZ end
+        // TODO XZY diagonal
+        // Diagonal end
+
+        for ((squareIndex, squareCell) in playGround.withIndex()) {
+            for ((linearIndex, linearCell) in squareCell.withIndex()) {
+                for ((cellIndex, cell) in linearCell.withIndex()) {
+                    if (cell == 0) {
+                        emptyCells++
+                    }
+                }
+            }
+        }
 
         //check for Draw
         if ((emptyCells == 0 && is3DBoard) || (emptyCells == grid * grid * (grid - 1) && !is3DBoard)) {
