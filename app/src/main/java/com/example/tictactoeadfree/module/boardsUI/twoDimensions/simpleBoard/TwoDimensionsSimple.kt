@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
 import kotlinx.android.synthetic.main.board_two_dimensions_simple.view.*
@@ -32,6 +33,10 @@ class TwoDimensionsSimple @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     private fun intializeBoardListener() {
+        game_end_overlay.setOnClickListener{
+          game_end_overlay.isVisible = false
+        }
+
         one_one.setOnClickListener{
             toe.playerTurn(0,2)
             one_one.text = getCurrentPlayerPlayStone()
@@ -86,8 +91,9 @@ class TwoDimensionsSimple @JvmOverloads constructor(context: Context, attrs: Att
             three_three.setOnClickListener{}
         }
 
-        clear_board.setOnClickListener{
+        restart_game.setOnClickListener{
             intializeBoardListener()
+            board_view_group.isEnabled = true
             toe.initializeBoard()
             one_one.text = ""
             one_two.text = ""
@@ -102,11 +108,17 @@ class TwoDimensionsSimple @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     override fun onPlayerWin() {
-        game_info.text = "Sieg!"
+        game_info.text = context.getString(R.string.won)
+        game_end_overlay.isVisible = true
+        game_end_overlay.onGameWon()
+        board_view_group.isEnabled = false
     }
 
     override fun onDraw() {
-        game_info.text = "Unentschieden!"
+        game_info.text = context.getString(R.string.draw)
+        game_end_overlay.isVisible = true
+        game_end_overlay.onGameDraw()
+        board_view_group.isEnabled = false
     }
 
     override fun onSwitchPlayer(playerNumber: Int) {
@@ -114,6 +126,6 @@ class TwoDimensionsSimple @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     override fun onInitializeBoard() {
-        game_info.text = "Los Geht's!"
+        game_info.text = context.getString(R.string.get_it_started)
     }
 }

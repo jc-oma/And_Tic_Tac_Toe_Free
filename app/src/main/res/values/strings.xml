@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TicTacToeAdFree</string>
+
+    <string name="won">Sieg!</string>
+    <string name="draw">Unentschieden!</string>
+    <string name="restart_game">Spiel neu Starten</string>
+    <string name="get_it_started">Los Geht\'s!</string>
 </resources>
