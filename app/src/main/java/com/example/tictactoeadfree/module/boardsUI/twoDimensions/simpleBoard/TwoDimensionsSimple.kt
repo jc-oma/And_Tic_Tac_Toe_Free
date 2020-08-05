@@ -23,8 +23,8 @@ class TwoDimensionsSimple @JvmOverloads constructor(
     }
 
     @DrawableRes
-    private val oImgPlayerStone = R.drawable.o_play_stone
-    private val xImgPlayerStone = R.drawable.x_play_stone
+    private val oImgPlayerStone = R.drawable.blender_o_play_stone
+    private val xImgPlayerStone = R.drawable.blender_x_play_stone
 
     private fun initView(context: Context) {
         View.inflate(context, R.layout.board_two_dimensions_simple, this)
@@ -108,7 +108,7 @@ class TwoDimensionsSimple @JvmOverloads constructor(
             intializeBoardListener()
             board_view_group.isEnabled = true
             toe.initializeBoard()
-            val kuerbisDrawable = context.getDrawable(R.drawable.kuerbis)
+            val kuerbisDrawable = context.getDrawable(R.drawable.blender_box_placeholder)
             one_one.setImageDrawable(kuerbisDrawable)
             one_two.setImageDrawable(kuerbisDrawable)
             one_three.setImageDrawable(kuerbisDrawable)
