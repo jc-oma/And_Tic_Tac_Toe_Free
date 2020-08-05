@@ -1,9 +1,11 @@
 package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.example.tictactoeadfree.R
@@ -20,6 +22,10 @@ class TwoDimensionsSimple @JvmOverloads constructor(
         initView(context)
     }
 
+    @DrawableRes
+    private val oImgPlayerStone = R.drawable.o_play_stone
+    private val xImgPlayerStone = R.drawable.x_play_stone
+
     private fun initView(context: Context) {
         View.inflate(context, R.layout.board_two_dimensions_simple, this)
     }
@@ -35,8 +41,8 @@ class TwoDimensionsSimple @JvmOverloads constructor(
 
     private val groupIds = board_view_group.referencedIds
 
-    private fun getCurrentPlayerPlayStone(): String {
-        return if (toe.getCurrentPlayer() == 1) "X" else "O"
+    private fun getCurrentPlayerPlayStone(): Drawable? {
+        return if (toe.getCurrentPlayer() == 1) context.getDrawable(xImgPlayerStone) else context.getDrawable(oImgPlayerStone)
     }
 
     private fun intializeBoardListener() {
@@ -46,55 +52,55 @@ class TwoDimensionsSimple @JvmOverloads constructor(
 
         one_one.setOnClickListener {
             toe.playerTurn(0, 2)
-            one_one.text = getCurrentPlayerPlayStone()
+            one_one.setImageDrawable(getCurrentPlayerPlayStone())
             one_one.setOnClickListener {}
         }
 
         one_two.setOnClickListener {
             toe.playerTurn(1, 2)
-            one_two.text = getCurrentPlayerPlayStone()
+            one_two.setImageDrawable(getCurrentPlayerPlayStone())
             one_two.setOnClickListener {}
         }
 
         one_three.setOnClickListener {
             toe.playerTurn(2, 2)
-            one_three.text = getCurrentPlayerPlayStone()
+            one_three.setImageDrawable(getCurrentPlayerPlayStone())
             one_three.setOnClickListener {}
         }
 
         two_one.setOnClickListener {
             toe.playerTurn(0, 1)
-            two_one.text = getCurrentPlayerPlayStone()
+            two_one.setImageDrawable(getCurrentPlayerPlayStone())
             two_one.setOnClickListener {}
         }
 
         two_two.setOnClickListener {
             toe.playerTurn(1, 1)
-            two_two.text = getCurrentPlayerPlayStone()
+            two_two.setImageDrawable(getCurrentPlayerPlayStone())
             two_two.setOnClickListener {}
         }
 
         two_three.setOnClickListener {
             toe.playerTurn(2, 1)
-            two_three.text = getCurrentPlayerPlayStone()
+            two_three.setImageDrawable(getCurrentPlayerPlayStone())
             two_three.setOnClickListener {}
         }
 
         three_one.setOnClickListener {
             toe.playerTurn(0, 0)
-            three_one.text = getCurrentPlayerPlayStone()
+            three_one.setImageDrawable(getCurrentPlayerPlayStone())
             three_one.setOnClickListener {}
         }
 
         three_two.setOnClickListener {
             toe.playerTurn(1, 0)
-            three_two.text = getCurrentPlayerPlayStone()
+            three_two.setImageDrawable(getCurrentPlayerPlayStone())
             three_two.setOnClickListener {}
         }
 
         three_three.setOnClickListener {
             toe.playerTurn(2, 0)
-            three_three.text = getCurrentPlayerPlayStone()
+            three_three.setImageDrawable(getCurrentPlayerPlayStone())
             three_three.setOnClickListener {}
         }
 
@@ -102,15 +108,16 @@ class TwoDimensionsSimple @JvmOverloads constructor(
             intializeBoardListener()
             board_view_group.isEnabled = true
             toe.initializeBoard()
-            one_one.text = ""
-            one_two.text = ""
-            one_three.text = ""
-            two_one.text = ""
-            two_two.text = ""
-            two_three.text = ""
-            three_one.text = ""
-            three_two.text = ""
-            three_three.text = ""
+            val kuerbisDrawable = context.getDrawable(R.drawable.kuerbis)
+            one_one.setImageDrawable(kuerbisDrawable)
+            one_two.setImageDrawable(kuerbisDrawable)
+            one_three.setImageDrawable(kuerbisDrawable)
+            two_one.setImageDrawable(kuerbisDrawable)
+            two_two.setImageDrawable(kuerbisDrawable)
+            two_three.setImageDrawable(kuerbisDrawable)
+            three_one.setImageDrawable(kuerbisDrawable)
+            three_two.setImageDrawable(kuerbisDrawable)
+            three_three.setImageDrawable(kuerbisDrawable)
         }
     }
 

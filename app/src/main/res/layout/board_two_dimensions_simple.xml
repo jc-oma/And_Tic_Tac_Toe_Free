@@ -12,131 +12,133 @@
         android:translationZ="40dp"
         android:visibility="gone" />
 
-    <Button
+    <ImageView
         android:id="@+id/one_one"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:adjustViewBounds="true"
+        android:background="@color/buttonBackground"
+        android:cropToPadding="true"
         android:orientation="horizontal"
+        android:src="@drawable/kuerbis"
         android:textSize="80sp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/one_two"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="O" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageView
         android:id="@+id/one_two"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:background="@color/buttonBackground"
         android:orientation="horizontal"
+        android:src="@drawable/kuerbis"
         android:textSize="80sp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/one_three"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_one"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="X" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageView
         android:id="@+id/one_three"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:background="@color/buttonBackground"
         android:orientation="horizontal"
+        android:src="@drawable/kuerbis"
         android:textSize="80sp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_two"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="X" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageView
         android:id="@+id/two_one"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:background="@color/buttonBackground"
         android:orientation="horizontal"
+        android:src="@drawable/kuerbis"
         android:textSize="80sp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/one_two"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/one_one"
-        tools:text="X" />
+        app:layout_constraintTop_toBottomOf="@+id/one_one" />
 
-    <Button
+    <ImageView
         android:id="@+id/two_two"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:background="@color/buttonBackground"
         android:orientation="horizontal"
+        android:src="@drawable/kuerbis"
         android:textSize="80sp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/one_three"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_one"
-        app:layout_constraintTop_toBottomOf="@+id/one_one"
-        tools:text="O" />
+        app:layout_constraintTop_toBottomOf="@+id/one_one" />
 
-    <Button
+    <ImageView
         android:id="@+id/two_three"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:background="@color/buttonBackground"
         android:orientation="horizontal"
+        android:src="@drawable/kuerbis"
         android:textSize="80sp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_two"
-        app:layout_constraintTop_toBottomOf="@+id/one_one"
-        tools:text="X" />
+        app:layout_constraintTop_toBottomOf="@+id/one_one" />
 
-    <Button
+    <ImageView
         android:id="@+id/three_one"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:background="@color/buttonBackground"
         android:orientation="horizontal"
+        android:src="@drawable/kuerbis"
         android:textSize="80sp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/one_two"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/two_one"
-        tools:text="O" />
+        tools:src="@drawable/o_play_stone" />
 
-    <Button
+    <ImageView
         android:id="@+id/three_two"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:background="@color/buttonBackground"
         android:orientation="horizontal"
+        android:src="@drawable/kuerbis"
         android:textSize="80sp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/one_three"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_one"
-        app:layout_constraintTop_toBottomOf="@+id/two_one"
-        tools:text="X" />
+        app:layout_constraintTop_toBottomOf="@+id/two_one" />
 
-    <Button
+    <ImageView
         android:id="@+id/three_three"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:background="@color/buttonBackground"
         android:orientation="horizontal"
+        android:src="@drawable/kuerbis"
         android:textSize="80sp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_two"
-        app:layout_constraintTop_toBottomOf="@+id/two_one"
-        tools:text="O" />
+        app:layout_constraintTop_toBottomOf="@+id/two_one" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/board_view_group"
