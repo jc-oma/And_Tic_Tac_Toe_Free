@@ -3,6 +3,7 @@ package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -13,7 +14,7 @@ import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
 import kotlinx.android.synthetic.main.board_two_dimensions_simple.view.*
 
-class TwoDimensionsSimple @JvmOverloads constructor(
+class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -78,14 +79,19 @@ class TwoDimensionsSimple @JvmOverloads constructor(
             }
         }
 
-        restart_game.setOnClickListener {
-            intializeBoardListener()
-            board_view_group.isEnabled = true
-            toe.initializeBoard()
-            val placeHolderDrawable = context.getDrawable(R.drawable.blender_box_placeholder)
-            for (cellView in playGroundViewGrid) {
-                cellView.setImageDrawable(placeHolderDrawable)
+        restart_game.setOnTouchListener { view, motionEvent ->
+            restart_game.changeStyleOnTouchEvent(motionEvent)
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                view.performClick()
+                intializeBoardListener()
+                board_view_group.isEnabled = true
+                toe.initializeBoard()
+                val placeHolderDrawable = context.getDrawable(R.drawable.blender_box_placeholder)
+                for (cellView in playGroundViewGrid) {
+                    cellView.setImageDrawable(placeHolderDrawable)
+                }
             }
+            return@setOnTouchListener true
         }
     }
 
