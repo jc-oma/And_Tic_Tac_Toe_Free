@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
@@ -33,6 +34,23 @@ class TwoDimensionsSimple @JvmOverloads constructor(
     private val toe: TicTacToeEngine =
         TicTacToeEngine(listener = this)
 
+    private val playGroundViewGrid: List<ImageView> by lazy {
+        listOf(
+            three_one,
+            three_two,
+            three_three,
+            two_one,
+            two_two,
+            two_three,
+            one_one,
+            one_two,
+            one_three
+        )
+    }
+
+    //Todo make dynamic
+    private val grid = 3
+
     override fun onFinishInflate() {
         super.onFinishInflate()
         onInitializeBoard()
@@ -42,7 +60,9 @@ class TwoDimensionsSimple @JvmOverloads constructor(
     private val groupIds = board_view_group.referencedIds
 
     private fun getCurrentPlayerPlayStone(): Drawable? {
-        return if (toe.getCurrentPlayer() == 1) context.getDrawable(xImgPlayerStone) else context.getDrawable(oImgPlayerStone)
+        return if (toe.getCurrentPlayer() == 1) context.getDrawable(xImgPlayerStone) else context.getDrawable(
+            oImgPlayerStone
+        )
     }
 
     private fun intializeBoardListener() {
@@ -50,74 +70,22 @@ class TwoDimensionsSimple @JvmOverloads constructor(
             game_end_overlay.isVisible = false
         }
 
-        one_one.setOnClickListener {
-            toe.playerTurn(0, 2)
-            one_one.setImageDrawable(getCurrentPlayerPlayStone())
-            one_one.setOnClickListener {}
-        }
-
-        one_two.setOnClickListener {
-            toe.playerTurn(1, 2)
-            one_two.setImageDrawable(getCurrentPlayerPlayStone())
-            one_two.setOnClickListener {}
-        }
-
-        one_three.setOnClickListener {
-            toe.playerTurn(2, 2)
-            one_three.setImageDrawable(getCurrentPlayerPlayStone())
-            one_three.setOnClickListener {}
-        }
-
-        two_one.setOnClickListener {
-            toe.playerTurn(0, 1)
-            two_one.setImageDrawable(getCurrentPlayerPlayStone())
-            two_one.setOnClickListener {}
-        }
-
-        two_two.setOnClickListener {
-            toe.playerTurn(1, 1)
-            two_two.setImageDrawable(getCurrentPlayerPlayStone())
-            two_two.setOnClickListener {}
-        }
-
-        two_three.setOnClickListener {
-            toe.playerTurn(2, 1)
-            two_three.setImageDrawable(getCurrentPlayerPlayStone())
-            two_three.setOnClickListener {}
-        }
-
-        three_one.setOnClickListener {
-            toe.playerTurn(0, 0)
-            three_one.setImageDrawable(getCurrentPlayerPlayStone())
-            three_one.setOnClickListener {}
-        }
-
-        three_two.setOnClickListener {
-            toe.playerTurn(1, 0)
-            three_two.setImageDrawable(getCurrentPlayerPlayStone())
-            three_two.setOnClickListener {}
-        }
-
-        three_three.setOnClickListener {
-            toe.playerTurn(2, 0)
-            three_three.setImageDrawable(getCurrentPlayerPlayStone())
-            three_three.setOnClickListener {}
+        for ((index, cellView) in playGroundViewGrid.withIndex()) {
+            cellView.setOnClickListener {
+                toe.playerTurn(index % grid, index / grid)
+                cellView.setImageDrawable(getCurrentPlayerPlayStone())
+                cellView.setOnClickListener {}
+            }
         }
 
         restart_game.setOnClickListener {
             intializeBoardListener()
             board_view_group.isEnabled = true
             toe.initializeBoard()
-            val kuerbisDrawable = context.getDrawable(R.drawable.blender_box_placeholder)
-            one_one.setImageDrawable(kuerbisDrawable)
-            one_two.setImageDrawable(kuerbisDrawable)
-            one_three.setImageDrawable(kuerbisDrawable)
-            two_one.setImageDrawable(kuerbisDrawable)
-            two_two.setImageDrawable(kuerbisDrawable)
-            two_three.setImageDrawable(kuerbisDrawable)
-            three_one.setImageDrawable(kuerbisDrawable)
-            three_two.setImageDrawable(kuerbisDrawable)
-            three_three.setImageDrawable(kuerbisDrawable)
+            val placeHolderDrawable = context.getDrawable(R.drawable.blender_box_placeholder)
+            for (cellView in playGroundViewGrid) {
+                cellView.setImageDrawable(placeHolderDrawable)
+            }
         }
     }
 
