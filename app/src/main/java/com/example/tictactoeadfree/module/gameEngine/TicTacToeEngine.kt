@@ -227,9 +227,9 @@ class TicTacToeEngine internal constructor(
         // TODO XZY diagonal
         // Diagonal end
 
-        for ((squareIndex, squareCell) in playGround.withIndex()) {
-            for ((linearIndex, linearCell) in squareCell.withIndex()) {
-                for ((cellIndex, cell) in linearCell.withIndex()) {
+        for (squareCell in playGround) {
+            for (linearCell in squareCell) {
+                for (cell in linearCell) {
                     if (cell == 0) {
                         emptyCells++
                     }
