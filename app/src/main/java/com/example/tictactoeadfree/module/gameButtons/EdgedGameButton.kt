@@ -26,6 +26,10 @@ class EdgedGameButton @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+        startWhobbleAnimation()
+    }
+
+    private fun startWhobbleAnimation() {
         edge_button_root.startAnimation(
             AnimationUtils.loadAnimation(
                 context,
@@ -38,7 +42,7 @@ class EdgedGameButton @JvmOverloads constructor(
         val clickDuration = 150L
         val scaleTo = 0.9f
         val scaleFrom = 1f
-        
+
         if (motionEvent.action == MotionEvent.ACTION_DOWN) {
             edged_button_image.setImageDrawable(context.getDrawable(R.drawable.blender_buttonedge2_touched))
             edge_button_root.animate().scaleX(scaleTo).setInterpolator(BounceInterpolator())
