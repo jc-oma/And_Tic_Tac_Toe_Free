@@ -84,9 +84,8 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 view.performClick()
                 intializeBoardListener()
-                board_view_group.isEnabled = true
                 toe.initializeBoard()
-                val placeHolderDrawable = context.getDrawable(R.drawable.blender_box_placeholder)
+                val placeHolderDrawable = context.getDrawable(R.drawable.ic_kurbis_test2_nonstop)
                 for (cellView in playGroundViewGrid) {
                     cellView.setImageDrawable(placeHolderDrawable)
                 }

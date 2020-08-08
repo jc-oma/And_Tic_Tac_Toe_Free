@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tictactoeadfree.R
 import kotlinx.android.synthetic.main.view_button_edged.view.*
@@ -24,6 +25,12 @@ class EdgedGameButton @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+        edge_button_root.startAnimation(
+            AnimationUtils.loadAnimation(
+                context,
+                R.anim.whobble_animation
+            )
+        )
     }
 
     fun changeStyleOnTouchEvent(motionEvent: MotionEvent) {
