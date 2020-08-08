@@ -53,6 +53,8 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     //Todo make dynamic
     private val grid = 3
 
+    private val placeHolderDrawable = context.getDrawable(R.drawable.ic_spooky_kurbis)
+
     override fun onFinishInflate() {
         super.onFinishInflate()
         onInitializeBoard()
@@ -74,6 +76,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
         for ((index, cellView) in playGroundViewGrid.withIndex()) {
             startWhobbleAnimation(cellView)
+            cellView.setImageDrawable(placeHolderDrawable)
             cellView.setOnClickListener {
                 toe.playerTurn(index % grid, index / grid)
                 cellView.setImageDrawable(getCurrentPlayerPlayStone())
@@ -90,7 +93,6 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
                 view.performClick()
                 intializeBoardListener()
                 toe.initializeBoard()
-                val placeHolderDrawable = context.getDrawable(R.drawable.ic_spooky_kurbis)
                 for (cellView in playGroundViewGrid) {
                     cellView.setImageDrawable(placeHolderDrawable)
                 }
@@ -100,11 +102,15 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     }
 
     private fun startWhobbleAnimation(view: View) {
+        val loadAnimation = AnimationUtils.loadAnimation(
+            context,
+            R.anim.whobble_animation
+        )
+        val randomDuration = ((Math.random() + 2) * 100).toLong()
+        loadAnimation.duration = randomDuration
+
         view.startAnimation(
-            AnimationUtils.loadAnimation(
-                context,
-                R.anim.whobble_animation
-            )
+            loadAnimation
         )
     }
 
