@@ -12,7 +12,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
-import kotlinx.android.synthetic.main.board_two_dimensions_simple.view.*
+import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
+import kotlinx.android.synthetic.main.view_overlay_two_dimension_simple_overlay.view.*
 
 class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     context: Context,
@@ -29,7 +30,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     private val xImgPlayerStone = R.drawable.blender_x_play_stone
 
     private fun initView(context: Context) {
-        View.inflate(context, R.layout.board_two_dimensions_simple, this)
+        View.inflate(context, R.layout.view_board_two_dimensions_simple, this)
     }
 
     private val toe: TicTacToeEngine =
@@ -119,6 +120,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
             cellView.clearAnimation()
         }
         game_end_overlay.isVisible = true
+        game_end_overlay.onClosed()
         restart_game.whobbleAnimation(true)
         deleteBoardListener()
     }
