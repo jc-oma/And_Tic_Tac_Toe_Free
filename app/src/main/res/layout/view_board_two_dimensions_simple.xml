@@ -5,6 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_spooky_house_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard.GameEndedOverlay
         android:id="@+id/game_end_overlay"
         android:layout_width="match_parent"
