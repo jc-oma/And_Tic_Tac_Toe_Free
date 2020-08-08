@@ -103,7 +103,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/two_one"
-        tools:src="@drawable/ic_kurbis_test2_nonstop" />
+        tools:src="@drawable/ic_spooky_kurbis" />
 
     <ImageView
         android:id="@+id/three_two"

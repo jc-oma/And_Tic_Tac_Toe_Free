@@ -89,7 +89,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
                 view.performClick()
                 intializeBoardListener()
                 toe.initializeBoard()
-                val placeHolderDrawable = context.getDrawable(R.drawable.ic_kurbis_test2_nonstop)
+                val placeHolderDrawable = context.getDrawable(R.drawable.ic_spooky_kurbis)
                 for (cellView in playGroundViewGrid) {
                     cellView.setImageDrawable(placeHolderDrawable)
                 }
