@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.view.animation.BounceInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tictactoeadfree.R
 import kotlinx.android.synthetic.main.view_button_edged.view.*
@@ -33,11 +34,33 @@ class EdgedGameButton @JvmOverloads constructor(
         )
     }
 
+    private val clickDuration = 150L
+
+    private val scaleTo = 0.9f
+
+    private val scaleFrom = 1f
+
     fun changeStyleOnTouchEvent(motionEvent: MotionEvent) {
         if (motionEvent.action == MotionEvent.ACTION_DOWN) {
             edged_button_image.setImageDrawable(context.getDrawable(R.drawable.blender_buttonedge2_touched))
+            edge_button_root.animate().scaleX(scaleTo).setInterpolator(BounceInterpolator())
+                .setDuration(
+                    clickDuration
+                ).start()
+            edge_button_root.animate().scaleY(scaleTo).setInterpolator(BounceInterpolator())
+                .setDuration(
+                    clickDuration
+                ).start()
         } else if (motionEvent.action == MotionEvent.ACTION_UP) {
             edged_button_image.setImageDrawable(context.getDrawable(R.drawable.blender_buttonedge2))
+            edge_button_root.animate().scaleX(scaleFrom).setInterpolator(BounceInterpolator())
+                .setDuration(
+                    clickDuration
+                ).start()
+            edge_button_root.animate().scaleY(scaleFrom).setInterpolator(BounceInterpolator())
+                .setDuration(
+                    clickDuration
+                ).start()
         }
     }
 }
