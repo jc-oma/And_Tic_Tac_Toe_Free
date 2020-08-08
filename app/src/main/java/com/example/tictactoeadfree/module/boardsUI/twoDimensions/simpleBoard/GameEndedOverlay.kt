@@ -53,15 +53,15 @@ class GameEndedOverlay @JvmOverloads constructor(
                 //TODO theme colors
             .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
             .setDirection(0.0, 359.0)
-            .setSpeed(1f, 10f)
+            .setSpeed(1f, 30f)
             .setFadeOutEnabled(true)
             .setTimeToLive(2000L)
             .addShapes(Shape.DrawableShape(context.getDrawable(R.drawable.ic_spooky_bat)!!))
             .addSizes(Size(80))
             .setPosition(
-                ended_game_headline.x + ended_game_headline.width,
-                ended_game_headline.y
+                ended_game_headline.x + ended_game_headline.width / 2,
+                ended_game_headline.y - ended_game_headline.width / 2
             )
-            .burst(60)
+            .burst(140)
     }
 }
