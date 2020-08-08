@@ -34,13 +34,11 @@ class EdgedGameButton @JvmOverloads constructor(
         )
     }
 
-    private val clickDuration = 150L
-
-    private val scaleTo = 0.9f
-
-    private val scaleFrom = 1f
-
     fun changeStyleOnTouchEvent(motionEvent: MotionEvent) {
+        val clickDuration = 150L
+        val scaleTo = 0.9f
+        val scaleFrom = 1f
+        
         if (motionEvent.action == MotionEvent.ACTION_DOWN) {
             edged_button_image.setImageDrawable(context.getDrawable(R.drawable.blender_buttonedge2_touched))
             edge_button_root.animate().scaleX(scaleTo).setInterpolator(BounceInterpolator())
