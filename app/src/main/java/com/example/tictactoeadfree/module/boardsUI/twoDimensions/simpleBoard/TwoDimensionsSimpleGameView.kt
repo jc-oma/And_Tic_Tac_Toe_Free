@@ -72,12 +72,16 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         }
 
         for ((index, cellView) in playGroundViewGrid.withIndex()) {
+            startWhobbleAnimation(cellView)
             cellView.setOnClickListener {
                 toe.playerTurn(index % grid, index / grid)
                 cellView.setImageDrawable(getCurrentPlayerPlayStone())
+                cellView.clearAnimation()
                 cellView.setOnClickListener {}
             }
         }
+
+        restart_game.whobbleAnimation(false)
 
         restart_game.setOnTouchListener { view, motionEvent ->
             restart_game.changeStyleOnTouchEvent(motionEvent)
@@ -94,17 +98,28 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         }
     }
 
-    override fun onPlayerWin(wonPlayer: Int) {
-        game_info.text = context.getString(R.string.player_x_won, wonPlayer.toString())
-        game_end_overlay.isVisible = true
-        game_end_overlay.onGameWon(wonPlayer)
-        deleteBoardListener()
+    private fun startWhobbleAnimation(view: View) {
+        view.startAnimation(
+            AnimationUtils.loadAnimation(
+                context,
+                R.anim.whobble_animation
+            )
+        )
     }
 
-    override fun onDraw() {
-        game_info.text = context.getString(R.string.draw)
+    override fun onGameEnd(wonPlayer: Int?) {
+        if (wonPlayer != null) {
+            game_info.text = context.getString(R.string.player_x_won, wonPlayer.toString())
+            game_end_overlay.onGameWon(wonPlayer)
+        } else {
+            game_info.text = context.getString(R.string.draw)
+            game_end_overlay.onGameDraw()
+        }
+        for (cellView in playGroundViewGrid) {
+            cellView.clearAnimation()
+        }
         game_end_overlay.isVisible = true
-        game_end_overlay.onGameDraw()
+        restart_game.whobbleAnimation(true)
         deleteBoardListener()
     }
 

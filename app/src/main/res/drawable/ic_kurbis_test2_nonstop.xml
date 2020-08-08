@@ -16,7 +16,7 @@
         android:fillType="evenOdd"
         android:strokeLineCap="square">
       <aapt:attr name="android:fillColor">
-        <gradient 
+        <gradient
             android:gradientRadius="1237.5481"
             android:centerX="303.7233"
             android:centerY="133.52791"
@@ -33,7 +33,7 @@
         android:strokeColor="#000000"
         android:strokeLineCap="square">
       <aapt:attr name="android:fillColor">
-        <gradient 
+        <gradient
             android:startY="569.096"
             android:startX="156.50641"
             android:endY="569.096"
@@ -69,7 +69,7 @@
     <path
         android:pathData="M275.726,329.682a61,71 0,1 0,122 0a61,71 0,1 0,-122 0z">
       <aapt:attr name="android:fillColor">
-        <gradient 
+        <gradient
             android:gradientRadius="184.55399"
             android:centerX="363.7626"
             android:centerY="373.49924"
@@ -82,7 +82,7 @@
     <path
         android:pathData="M548,331a61,71 0,1 0,122 0a61,71 0,1 0,-122 0z">
       <aapt:attr name="android:fillColor">
-        <gradient 
+        <gradient
             android:gradientRadius="171.75111"
             android:centerX="626.71344"
             android:centerY="367.35925"

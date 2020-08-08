@@ -5,7 +5,7 @@ class TicTacToeEngine internal constructor(
     private val is3DBoard: Boolean = false,
     listener: GameListener
 ) {
-    var gameListener: GameListener = listener
+    private var gameListener: GameListener = listener
 
     private var playGround: MutableList<MutableList<MutableList<Int>>> = mutableList()
 
@@ -239,17 +239,16 @@ class TicTacToeEngine internal constructor(
 
         //check for Draw
         if ((emptyCells == 0 && is3DBoard) || (emptyCells == grid * grid * (grid - 1) && !is3DBoard)) {
-            gameListener.onDraw()
+            gameListener.onGameEnd(null)
         }
     }
 
     private fun currentPlayerWinsGame() {
-        gameListener.onPlayerWin(currentPlayer)
+        gameListener.onGameEnd(currentPlayer)
     }
 
     interface GameListener {
-        fun onPlayerWin(wonPlayer: Int)
-        fun onDraw()
+        fun onGameEnd(wonPlayer: Int?)
         fun onSwitchPlayer(playerNumber: Int)
         fun onInitializeBoard()
     }

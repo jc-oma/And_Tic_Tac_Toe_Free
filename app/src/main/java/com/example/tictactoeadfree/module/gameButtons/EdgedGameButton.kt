@@ -24,22 +24,22 @@ class EdgedGameButton @JvmOverloads constructor(
         View.inflate(context, R.layout.view_button_edged, this)
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        startWhobbleAnimation()
-    }
-
-    private fun startWhobbleAnimation() {
-        edge_button_root.startAnimation(
-            AnimationUtils.loadAnimation(
-                context,
-                R.anim.whobble_animation
+    fun whobbleAnimation(isWhobble: Boolean) {
+        if(isWhobble) {
+            edge_button_root.startAnimation(
+                AnimationUtils.loadAnimation(
+                    context,
+                    R.anim.whobble_animation
+                )
             )
-        )
+        } else {
+            edge_button_root.clearAnimation()
+        }
     }
 
     fun changeStyleOnTouchEvent(motionEvent: MotionEvent) {
-        val clickDuration = 150L
+        val clickOutDuration = 150L
+        val clickInDuration = 30L
         val scaleTo = 0.9f
         val scaleFrom = 1f
 
@@ -47,21 +47,21 @@ class EdgedGameButton @JvmOverloads constructor(
             edged_button_image.setImageDrawable(context.getDrawable(R.drawable.blender_buttonedge2_touched))
             edge_button_root.animate().scaleX(scaleTo).setInterpolator(BounceInterpolator())
                 .setDuration(
-                    clickDuration
+                    clickInDuration
                 ).start()
             edge_button_root.animate().scaleY(scaleTo).setInterpolator(BounceInterpolator())
                 .setDuration(
-                    clickDuration
+                    clickInDuration
                 ).start()
         } else if (motionEvent.action == MotionEvent.ACTION_UP) {
             edged_button_image.setImageDrawable(context.getDrawable(R.drawable.blender_buttonedge2))
             edge_button_root.animate().scaleX(scaleFrom).setInterpolator(BounceInterpolator())
                 .setDuration(
-                    clickDuration
+                    clickOutDuration
                 ).start()
             edge_button_root.animate().scaleY(scaleFrom).setInterpolator(BounceInterpolator())
                 .setDuration(
-                    clickDuration
+                    clickOutDuration
                 ).start()
         }
     }
