@@ -14,4 +14,8 @@ class GameStatisticsViewModel(
             gameStatisticsRepository.createNewGameStatistic(gameStatistics)
         }
     }
+
+    fun getGameStatisticsList() : List<GameStatistics>{
+        return gameStatisticsRepository.getGameStatistics()
+    }
 }

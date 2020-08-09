@@ -12,7 +12,7 @@ class GameStatisticsRepository private constructor(
         gameStatisticsDao.delete(gameStatistics)
     }
 
-    suspend fun getGameStatistics() = gameStatisticsDao.getAll()
+    fun getGameStatistics() = gameStatisticsDao.getAll()
 
     companion object {
 

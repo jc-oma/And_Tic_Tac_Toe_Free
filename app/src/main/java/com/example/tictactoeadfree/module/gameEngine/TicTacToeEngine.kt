@@ -16,8 +16,10 @@ class TicTacToeEngine internal constructor(
 
     private lateinit var viewModel: GameStatisticsViewModel
 
+    private val dbName = "TIC_TAC_TOE_GAME_STATISTICS_DB"
+
     //Fixme not on main thread
-    private val appDatabase = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).allowMainThreadQueries().build()
+    private val appDatabase = Room.databaseBuilder(context, AppDatabase::class.java, dbName).allowMainThreadQueries().build()
 
     private val gameRepo = GameStatisticsRepository.getInstance(appDatabase.gameStatisticsDao())
 
@@ -265,9 +267,10 @@ class TicTacToeEngine internal constructor(
     }
 
     private fun doOnGameEnd() {
-        gameListener.onGameEnd(currentPlayer)
         viewModel = GameStatisticsViewModel(gameRepo)
         viewModel.addGameToStatistic(GameStatistics(wonPlayer = currentPlayer))
+        val gameStatistics: List<GameStatistics> = viewModel.getGameStatisticsList()
+        gameListener.onGameEnd(currentPlayer)
     }
 
     interface GameListener {
