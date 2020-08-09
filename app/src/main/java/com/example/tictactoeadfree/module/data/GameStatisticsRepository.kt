@@ -4,11 +4,11 @@ class GameStatisticsRepository private constructor(
     private val gameStatisticsDao: GameStatisticsDao
 ) {
 
-    suspend fun createNewGameStatistic(gameStatistics: GameStatistics) {
+    fun createNewGameStatistic(gameStatistics: GameStatistics) {
         gameStatisticsDao.insertAll(gameStatistics)
     }
 
-    suspend fun removeGameStatistic(gameStatistics: GameStatistics) {
+    fun removeGameStatistic(gameStatistics: GameStatistics) {
         gameStatisticsDao.delete(gameStatistics)
     }
 

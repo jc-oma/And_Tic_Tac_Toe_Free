@@ -8,4 +8,6 @@
     <string name="game_has_ended_hint">Das spiel wurde beendet. Bitte Spiel neu starten!</string>
     <string name="player_x_won">Spieler %s hat das Spiel gewonnen</string>
     <string name="player_x_won_headline">Spieler %s\ngewinnt!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

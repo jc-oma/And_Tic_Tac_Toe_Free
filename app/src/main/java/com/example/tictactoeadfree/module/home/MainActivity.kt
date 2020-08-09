@@ -2,17 +2,23 @@ package com.example.tictactoeadfree.module.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.tictactoeadfree.R
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard.TwoDimensionsSimpleGameFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        openTwoDimensionalFragment()
     }
 
-    override fun onResume() {
-        super.onResume()
-        play_board.onCreateBoardAnimations()
+    private fun openTwoDimensionalFragment() {
+        val manager: FragmentManager = supportFragmentManager
+        val transaction: FragmentTransaction = manager.beginTransaction()
+        transaction.add(R.id.main_activity_root, TwoDimensionsSimpleGameFragment.newInstance())
+        transaction.commit()
     }
 }

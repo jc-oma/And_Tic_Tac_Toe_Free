@@ -1,39 +1,88 @@
 package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard
 
-import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.AttributeSet
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
-import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
+import kotlinx.android.synthetic.main.fragment_two_dimensions_simple_game.*
 
-//TODO convert to a Fragment -> gets to complex (lifecycles, context etc.)
-class TwoDimensionsSimpleGameView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener {
-    init {
-        initView(context)
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
+/**
+ * A simple [Fragment] subclass.
+ * Use the [TwoDimensionsSimpleGameFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class TwoDimensionsSimpleGameFragment : Fragment(), TicTacToeEngine.GameListener {
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment TwoDimensionsSimpleGameFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String = "", param2: String = "") =
+            TwoDimensionsSimpleGameFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
+    }
+
+    // TODO: Rename and change types of parameters
+    private var param1: String? = null
+    private var param2: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        onInitializeBoard()
+        intializeBoardListener()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_two_dimensions_simple_game, container, false)
     }
 
     @DrawableRes
     private val oImgPlayerStone = R.drawable.blender_o_play_stone
     private val xImgPlayerStone = R.drawable.blender_x_play_stone
 
-    private fun initView(context: Context) {
-        View.inflate(context, R.layout.view_board_two_dimensions_simple, this)
+    private val toe: TicTacToeEngine by lazy {
+        TicTacToeEngine(
+            listener = this,
+            context = requireContext()
+        )
     }
-
-    private val toe: TicTacToeEngine =
-        TicTacToeEngine(listener = this, context = context)
 
     private lateinit var playGroundPositions: Pair<Float, Float>
 
@@ -54,23 +103,15 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     //Todo make dynamic
     private val grid = 3
 
-    private val placeHolderDrawable = context.getDrawable(R.drawable.ic_spooky_kurbis)
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        onInitializeBoard()
-        intializeBoardListener()
-    }
+    private val placeHolderDrawable by lazy { requireContext().getDrawable(R.drawable.ic_spooky_kurbis) }
 
     //TODO move to lifecycle when converted into Fragment
     fun onCreateBoardAnimations() {
 
     }
 
-    private val groupIds = board_view_group.referencedIds
-
     private fun getCurrentPlayerPlayStone(): Drawable? {
-        return if (toe.getCurrentPlayer() == 1) context.getDrawable(xImgPlayerStone) else context.getDrawable(
+        return if (toe.getCurrentPlayer() == 1) requireContext().getDrawable(xImgPlayerStone) else requireContext().getDrawable(
             oImgPlayerStone
         )
     }
@@ -136,10 +177,10 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
     override fun onGameEnd(wonPlayer: Int) {
         if (wonPlayer != 0) {
-            game_info.text = context.getString(R.string.player_x_won, wonPlayer.toString())
+            game_info.text = requireContext().getString(R.string.player_x_won, wonPlayer.toString())
             game_end_overlay.onGameWon(wonPlayer)
         } else {
-            game_info.text = context.getString(R.string.draw)
+            game_info.text = requireContext().getString(R.string.draw)
             game_end_overlay.onGameDraw()
         }
         for (cellView in playGroundViewGrid) {
@@ -152,12 +193,12 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     }
 
     private fun deleteBoardListener() {
-        groupIds.forEach { id ->
-            rootView.findViewById<View>(id).setOnClickListener {
-                game_info.text = context.getString(R.string.game_has_ended_hint)
+        playGroundViewGrid.forEach { id ->
+            id.setOnClickListener {
+                game_info.text = requireContext().getString(R.string.game_has_ended_hint)
                 restart_game.startAnimation(
                     AnimationUtils.loadAnimation(
-                        context,
+                        requireContext(),
                         R.anim.shake_animation
                     )
                 )
@@ -170,6 +211,6 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     }
 
     override fun onInitializeBoard() {
-        game_info.text = context.getString(R.string.get_it_started)
+        game_info.text = requireContext().getString(R.string.get_it_started)
     }
 }
