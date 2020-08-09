@@ -8,12 +8,12 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/ic_spooky_house_background"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:src="@drawable/ic_spooky_house_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard.GameEndedOverlay
         android:id="@+id/game_end_overlay"
@@ -27,6 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:adjustViewBounds="true"
+        android:alpha="0"
         android:cropToPadding="true"
         android:orientation="horizontal"
         android:src="@drawable/blender_box_placeholder"
@@ -34,12 +35,14 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/one_two"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:alpha="1" />
 
     <ImageView
         android:id="@+id/one_two"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:alpha="0"
         android:orientation="horizontal"
         android:src="@drawable/blender_box_placeholder"
         android:textSize="80sp"
@@ -47,12 +50,14 @@
         app:layout_constraintEnd_toStartOf="@+id/one_three"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_one"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:alpha="1" />
 
     <ImageView
         android:id="@+id/one_three"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:alpha="0"
         android:orientation="horizontal"
         android:src="@drawable/blender_box_placeholder"
         android:textSize="80sp"
@@ -60,12 +65,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_two"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:alpha="1" />
 
     <ImageView
         android:id="@+id/two_one"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:alpha="0"
         android:orientation="horizontal"
         android:src="@drawable/blender_box_placeholder"
         android:textSize="80sp"
@@ -73,12 +80,14 @@
         app:layout_constraintEnd_toStartOf="@+id/one_two"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/one_one" />
+        app:layout_constraintTop_toBottomOf="@+id/one_one"
+        tools:alpha="1" />
 
     <ImageView
         android:id="@+id/two_two"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:alpha="0"
         android:orientation="horizontal"
         android:src="@drawable/blender_box_placeholder"
         android:textSize="80sp"
@@ -86,12 +95,14 @@
         app:layout_constraintEnd_toStartOf="@+id/one_three"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_one"
-        app:layout_constraintTop_toBottomOf="@+id/one_one" />
+        app:layout_constraintTop_toBottomOf="@+id/one_one"
+        tools:alpha="1" />
 
     <ImageView
         android:id="@+id/two_three"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:alpha="0"
         android:orientation="horizontal"
         android:src="@drawable/blender_box_placeholder"
         android:textSize="80sp"
@@ -99,12 +110,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_two"
-        app:layout_constraintTop_toBottomOf="@+id/one_one" />
+        app:layout_constraintTop_toBottomOf="@+id/one_one"
+        tools:alpha="1" />
 
     <ImageView
         android:id="@+id/three_one"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:alpha="0"
         android:orientation="horizontal"
         android:src="@drawable/blender_box_placeholder"
         android:textSize="80sp"
@@ -113,12 +126,14 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/two_one"
+        tools:alpha="1"
         tools:src="@drawable/ic_spooky_kurbis" />
 
     <ImageView
         android:id="@+id/three_two"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:alpha="0"
         android:orientation="horizontal"
         android:src="@drawable/blender_box_placeholder"
         android:textSize="80sp"
@@ -126,12 +141,14 @@
         app:layout_constraintEnd_toStartOf="@+id/one_three"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_one"
-        app:layout_constraintTop_toBottomOf="@+id/two_one" />
+        app:layout_constraintTop_toBottomOf="@+id/two_one"
+        tools:alpha="1" />
 
     <ImageView
         android:id="@+id/three_three"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:alpha="0"
         android:orientation="horizontal"
         android:src="@drawable/blender_box_placeholder"
         android:textSize="80sp"
@@ -139,7 +156,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/one_two"
-        app:layout_constraintTop_toBottomOf="@+id/two_one" />
+        app:layout_constraintTop_toBottomOf="@+id/two_one"
+        tools:alpha="1" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/board_view_group"

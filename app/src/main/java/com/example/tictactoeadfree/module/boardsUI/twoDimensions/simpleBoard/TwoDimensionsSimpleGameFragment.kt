@@ -1,18 +1,11 @@
 package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import androidx.annotation.DrawableRes
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.tictactoeadfree.R
-import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
 import kotlinx.android.synthetic.main.fragment_two_dimensions_simple_game.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -60,6 +53,7 @@ class TwoDimensionsSimpleGameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        play_board.prepareBoardStartAnimations()
     }
 
     override fun onCreateView(

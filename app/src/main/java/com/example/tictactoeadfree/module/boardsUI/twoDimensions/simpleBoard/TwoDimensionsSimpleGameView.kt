@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
@@ -14,7 +15,6 @@ import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 
-//TODO convert to a Fragment -> gets to complex (lifecycles, context etc.)
 class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -34,8 +34,6 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
     private val toe: TicTacToeEngine =
         TicTacToeEngine(listener = this, context = context)
-
-    private lateinit var playGroundPositions: Pair<Float, Float>
 
     private val playGroundViewGrid: List<ImageView> by lazy {
         listOf(
@@ -62,9 +60,25 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         intializeBoardListener()
     }
 
-    //TODO move to lifecycle when converted into Fragment
-    fun onCreateBoardAnimations() {
+    fun prepareBoardStartAnimations() {
+        val animationSet = AnimationSet(false)
+        val fallDownAnimation = AnimationUtils.loadAnimation(
+            context,
+            R.anim.grid_fall_down_animation
+        )
+        val whobbleAnimation = AnimationUtils.loadAnimation(
+            context,
+            R.anim.whobble_animation
+        )
+        animationSet.addAnimation(fallDownAnimation)
+        animationSet.addAnimation(whobbleAnimation)
+        playGroundViewGrid.forEach{cell ->
+            cell.alpha = 1f
 
+            cell.startAnimation(
+                animationSet
+            )
+        }
     }
 
     private val groupIds = board_view_group.referencedIds
@@ -79,8 +93,6 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         game_end_overlay.setOnClickListener {
             game_end_overlay.isVisible = false
         }
-
-        prepareAnimationOnCreate()
 
         for ((index, cellView) in playGroundViewGrid.withIndex()) {
             startWhobbleAnimation(cellView)
@@ -107,18 +119,6 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
             }
             return@setOnTouchListener true
         }
-    }
-
-    private fun prepareAnimationOnCreate() {
-        /*for (cell in playGroundViewGrid) {
-            playGroundPositions = Pair(cell.x, cell.y)
-            cell.animate().yBy(-2000f)
-                .withEndAction{
-                    cell.animate().x(playGroundPositions.first).y(playGroundPositions.second).setDuration(300L).start()
-                }
-                .start()
-        }
-         */
     }
 
     private fun startWhobbleAnimation(view: View) {
