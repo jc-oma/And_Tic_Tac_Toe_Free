@@ -15,7 +15,8 @@ class TicTacToeEngine internal constructor(
 ) {
 
     private lateinit var viewModel: GameStatisticsViewModel
-
+    
+    //Fixme not on main thread
     private val appDatabase = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).allowMainThreadQueries().build()
 
     private val gameRepo = GameStatisticsRepository.getInstance(appDatabase.gameStatisticsDao())
