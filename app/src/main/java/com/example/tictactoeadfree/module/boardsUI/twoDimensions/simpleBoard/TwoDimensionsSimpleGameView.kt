@@ -61,20 +61,23 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     }
 
     fun prepareBoardStartAnimations() {
-        val animationSet = AnimationSet(false)
-        val fallDownAnimation = AnimationUtils.loadAnimation(
-            context,
-            R.anim.grid_fall_down_animation
-        )
-        val whobbleAnimation = AnimationUtils.loadAnimation(
-            context,
-            R.anim.whobble_animation
-        )
-        animationSet.addAnimation(fallDownAnimation)
-        animationSet.addAnimation(whobbleAnimation)
+        var delayTimer: Long = 0
         playGroundViewGrid.forEach{cell ->
-            cell.alpha = 1f
+            val animationSet = AnimationSet(false)
+            val fallDownAnimation = AnimationUtils.loadAnimation(
+                context,
+                R.anim.grid_fall_down_animation
+            )
+            val whobbleAnimation = AnimationUtils.loadAnimation(
+                context,
+                R.anim.whobble_animation
+            )
+            animationSet.addAnimation(fallDownAnimation)
+            animationSet.addAnimation(whobbleAnimation)
 
+            animationSet.startOffset = delayTimer
+            delayTimer += (Math.random() * 400).toLong()
+            cell.alpha = 1f
             cell.startAnimation(
                 animationSet
             )
