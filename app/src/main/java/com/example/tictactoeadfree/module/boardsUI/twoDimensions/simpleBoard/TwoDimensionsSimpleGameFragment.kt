@@ -25,7 +25,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [TwoDimensionsSimpleGameFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TwoDimensionsSimpleGameFragment : Fragment(), TicTacToeEngine.GameListener {
+class TwoDimensionsSimpleGameFragment : Fragment() {
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -60,9 +60,6 @@ class TwoDimensionsSimpleGameFragment : Fragment(), TicTacToeEngine.GameListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        onInitializeBoard()
-        intializeBoardListener()
     }
 
     override fun onCreateView(
@@ -71,146 +68,5 @@ class TwoDimensionsSimpleGameFragment : Fragment(), TicTacToeEngine.GameListener
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_two_dimensions_simple_game, container, false)
-    }
-
-    @DrawableRes
-    private val oImgPlayerStone = R.drawable.blender_o_play_stone
-    private val xImgPlayerStone = R.drawable.blender_x_play_stone
-
-    private val toe: TicTacToeEngine by lazy {
-        TicTacToeEngine(
-            listener = this,
-            context = requireContext()
-        )
-    }
-
-    private lateinit var playGroundPositions: Pair<Float, Float>
-
-    private val playGroundViewGrid: List<ImageView> by lazy {
-        listOf(
-            three_one,
-            three_two,
-            three_three,
-            two_one,
-            two_two,
-            two_three,
-            one_one,
-            one_two,
-            one_three
-        )
-    }
-
-    //Todo make dynamic
-    private val grid = 3
-
-    private val placeHolderDrawable by lazy { requireContext().getDrawable(R.drawable.ic_spooky_kurbis) }
-
-    //TODO move to lifecycle when converted into Fragment
-    fun onCreateBoardAnimations() {
-
-    }
-
-    private fun getCurrentPlayerPlayStone(): Drawable? {
-        return if (toe.getCurrentPlayer() == 1) requireContext().getDrawable(xImgPlayerStone) else requireContext().getDrawable(
-            oImgPlayerStone
-        )
-    }
-
-    private fun intializeBoardListener() {
-        game_end_overlay.setOnClickListener {
-            game_end_overlay.isVisible = false
-        }
-
-        prepareAnimationOnCreate()
-
-        for ((index, cellView) in playGroundViewGrid.withIndex()) {
-            startWhobbleAnimation(cellView)
-            cellView.setImageDrawable(placeHolderDrawable)
-            cellView.setOnClickListener {
-                toe.playerTurn(index % grid, index / grid)
-                cellView.setImageDrawable(getCurrentPlayerPlayStone())
-                cellView.clearAnimation()
-                cellView.setOnClickListener {}
-            }
-        }
-
-        restart_game.whobbleAnimation(false)
-
-        restart_game.setOnTouchListener { view, motionEvent ->
-            restart_game.changeStyleOnTouchEvent(motionEvent)
-            if (motionEvent.action == MotionEvent.ACTION_UP) {
-                view.performClick()
-                intializeBoardListener()
-                toe.initializeBoard()
-                for (cellView in playGroundViewGrid) {
-                    cellView.setImageDrawable(placeHolderDrawable)
-                }
-            }
-            return@setOnTouchListener true
-        }
-    }
-
-    private fun prepareAnimationOnCreate() {
-        /*for (cell in playGroundViewGrid) {
-            playGroundPositions = Pair(cell.x, cell.y)
-            cell.animate().yBy(-2000f)
-                .withEndAction{
-                    cell.animate().x(playGroundPositions.first).y(playGroundPositions.second).setDuration(300L).start()
-                }
-                .start()
-        }
-         */
-    }
-
-    private fun startWhobbleAnimation(view: View) {
-        val loadAnimation = AnimationUtils.loadAnimation(
-            context,
-            R.anim.whobble_animation
-        )
-        val randomDuration = ((Math.random() + 2) * 100).toLong()
-        loadAnimation.duration = randomDuration
-
-        view.startAnimation(
-            loadAnimation
-        )
-    }
-
-    override fun onGameEnd(wonPlayer: Int) {
-        if (wonPlayer != 0) {
-            game_info.text = requireContext().getString(R.string.player_x_won, wonPlayer.toString())
-            game_end_overlay.onGameWon(wonPlayer)
-        } else {
-            game_info.text = requireContext().getString(R.string.draw)
-            game_end_overlay.onGameDraw()
-        }
-        for (cellView in playGroundViewGrid) {
-            cellView.clearAnimation()
-        }
-        game_end_overlay.isVisible = true
-        game_end_overlay.onClosed()
-        restart_game.whobbleAnimation(true)
-        deleteBoardListener()
-    }
-
-    private fun deleteBoardListener() {
-        playGroundViewGrid.forEach { id ->
-            id.setOnClickListener {
-                game_info.text = requireContext().getString(R.string.game_has_ended_hint)
-                restart_game.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        requireContext(),
-                        R.anim.shake_animation
-                    )
-                )
-            }
-        }
-    }
-
-    override fun onSwitchPlayer(playerNumber: Int) {
-        game_info.text = playerNumber.toString()
-    }
-
-    override fun onInitializeBoard() {
-        game_info.text = requireContext().getString(R.string.get_it_started)
     }
 }
