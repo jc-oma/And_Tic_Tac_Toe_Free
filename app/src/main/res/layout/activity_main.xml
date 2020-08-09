@@ -7,6 +7,7 @@
     tools:context=".module.home.MainActivity">
 
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard.TwoDimensionsSimpleGameView
+        android:id="@+id/play_board"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"

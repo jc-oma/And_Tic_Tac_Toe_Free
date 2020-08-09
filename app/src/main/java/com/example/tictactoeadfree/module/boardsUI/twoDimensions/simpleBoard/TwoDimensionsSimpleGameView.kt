@@ -12,10 +12,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
-import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
-import kotlinx.android.synthetic.main.view_overlay_two_dimension_simple_overlay.view.*
 
+//TODO convert to a Fragment -> gets to complex (lifecycles, context etc.)
 class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -35,6 +34,8 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
     private val toe: TicTacToeEngine =
         TicTacToeEngine(listener = this, context = context)
+
+    private lateinit var playGroundPositions: Pair<Float, Float>
 
     private val playGroundViewGrid: List<ImageView> by lazy {
         listOf(
@@ -61,6 +62,11 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         intializeBoardListener()
     }
 
+    //TODO move to lifecycle when converted into Fragment
+    fun onCreateBoardAnimations() {
+
+    }
+
     private val groupIds = board_view_group.referencedIds
 
     private fun getCurrentPlayerPlayStone(): Drawable? {
@@ -73,6 +79,8 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         game_end_overlay.setOnClickListener {
             game_end_overlay.isVisible = false
         }
+
+        prepareAnimationOnCreate()
 
         for ((index, cellView) in playGroundViewGrid.withIndex()) {
             startWhobbleAnimation(cellView)
@@ -99,6 +107,18 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
             }
             return@setOnTouchListener true
         }
+    }
+
+    private fun prepareAnimationOnCreate() {
+        /*for (cell in playGroundViewGrid) {
+            playGroundPositions = Pair(cell.x, cell.y)
+            cell.animate().yBy(-2000f)
+                .withEndAction{
+                    cell.animate().x(playGroundPositions.first).y(playGroundPositions.second).setDuration(300L).start()
+                }
+                .start()
+        }
+         */
     }
 
     private fun startWhobbleAnimation(view: View) {
