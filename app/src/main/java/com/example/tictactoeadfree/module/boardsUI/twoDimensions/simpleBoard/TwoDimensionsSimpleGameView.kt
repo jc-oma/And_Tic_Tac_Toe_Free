@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.AnimationSet
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
@@ -62,24 +62,32 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
     fun prepareBoardStartAnimations() {
         var delayTimer: Long = 0
-        playGroundViewGrid.forEach{cell ->
-            val animationSet = AnimationSet(false)
-            val fallDownAnimation = AnimationUtils.loadAnimation(
-                context,
-                R.anim.grid_fall_down_animation
-            )
+        val delayRange = 400
+        playGroundViewGrid.forEach { cell ->
             val whobbleAnimation = AnimationUtils.loadAnimation(
                 context,
                 R.anim.whobble_animation
             )
-            animationSet.addAnimation(fallDownAnimation)
-            animationSet.addAnimation(whobbleAnimation)
+            val fallDownAnimation = AnimationUtils.loadAnimation(
+                context,
+                R.anim.grid_fall_down_animation
+            )
+            fallDownAnimation.startOffset = delayTimer
+            fallDownAnimation.setAnimationListener(object : Animation.AnimationListener{
+                override fun onAnimationRepeat(p0: Animation?) {
+                }
+                override fun onAnimationEnd(p0: Animation?) {
+                    whobbleAnimation.duration = getRandomDuration()
+                    cell.startAnimation(whobbleAnimation)
+                }
+                override fun onAnimationStart(p0: Animation?) {
+                }
+            })
 
-            animationSet.startOffset = delayTimer
-            delayTimer += (Math.random() * 400).toLong()
+            delayTimer += (Math.random() * delayRange).toLong()
             cell.alpha = 1f
             cell.startAnimation(
-                animationSet
+                fallDownAnimation
             )
         }
     }
@@ -129,13 +137,15 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
             context,
             R.anim.whobble_animation
         )
-        val randomDuration = ((Math.random() + 2) * 100).toLong()
+        val randomDuration = getRandomDuration()
         loadAnimation.duration = randomDuration
 
         view.startAnimation(
             loadAnimation
         )
     }
+
+    private fun getRandomDuration() = ((Math.random() + 2) * 100).toLong()
 
     override fun onGameEnd(wonPlayer: Int) {
         if (wonPlayer != 0) {
