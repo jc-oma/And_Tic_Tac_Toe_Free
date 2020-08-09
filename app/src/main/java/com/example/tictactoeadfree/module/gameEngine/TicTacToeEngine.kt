@@ -10,7 +10,7 @@ import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
 class TicTacToeEngine internal constructor(
     private val grid: Int = 3,
     private val is3DBoard: Boolean = false,
-    private val context: Context,
+    context: Context,
     listener: GameListener
 ) {
 
@@ -29,6 +29,8 @@ class TicTacToeEngine internal constructor(
 
     private var currentPlayer = 1
 
+    private var turns = 0
+
     private val rowAmountToWin = if (grid == 3) {
         3
     } else {
@@ -41,6 +43,7 @@ class TicTacToeEngine internal constructor(
     fun initializeBoard() {
         gameListener.onInitializeBoard()
         playGround = mutableList()
+        turns = 0
     }
 
     fun getCurrentPlayer(): Int {
@@ -51,6 +54,8 @@ class TicTacToeEngine internal constructor(
         if (!is3DBoard && positionZ > 0) {
             throw IllegalArgumentException("postionZ couldn't be calculated in 2D Game")
         }
+
+        turns++
 
         if (currentPlayer == 0) {
             currentPlayer = 1
@@ -268,7 +273,7 @@ class TicTacToeEngine internal constructor(
 
     private fun doOnGameEnd() {
         viewModel = GameStatisticsViewModel(gameRepo)
-        viewModel.addGameToStatistic(GameStatistics(wonPlayer = currentPlayer))
+        viewModel.addGameToStatistic(GameStatistics(wonPlayer = currentPlayer, neededTurns = turns, wasThreeDimensional = is3DBoard))
         val gameStatistics: List<GameStatistics> = viewModel.getGameStatisticsList()
         gameListener.onGameEnd(currentPlayer)
     }
