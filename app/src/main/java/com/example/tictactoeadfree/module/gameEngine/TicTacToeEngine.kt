@@ -1,10 +1,25 @@
 package com.example.tictactoeadfree.module.gameEngine
 
+import android.content.Context
+import androidx.room.Room
+import com.example.tictactoeadfree.module.data.AppDatabase
+import com.example.tictactoeadfree.module.data.GameStatistics
+import com.example.tictactoeadfree.module.data.GameStatisticsRepository
+import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
+
 class TicTacToeEngine internal constructor(
     private val grid: Int = 3,
     private val is3DBoard: Boolean = false,
+    private val context: Context,
     listener: GameListener
 ) {
+
+    private lateinit var viewModel: GameStatisticsViewModel
+
+    private val appDatabase = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).allowMainThreadQueries().build()
+
+    private val gameRepo = GameStatisticsRepository.getInstance(appDatabase.gameStatisticsDao())
+
     private var gameListener: GameListener = listener
 
     private var playGround: MutableList<MutableList<MutableList<Int>>> = mutableList()
@@ -32,6 +47,10 @@ class TicTacToeEngine internal constructor(
     fun playerTurn(positionX: Int, positionY: Int, positionZ: Int = 0) {
         if (!is3DBoard && positionZ > 0) {
             throw IllegalArgumentException("postionZ couldn't be calculated in 2D Game")
+        }
+
+        if (currentPlayer == 0) {
+            currentPlayer = 1
         }
 
         gameListener.onSwitchPlayer(playerNumber = currentPlayer)
@@ -65,7 +84,7 @@ class TicTacToeEngine internal constructor(
                 playStoneCounterInXAxisStraight = 0
             }
             if (rowAmountToWin == playStoneCounterInXAxisStraight) {
-                currentPlayerWinsGame()
+                doOnGameEnd()
                 return
             }
         }
@@ -79,7 +98,7 @@ class TicTacToeEngine internal constructor(
                 playStoneCounterInYAxisStraight = 0
             }
             if (rowAmountToWin == playStoneCounterInYAxisStraight) {
-                currentPlayerWinsGame()
+                doOnGameEnd()
                 return
             }
         }
@@ -93,7 +112,7 @@ class TicTacToeEngine internal constructor(
                 playStoneCounterInZAxisStraight = 0
             }
             if (rowAmountToWin == playStoneCounterInZAxisStraight) {
-                currentPlayerWinsGame()
+                doOnGameEnd()
                 return
             }
         }
@@ -124,7 +143,7 @@ class TicTacToeEngine internal constructor(
             y++
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            currentPlayerWinsGame()
+            doOnGameEnd()
             return
         }
 
@@ -155,7 +174,7 @@ class TicTacToeEngine internal constructor(
             y--
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            currentPlayerWinsGame()
+            doOnGameEnd()
             return
         }
 
@@ -189,7 +208,7 @@ class TicTacToeEngine internal constructor(
             z++
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            currentPlayerWinsGame()
+            doOnGameEnd()
             return
         }
 
@@ -220,7 +239,7 @@ class TicTacToeEngine internal constructor(
             z--
         }
         if (rowAmountToWin == playStoneCounterIsDiagonal) {
-            currentPlayerWinsGame()
+            doOnGameEnd()
             return
         }
         // XZ end
@@ -239,16 +258,19 @@ class TicTacToeEngine internal constructor(
 
         //check for Draw
         if ((emptyCells == 0 && is3DBoard) || (emptyCells == grid * grid * (grid - 1) && !is3DBoard)) {
-            gameListener.onGameEnd(null)
+            currentPlayer = 0
+            doOnGameEnd()
         }
     }
 
-    private fun currentPlayerWinsGame() {
+    private fun doOnGameEnd() {
         gameListener.onGameEnd(currentPlayer)
+        viewModel = GameStatisticsViewModel(gameRepo)
+        viewModel.addGameToStatistic(GameStatistics(currentPlayer))
     }
 
     interface GameListener {
-        fun onGameEnd(wonPlayer: Int?)
+        fun onGameEnd(wonPlayer: Int)
         fun onSwitchPlayer(playerNumber: Int)
         fun onInitializeBoard()
     }

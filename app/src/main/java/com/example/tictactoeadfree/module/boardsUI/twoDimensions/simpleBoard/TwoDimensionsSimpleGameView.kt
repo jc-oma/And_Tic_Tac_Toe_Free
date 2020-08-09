@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
+import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 import kotlinx.android.synthetic.main.view_overlay_two_dimension_simple_overlay.view.*
 
@@ -20,7 +21,6 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener {
-
     init {
         initView(context)
     }
@@ -34,7 +34,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     }
 
     private val toe: TicTacToeEngine =
-        TicTacToeEngine(listener = this)
+        TicTacToeEngine(listener = this, context = context)
 
     private val playGroundViewGrid: List<ImageView> by lazy {
         listOf(
@@ -114,8 +114,8 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         )
     }
 
-    override fun onGameEnd(wonPlayer: Int?) {
-        if (wonPlayer != null) {
+    override fun onGameEnd(wonPlayer: Int) {
+        if (wonPlayer != 0) {
             game_info.text = context.getString(R.string.player_x_won, wonPlayer.toString())
             game_end_overlay.onGameWon(wonPlayer)
         } else {
