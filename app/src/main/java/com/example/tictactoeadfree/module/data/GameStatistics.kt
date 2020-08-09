@@ -6,8 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "gameStatistics")
 data class GameStatistics (
-    @PrimaryKey(autoGenerate = true)
     var wonPlayer: Int,
     var neededTurns: Int? = null,
-    var timeTakenToWin: Long? = null
+    var timeTakenToWin: Long? = null,
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
 )
