@@ -52,7 +52,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     //Todo make dynamic
     private val grid = 3
 
-    private val placeHolderDrawable = context.getDrawable(R.drawable.ic_spooky_kurbis)
+    private val placeHolderDrawable = context.getDrawable(R.drawable.ic_spooky_kurbis_v3_3d)
 
     override fun onFinishInflate() {
         super.onFinishInflate()

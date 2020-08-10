@@ -127,7 +127,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/two_one"
         tools:alpha="1"
-        tools:src="@drawable/ic_spooky_kurbis" />
+        tools:src="@drawable/ic_spooky_kurbis_v3_3d" />
 
     <ImageView
         android:id="@+id/three_two"
