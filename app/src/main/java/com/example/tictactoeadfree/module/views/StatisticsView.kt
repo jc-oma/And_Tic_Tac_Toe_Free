@@ -53,7 +53,7 @@ class StatisticsView @JvmOverloads constructor(
         val gameStatistics: List<GameStatistics> = viewModel.getGameStatisticsList()
         val filteredGameStatisticForPlayer =
             gameStatistics.filter { it -> it.wonPlayer == wonPlayer }
-        val wonGames = filteredGameStatisticForPlayer.count()
+        val wonGames = if (filteredGameStatisticForPlayer.count() == 0) { 1 } else { filteredGameStatisticForPlayer.count() }
         statistics_won_games.text = wonGames.toString()
 
         var averageTurns: Int = 0
