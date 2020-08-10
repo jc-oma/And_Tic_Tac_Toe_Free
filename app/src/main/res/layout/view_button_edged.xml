@@ -26,6 +26,7 @@
         android:paddingStart="40dp"
         android:paddingEnd="40dp"
         android:paddingBottom="40dp"
+        android:textSize="22sp"
         android:paddingTop="40dp"
         android:layout_marginTop="18dp"
         android:text="@string/restart_game"

@@ -16,9 +16,9 @@ import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 
 class TwoDimensionsSimpleGameView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+context: Context,
+attrs: AttributeSet? = null,
+defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener {
     init {
         initView(context)

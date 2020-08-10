@@ -24,6 +24,12 @@ class GameEndedOverlay @JvmOverloads constructor(
         View.inflate(context, R.layout.view_overlay_two_dimension_simple_overlay, this)
     }
 
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        game_end_overlay_statistics_1.getWonGamesForPlayer(1)
+        game_end_overlay_statistics_2.getWonGamesForPlayer(2)
+    }
+
     fun onGameWon(wonPlayer: Int) {
         animateHeadline()
         ended_game_headline.text =

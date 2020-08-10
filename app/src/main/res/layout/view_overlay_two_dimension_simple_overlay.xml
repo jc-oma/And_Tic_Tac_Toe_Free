@@ -19,7 +19,27 @@
         android:id="@+id/ended_game_konfetti_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="20sp"/>
+        android:elevation="20sp" />
+
+    <com.example.tictactoeadfree.module.views.StatisticsView
+        android:id="@+id/game_end_overlay_statistics_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/ended_game_headline"
+        app:layout_constraintEnd_toStartOf="@+id/game_end_overlay_statistics_2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.tictactoeadfree.module.views.StatisticsView
+        android:id="@+id/game_end_overlay_statistics_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/ended_game_headline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_end_overlay_statistics_1"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/ended_game_headline"

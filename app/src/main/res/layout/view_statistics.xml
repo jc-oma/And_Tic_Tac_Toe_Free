@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/statistics_play1_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:src="@drawable/ic_spooky_kurbis_v3_3d" />
+
+    <TextView
+        android:id="@+id/statistics_view_headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:text="@string/statistics_view_x"
+        android:textSize="45sp"
+        app:layout_constraintBottom_toTopOf="@+id/statistics_won_games_head"
+        app:layout_constraintEnd_toEndOf="@id/statistics_play1_image"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/statistics_play1_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/statistics_won_games_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:text="@string/statistics_view_won_games"
+        app:layout_constraintBottom_toTopOf="@+id/statistics_needed_turns_head"
+        app:layout_constraintStart_toStartOf="@+id/statistics_play1_image"
+        app:layout_constraintTop_toBottomOf="@+id/statistics_view_headline" />
+
+    <TextView
+        android:id="@+id/statistics_won_games"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/statistics_play1_image"
+        tools:text="200"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toTopOf="@+id/statistics_won_games_head"/>
+
+    <TextView
+        android:id="@+id/statistics_needed_turns_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:text="@string/statistics_average_needed_turns"
+        app:layout_constraintBottom_toTopOf="@+id/statistics_needed_time_head"
+        app:layout_constraintStart_toStartOf="@+id/statistics_play1_image"
+        app:layout_constraintTop_toBottomOf="@+id/statistics_won_games_head" />
+
+    <TextView
+        android:id="@+id/statistics_needed_turns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/statistics_play1_image"
+        tools:text="200"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toTopOf="@+id/statistics_needed_turns_head"/>
+
+    <TextView
+        android:id="@+id/statistics_needed_time_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:text="@string/average_needed_time"
+        app:layout_constraintBottom_toTopOf="@+id/statistics_play1_image"
+        app:layout_constraintStart_toStartOf="@+id/statistics_play1_image"
+        app:layout_constraintTop_toBottomOf="@+id/statistics_needed_turns_head" />
+
+    <TextView
+        android:id="@+id/statistics_needed_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/statistics_play1_image"
+        tools:text="200 s"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toTopOf="@+id/statistics_needed_time_head"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
