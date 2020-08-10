@@ -56,7 +56,7 @@ class StatisticsView @JvmOverloads constructor(
         val wonGames = if (filteredGameStatisticForPlayer.count() == 0) { 1 } else { filteredGameStatisticForPlayer.count() }
         statistics_won_games.text = wonGames.toString()
 
-        var averageTurns: Int = 0
+        var averageTurns = 0
         filteredGameStatisticForPlayer
             .filter { it -> it.neededTurns != null }
             .forEach {
