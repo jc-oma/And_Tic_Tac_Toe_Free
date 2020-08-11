@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tictactoeadfree.R
 import kotlinx.android.synthetic.main.view_overlay_two_dimension_simple_overlay.view.*
@@ -50,13 +51,27 @@ class GameEndedOverlay @JvmOverloads constructor(
             .animate()
             .setDuration(600)
             .rotationXBy(360f)
-            .withEndAction{setupKonfettiView()}
+            .withEndAction {
+                setupKonfettiView()
+                startInfiniteSignShake()
+            }
             .start()
+    }
+
+    private fun startInfiniteSignShake() {
+        val loadAnimation = AnimationUtils.loadAnimation(
+            context,
+            R.anim.shake_infinite_animation_slow
+        )
+        loadAnimation.startOffset = 1600L
+        ended_game_headline.startAnimation(
+            loadAnimation
+        )
     }
 
     private fun setupKonfettiView() {
         ended_game_konfetti_view.build()
-                //TODO theme colors
+            //TODO theme colors
             .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
             .setDirection(0.0, 359.0)
             .setSpeed(1f, 30f)
