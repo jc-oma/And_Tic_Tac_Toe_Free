@@ -8,7 +8,7 @@
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:alpha="0.5"
+        android:alpha="0.8"
         android:background="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,9 +25,9 @@
         android:id="@+id/game_end_overlay_statistics_1"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@id/ended_game_headline"
         app:layout_constraintEnd_toStartOf="@+id/game_end_overlay_statistics_2"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,6 +35,7 @@
         android:id="@+id/game_end_overlay_statistics_2"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@id/ended_game_headline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -45,20 +46,19 @@
         android:id="@+id/ended_game_headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:background="@color/colorAccent"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/ic_spooky_sign"
         android:elevation="15sp"
         android:fontFamily="@font/berkshire_swash_regular"
         android:gravity="center"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="10dp"
         android:textSize="48sp"
+        android:paddingVertical="15dp"
+        android:paddingHorizontal="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.63"
         tools:text="@string/player_x_won_headline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
