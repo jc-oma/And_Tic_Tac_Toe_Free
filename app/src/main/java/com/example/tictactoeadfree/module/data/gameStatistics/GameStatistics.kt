@@ -1,11 +1,11 @@
-package com.example.tictactoeadfree.module.data
+package com.example.tictactoeadfree.module.data.gameStatistics
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "gameStatistics")
-data class GameStatistics (
+data class GameStatistics(
     var wonPlayer: Int,
     var neededTurns: Int? = null,
     var timeTakenToWin: Long? = null,

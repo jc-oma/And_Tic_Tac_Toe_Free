@@ -1,7 +1,9 @@
 package com.example.tictactoeadfree.module.application
 
 import android.app.Application
-import com.example.tictactoeadfree.module.data.gameStatisticsModule
+import com.example.tictactoeadfree.module.data.gameSettings.gameSettingsModule
+import com.example.tictactoeadfree.module.data.gameStatistics.gameStatisticsModule
+import com.example.tictactoeadfree.module.data.roomDatabaseModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -12,7 +14,7 @@ class TictactoeFreeApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@TictactoeFreeApplication)
-            modules(listOf(gameStatisticsModule))
+            modules(listOf(roomDatabaseModule, gameStatisticsModule, gameSettingsModule))
         }
     }
 }

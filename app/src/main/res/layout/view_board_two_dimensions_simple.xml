@@ -10,6 +10,7 @@
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:scaleY="1.1"
+        android:background="@color/white"
         android:src="@drawable/spooky_house_background_diffuse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

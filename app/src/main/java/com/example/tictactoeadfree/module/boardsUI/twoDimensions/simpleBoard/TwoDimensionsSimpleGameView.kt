@@ -33,7 +33,7 @@ defStyleAttr: Int = 0
     }
 
     private val toe: TicTacToeEngine =
-        TicTacToeEngine(listener = this, context = context)
+        TicTacToeEngine(listener = this)
 
     private val playGroundViewGrid: List<ImageView> by lazy {
         listOf(
@@ -184,5 +184,13 @@ defStyleAttr: Int = 0
 
     override fun onInitializeBoard() {
         game_info.text = context.getString(R.string.get_it_started)
+    }
+
+    override fun onAiIsTurning() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onAiTurned(positionX: Int, positionY: Int, positionZ: Int) {
+        TODO("Not yet implemented")
     }
 }

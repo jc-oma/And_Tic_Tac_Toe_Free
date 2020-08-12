@@ -1,18 +1,20 @@
-package com.example.tictactoeadfree.module.data
+package com.example.tictactoeadfree.module.data.gameStatistics
 
 import androidx.room.Room
+import com.example.tictactoeadfree.module.data.AppDatabase
 import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val gameStatisticsModule = module {
 
-    //Fixme not on main thread
-    single { Room.databaseBuilder(get(), AppDatabase::class.java, "gameStatistics").allowMainThreadQueries().build() }
-
     single { get<AppDatabase>().gameStatisticsDao() }
 
-    single { GameStatisticsRepository(get()) }
+    single {
+        GameStatisticsRepository(
+            get()
+        )
+    }
 
     viewModel { GameStatisticsViewModel(get()) }
 }
@@ -30,16 +32,4 @@ class GameStatisticsRepository constructor(
     }
 
     fun getGameStatistics() = gameStatisticsDao.getAll()
-
-    companion object {
-
-        // For Singleton instantiation
-        @Volatile
-        private var instance: GameStatisticsRepository? = null
-
-        fun getInstance(gameStatisticsDao: GameStatisticsDao) =
-            instance ?: synchronized(this) {
-                instance ?: GameStatisticsRepository(gameStatisticsDao).also { instance = it }
-            }
-    }
 }

@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tictactoeadfree.R
-import com.example.tictactoeadfree.module.data.GameStatistics
+import com.example.tictactoeadfree.module.data.gameStatistics.GameStatistics
 import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
 import kotlinx.android.synthetic.main.view_statistics.view.*
 import org.koin.core.KoinComponent

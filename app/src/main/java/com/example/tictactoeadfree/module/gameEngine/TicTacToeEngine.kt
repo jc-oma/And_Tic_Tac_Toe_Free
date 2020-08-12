@@ -1,7 +1,6 @@
 package com.example.tictactoeadfree.module.gameEngine
 
-import android.content.Context
-import com.example.tictactoeadfree.module.data.GameStatistics
+import com.example.tictactoeadfree.module.data.gameStatistics.GameStatistics
 import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -9,7 +8,6 @@ import org.koin.core.inject
 class TicTacToeEngine internal constructor(
     private val grid: Int = 3,
     private val is3DBoard: Boolean = false,
-    context: Context,
     listener: GameListener
 ) : KoinComponent {
 
@@ -29,7 +27,6 @@ class TicTacToeEngine internal constructor(
         4
     }
 
-    //TODO in späteren Updates eventuell den Nutzer entscheiden lassen wieviele Spieler es sein sollen
     private val playerCount = 2
 
     fun initializeBoard() {
@@ -278,5 +275,7 @@ class TicTacToeEngine internal constructor(
         fun onGameEnd(wonPlayer: Int)
         fun onSwitchPlayer(playerNumber: Int)
         fun onInitializeBoard()
+        fun onAiIsTurning()
+        fun onAiTurned(positionX: Int, positionY: Int, positionZ: Int)
     }
 }

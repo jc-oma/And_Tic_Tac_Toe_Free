@@ -1,4 +1,4 @@
-package com.example.tictactoeadfree.module.data
+package com.example.tictactoeadfree.module.data.gameStatistics
 
 import androidx.room.Dao
 import androidx.room.Delete

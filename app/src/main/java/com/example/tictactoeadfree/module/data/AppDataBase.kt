@@ -4,13 +4,30 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.tictactoeadfree.module.data.gameSettings.GameSettings
+import com.example.tictactoeadfree.module.data.gameSettings.GameSettingsDao
+import com.example.tictactoeadfree.module.data.gameStatistics.GameStatistics
+import com.example.tictactoeadfree.module.data.gameStatistics.GameStatisticsDao
+import org.koin.dsl.module
 
-/**
- * The Room database for this app
- */
-@Database(entities = [GameStatistics::class], version = 1, exportSchema = false)
+val roomDatabaseModule = module {
+
+    //Fixme not on main thread
+    single {
+        Room.databaseBuilder(get(), AppDatabase::class.java, "gameSettings")
+            .allowMainThreadQueries().build()
+    }
+
+}
+
+@Database(
+    entities = [GameStatistics::class, GameSettings::class],
+    version = 2,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun gameStatisticsDao(): GameStatisticsDao
+    abstract fun gameSettingsDao(): GameSettingsDao
 
     companion object {
 
@@ -26,6 +43,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         // Create and pre-populate the database. See this article for more details:
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
+        // TODO change DB Name
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,

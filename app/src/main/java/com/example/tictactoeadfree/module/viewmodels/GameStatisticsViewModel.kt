@@ -1,8 +1,8 @@
 package com.example.tictactoeadfree.module.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.example.tictactoeadfree.module.data.GameStatistics
-import com.example.tictactoeadfree.module.data.GameStatisticsRepository
+import com.example.tictactoeadfree.module.data.gameStatistics.GameStatistics
+import com.example.tictactoeadfree.module.data.gameStatistics.GameStatisticsRepository
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
