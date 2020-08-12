@@ -1,27 +1,19 @@
 package com.example.tictactoeadfree.module.gameEngine
 
 import android.content.Context
-import androidx.room.Room
-import com.example.tictactoeadfree.module.data.AppDatabase
 import com.example.tictactoeadfree.module.data.GameStatistics
-import com.example.tictactoeadfree.module.data.GameStatisticsRepository
 import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class TicTacToeEngine internal constructor(
     private val grid: Int = 3,
     private val is3DBoard: Boolean = false,
     context: Context,
     listener: GameListener
-) {
+) : KoinComponent {
 
-    private lateinit var viewModel: GameStatisticsViewModel
-
-    private val dbName = "TIC_TAC_TOE_GAME_STATISTICS_DB"
-
-    //Fixme not on main thread
-    private val appDatabase = Room.databaseBuilder(context, AppDatabase::class.java, dbName).allowMainThreadQueries().build()
-
-    private val gameRepo = GameStatisticsRepository.getInstance(appDatabase.gameStatisticsDao())
+    private val viewModel by inject<GameStatisticsViewModel>()
 
     private var gameListener: GameListener = listener
 
@@ -272,9 +264,13 @@ class TicTacToeEngine internal constructor(
     }
 
     private fun doOnGameEnd() {
-        viewModel = GameStatisticsViewModel(gameRepo)
-        viewModel.addGameToStatistic(GameStatistics(wonPlayer = currentPlayer, neededTurns = turns, wasThreeDimensional = is3DBoard))
-        val gameStatistics: List<GameStatistics> = viewModel.getGameStatisticsList()
+        viewModel.addGameToStatistic(
+            GameStatistics(
+                wonPlayer = currentPlayer,
+                neededTurns = turns,
+                wasThreeDimensional = is3DBoard
+            )
+        )
         gameListener.onGameEnd(currentPlayer)
     }
 

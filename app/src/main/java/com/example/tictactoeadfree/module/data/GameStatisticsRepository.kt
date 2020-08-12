@@ -2,12 +2,13 @@ package com.example.tictactoeadfree.module.data
 
 import androidx.room.Room
 import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val gameStatisticsModule = module {
 
-    single { Room.databaseBuilder(get(), AppDatabase::class.java, "gameStatistics").build() }
+    //Fixme not on main thread
+    single { Room.databaseBuilder(get(), AppDatabase::class.java, "gameStatistics").allowMainThreadQueries().build() }
 
     single { get<AppDatabase>().gameStatisticsDao() }
 
