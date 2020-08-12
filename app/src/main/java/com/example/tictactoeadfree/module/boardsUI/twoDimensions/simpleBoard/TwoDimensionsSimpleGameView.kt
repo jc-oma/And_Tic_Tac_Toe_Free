@@ -57,7 +57,7 @@ defStyleAttr: Int = 0
     override fun onFinishInflate() {
         super.onFinishInflate()
         onInitializeBoard()
-        intializeBoardListener()
+        restartBoard()
     }
 
     fun prepareBoardStartAnimations() {
@@ -94,13 +94,14 @@ defStyleAttr: Int = 0
 
     private val groupIds = board_view_group.referencedIds
 
-    private fun getCurrentPlayerPlayStone(): Drawable? {
-        return if (toe.getCurrentPlayer() == 1) context.getDrawable(xImgPlayerStone) else context.getDrawable(
+    private fun getCurrentPlayerPlayStone(isAiTurn: Boolean = false): Drawable? {
+        val currentPlayer = toe.getCurrentPlayer()
+        return if (currentPlayer == 1 && !isAiTurn) context.getDrawable(xImgPlayerStone) else context.getDrawable(
             oImgPlayerStone
         )
     }
 
-    private fun intializeBoardListener() {
+    private fun restartBoard() {
         game_end_overlay.setOnClickListener {
             game_end_overlay.isVisible = false
         }
@@ -108,12 +109,7 @@ defStyleAttr: Int = 0
         for ((index, cellView) in playGroundViewGrid.withIndex()) {
             startWhobbleAnimation(cellView)
             cellView.setImageDrawable(placeHolderDrawable)
-            cellView.setOnClickListener {
-                toe.playerTurn(index % grid, index / grid)
-                cellView.setImageDrawable(getCurrentPlayerPlayStone())
-                cellView.clearAnimation()
-                cellView.setOnClickListener {}
-            }
+            initializeClickListenerForPlayerTurn(cellView, index)
         }
 
         restart_game.whobbleAnimation(false)
@@ -122,7 +118,7 @@ defStyleAttr: Int = 0
             restart_game.changeStyleOnTouchEvent(motionEvent)
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 view.performClick()
-                intializeBoardListener()
+                restartBoard()
                 toe.initializeBoard()
                 for (cellView in playGroundViewGrid) {
                     cellView.setImageDrawable(placeHolderDrawable)
@@ -130,6 +126,19 @@ defStyleAttr: Int = 0
             }
             return@setOnTouchListener true
         }
+    }
+
+    private fun initializeClickListenerForPlayerTurn(cellView: ImageView, index: Int) {
+        cellView.setOnClickListener {
+            onPlayerTurned(index, cellView)
+        }
+    }
+
+    private fun onPlayerTurned(index: Int, cellView: ImageView, isAiTurn: Boolean = false) {
+        toe.gameTurn(index % grid, index / grid)
+        cellView.setImageDrawable(getCurrentPlayerPlayStone(isAiTurn))
+        cellView.clearAnimation()
+        cellView.setOnClickListener {}
     }
 
     private fun startWhobbleAnimation(view: View) {
@@ -186,10 +195,16 @@ defStyleAttr: Int = 0
     }
 
     override fun onAiIsTurning() {
-        TODO("Not yet implemented")
+        playGroundViewGrid.forEach{ cellView ->
+            cellView.isClickable = false
+        }
     }
 
     override fun onAiTurned(positionX: Int, positionY: Int, positionZ: Int) {
-        TODO("Not yet implemented")
+        val playedIndexInGrid = positionX + (positionY * grid)
+        onPlayerTurned(playedIndexInGrid, playGroundViewGrid[playedIndexInGrid], true)
+        playGroundViewGrid.forEach{ cellView ->
+            cellView.isClickable = true
+        }
     }
 }

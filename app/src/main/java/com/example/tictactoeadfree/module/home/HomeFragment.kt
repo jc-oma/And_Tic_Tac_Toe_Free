@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.tictactoeadfree.R
+import com.example.tictactoeadfree.module.data.gameSettings.GameSettings
+import com.example.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.koin.android.ext.android.inject
 
 
 class HomeFragment : Fragment() {
@@ -19,6 +22,8 @@ class HomeFragment : Fragment() {
     }
 
     private var listener: Listener? = null
+
+    private val settingViewModel by inject<GameSettingsViewModel>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -41,10 +46,12 @@ class HomeFragment : Fragment() {
 
         home_one_player_button.setOnClickListener{
             listener?.onHomeFragmentButtonClick()
+            settingViewModel.createGameSettings(GameSettings(true))
         }
 
         home_two_player_button.setOnClickListener{
             listener?.onHomeFragmentButtonClick()
+            settingViewModel.createGameSettings(GameSettings(false))
         }
     }
 

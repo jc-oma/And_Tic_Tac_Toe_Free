@@ -1,6 +1,7 @@
 package com.example.tictactoeadfree.module.gameEngine
 
 import com.example.tictactoeadfree.module.data.gameStatistics.GameStatistics
+import com.example.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -11,7 +12,9 @@ class TicTacToeEngine internal constructor(
     listener: GameListener
 ) : KoinComponent {
 
-    private val viewModel by inject<GameStatisticsViewModel>()
+    private val gameStatisticsViewModel by inject<GameStatisticsViewModel>()
+
+    private val gameSettingsViewModel by inject<GameSettingsViewModel>()
 
     private var gameListener: GameListener = listener
 
@@ -20,6 +23,8 @@ class TicTacToeEngine internal constructor(
     private var currentPlayer = 1
 
     private var turns = 0
+
+    private var isGameAgainstAi = false
 
     private val rowAmountToWin = if (grid == 3) {
         3
@@ -30,25 +35,36 @@ class TicTacToeEngine internal constructor(
     private val playerCount = 2
 
     fun initializeBoard() {
+        currentPlayer = 1
         gameListener.onInitializeBoard()
         playGround = mutableList()
         turns = 0
+        isGameAgainstAi = gameSettingsViewModel.getGameSettings().last().isSecondPlayerAi
     }
 
     fun getCurrentPlayer(): Int {
         return currentPlayer
     }
 
-    fun playerTurn(positionX: Int, positionY: Int, positionZ: Int = 0) {
+    fun getCurrentPlayGround(): MutableList<MutableList<MutableList<Int>>> {
+        return playGround
+    }
+
+    fun gameTurn(positionX: Int, positionY: Int, positionZ: Int = 0) {
+        // switch from last draw to a valid player
+        if (currentPlayer == 0) {
+            currentPlayer = 1
+        }
+
         if (!is3DBoard && positionZ > 0) {
             throw IllegalArgumentException("postionZ couldn't be calculated in 2D Game")
         }
 
-        turns++
-
-        if (currentPlayer == 0) {
-            currentPlayer = 1
+        if (playGround[positionX][positionY][positionZ] != 0) {
+            throw IllegalStateException("this position was already taken")
         }
+
+        turns++
 
         gameListener.onSwitchPlayer(playerNumber = currentPlayer)
 
@@ -56,11 +72,49 @@ class TicTacToeEngine internal constructor(
 
         checkForWinCondition(positionX, positionY, positionZ)
 
-        if (currentPlayer == playerCount) {
-            currentPlayer = 1
-        } else {
-            currentPlayer++
+        switchPlayer()
+
+        if (currentPlayer == 2 && isGameAgainstAi) {
+            aiTurnProcess()
         }
+    }
+
+    private fun aiTurnProcess() {
+        gameListener.onAiIsTurning()
+        var aiTurnX: Int? = null
+        var aiTurnY: Int? = null
+        var aiTurnZ: Int? = null
+
+        while (isPositionDataNull(aiTurnX, aiTurnY, aiTurnZ)) {
+            aiTurnX = (Math.random() * grid).toInt()
+            aiTurnY = (Math.random() * grid).toInt()
+            aiTurnZ = (Math.random() * grid).toInt()
+        }
+
+        if (is3DBoard) {
+            if (aiTurnX != null && aiTurnY != null && aiTurnZ != null) {
+                gameListener.onAiTurned(aiTurnX, aiTurnY, aiTurnZ)
+            }
+        } else {
+            if (aiTurnX != null && aiTurnY != null) {
+                gameListener.onAiTurned(aiTurnX, aiTurnY, 0)
+            }
+        }
+    }
+
+    private fun switchPlayer() {
+        currentPlayer = (currentPlayer % playerCount) + 1
+    }
+
+    private fun isPositionDataNull(aiTurnX: Int?, aiTurnY: Int?, aiTurnZ: Int?): Boolean {
+        return if (aiTurnX == null || aiTurnY == null || aiTurnZ == null) {
+            true
+        } else
+            if (is3DBoard) {
+                playGround[aiTurnX][aiTurnY][aiTurnZ] != 0
+            } else {
+                playGround[aiTurnX][aiTurnY][0] != 0
+            }
     }
 
     private fun mutableList() = MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
@@ -261,7 +315,7 @@ class TicTacToeEngine internal constructor(
     }
 
     private fun doOnGameEnd() {
-        viewModel.addGameToStatistic(
+        gameStatisticsViewModel.addGameToStatistic(
             GameStatistics(
                 wonPlayer = currentPlayer,
                 neededTurns = turns,
