@@ -153,13 +153,12 @@ defStyleAttr: Int = 0
             game_end_overlay.onGameWon(wonPlayer)
         } else {
             game_info.text = context.getString(R.string.draw)
-            game_end_overlay.onGameDraw()
+            game_end_overlay.onGameWon(wonPlayer)
         }
         for (cellView in playGroundViewGrid) {
             cellView.clearAnimation()
         }
         game_end_overlay.isVisible = true
-        game_end_overlay.onClosed()
         restart_game.whobbleAnimation(true)
         deleteBoardListener()
     }

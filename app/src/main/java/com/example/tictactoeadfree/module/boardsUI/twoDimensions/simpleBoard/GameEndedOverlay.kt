@@ -25,25 +25,20 @@ class GameEndedOverlay @JvmOverloads constructor(
         View.inflate(context, R.layout.view_overlay_two_dimension_simple_overlay, this)
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        game_end_overlay_statistics_1.getWonGamesForPlayer(1)
-        game_end_overlay_statistics_2.getWonGamesForPlayer(2)
-    }
-
     fun onGameWon(wonPlayer: Int) {
         animateHeadline()
-        ended_game_headline.text =
-            context.getString(R.string.player_x_won_headline, wonPlayer.toString())
+        getStatisticsForStatisticViews()
+        if (wonPlayer == 0) {
+            ended_game_headline.text = context.getString(R.string.draw)
+        } else {
+            ended_game_headline.text =
+                context.getString(R.string.player_x_won_headline, wonPlayer.toString())
+        }
     }
 
-    fun onGameDraw() {
-        animateHeadline()
-        ended_game_headline.text = context.getString(R.string.draw)
-    }
-
-    fun onClosed() {
-        ended_game_konfetti_view.stopGracefully()
+    private fun getStatisticsForStatisticViews() {
+        game_end_overlay_statistics_1.getWonGamesForPlayer(1)
+        game_end_overlay_statistics_2.getWonGamesForPlayer(2)
     }
 
     private fun animateHeadline() {

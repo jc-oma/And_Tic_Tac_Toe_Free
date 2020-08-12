@@ -1,6 +1,5 @@
 package com.example.tictactoeadfree.module.data.gameSettings
 
-import androidx.room.Room
 import com.example.tictactoeadfree.module.data.AppDatabase
 import com.example.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel

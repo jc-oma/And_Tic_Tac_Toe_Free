@@ -29,9 +29,9 @@ class StatisticsView @JvmOverloads constructor(
 
     fun getWonGamesForPlayer(wonPlayer: Int) {
         statistics_view_headline.text = if (wonPlayer == 1) {
-            context.getString(R.string.statistics_view_x)
-        } else {
             context.getString(R.string.statistics_view_o)
+        } else {
+            context.getString(R.string.statistics_view_x)
         }
 
         val gameStatistics: List<GameStatistics> = viewModel.getGameStatisticsList()
