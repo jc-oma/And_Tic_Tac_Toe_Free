@@ -102,6 +102,7 @@ defStyleAttr: Int = 0
     }
 
     private fun restartBoard() {
+        toe.initializeBoard()
         game_end_overlay.setOnClickListener {
             game_end_overlay.isVisible = false
         }
