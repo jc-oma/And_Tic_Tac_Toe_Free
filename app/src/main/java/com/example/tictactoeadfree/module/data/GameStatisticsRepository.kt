@@ -1,6 +1,22 @@
 package com.example.tictactoeadfree.module.data
 
-class GameStatisticsRepository private constructor(
+import androidx.room.Room
+import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
+import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.dsl.module
+
+val gameStatisticsModule = module {
+
+    single { Room.databaseBuilder(get(), AppDatabase::class.java, "gameStatistics").build() }
+
+    single { get<AppDatabase>().gameStatisticsDao() }
+
+    single { GameStatisticsRepository(get()) }
+
+    viewModel { GameStatisticsViewModel(get()) }
+}
+
+class GameStatisticsRepository constructor(
     private val gameStatisticsDao: GameStatisticsDao
 ) {
 
