@@ -138,7 +138,7 @@ class TicTacToeEngine internal constructor(
         for (x in 0 until grid) {
             if (playGround[x][positionY][positionZ] == currentPlayer) {
                 playStoneCounterInXAxisStraight++
-                wonPositions.add(Triple(positionX, positionY, positionZ))
+                wonPositions.add(Triple(x, positionY, positionZ))
             }
             if (playGround[x][positionY][positionZ] != currentPlayer) {
                 playStoneCounterInXAxisStraight = 0
@@ -154,7 +154,7 @@ class TicTacToeEngine internal constructor(
         for (y in 0 until grid) {
             if (playGround[positionX][y][positionZ] == currentPlayer) {
                 playStoneCounterInYAxisStraight++
-                wonPositions.add(Triple(positionX, positionY, positionZ))
+                wonPositions.add(Triple(positionX, y, positionZ))
             }
             if (playGround[positionX][y][positionZ] != currentPlayer) {
                 playStoneCounterInYAxisStraight = 0
@@ -188,7 +188,7 @@ class TicTacToeEngine internal constructor(
         while (x >= 0 && y >= 0) {
             if (playGround[x][y][positionZ] == currentPlayer) {
                 playStoneCounterIsDiagonal++
-                wonPositions.add(Triple(positionX, positionY, positionZ))
+                wonPositions.add(Triple(x, y, positionZ))
             }
             if (playGround[x][y][positionZ] != currentPlayer) {
                 break
@@ -201,7 +201,7 @@ class TicTacToeEngine internal constructor(
         while (x < grid && y < grid) {
             if (playGround[x][y][positionZ] == currentPlayer) {
                 playStoneCounterIsDiagonal++
-                wonPositions.add(Triple(positionX, positionY, positionZ))
+                wonPositions.add(Triple(x, y, positionZ))
             }
             if (playGround[x][y][positionZ] != currentPlayer) {
                 break
@@ -222,7 +222,7 @@ class TicTacToeEngine internal constructor(
         while (x >= 0 && y < grid) {
             if (playGround[x][y][positionZ] == currentPlayer) {
                 playStoneCounterIsDiagonal++
-                wonPositions.add(Triple(positionX, positionY, positionZ))
+                wonPositions.add(Triple(x, y, positionZ))
             }
             if (playGround[x][y][positionZ] != currentPlayer) {
                 break
@@ -235,7 +235,7 @@ class TicTacToeEngine internal constructor(
         while (x < grid && y >= 0 && y < grid) {
             if (playGround[x][y][positionZ] == currentPlayer) {
                 playStoneCounterIsDiagonal++
-                wonPositions.add(Triple(positionX, positionY, positionZ))
+                wonPositions.add(Triple(x, y, positionZ))
             }
             if (playGround[x][y][positionZ] != currentPlayer) {
                 break
@@ -259,7 +259,7 @@ class TicTacToeEngine internal constructor(
         while (x >= 0 && z >= 0) {
             if (playGround[x][positionY][z] == currentPlayer) {
                 playStoneCounterIsDiagonal++
-                wonPositions.add(Triple(positionX, positionY, positionZ))
+                wonPositions.add(Triple(x, positionY, z))
             }
             if (playGround[x][positionY][z] != currentPlayer) {
                 break
@@ -272,7 +272,7 @@ class TicTacToeEngine internal constructor(
         while (x < grid && z < grid) {
             if (playGround[x][positionY][z] == currentPlayer) {
                 playStoneCounterIsDiagonal++
-                wonPositions.add(Triple(positionX, positionY, positionZ))
+                wonPositions.add(Triple(x, positionY, z))
             }
             if (playGround[x][positionY][z] != currentPlayer) {
                 break
@@ -293,7 +293,7 @@ class TicTacToeEngine internal constructor(
         while (x >= 0 && z < grid) {
             if (playGround[x][positionY][z] == currentPlayer) {
                 playStoneCounterIsDiagonal++
-                wonPositions.add(Triple(positionX, positionY, positionZ))
+                wonPositions.add(Triple(x, positionY, z))
             }
             if (playGround[x][positionY][z] != currentPlayer) {
                 break
@@ -306,7 +306,7 @@ class TicTacToeEngine internal constructor(
         while (x < grid && z < grid && z >= 0) {
             if (playGround[x][positionY][z] == currentPlayer) {
                 playStoneCounterIsDiagonal++
-                wonPositions.add(Triple(positionX, positionY, positionZ))
+                wonPositions.add(Triple(x, positionY, z))
             }
             if (playGround[x][positionY][z] != currentPlayer) {
                 break

@@ -239,7 +239,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
                     "rotationX",
                     360f
                 )
-                element.duration = 300
+                element.duration = 800
 
                 objectAnimatorList.add(
                     element
