@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.example.tictactoeadfree.R
+import com.example.tictactoeadfree.module.baseClasses.BaseFragment
 import kotlinx.android.synthetic.main.fragment_two_dimensions_simple_game.*
 
 
-class TwoDimensionsSimpleGameFragment : Fragment() {
+class TwoDimensionsSimpleGameFragment : BaseFragment() {
     companion object {
         @JvmStatic
         fun newInstance() =

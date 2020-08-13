@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.tictactoeadfree.R
+import com.example.tictactoeadfree.module.baseClasses.BaseFragment
 import com.example.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.example.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
     companion object {
         @JvmStatic
         fun newInstance() =

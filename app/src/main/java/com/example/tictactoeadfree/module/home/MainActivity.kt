@@ -5,14 +5,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.tictactoeadfree.R
+import com.example.tictactoeadfree.module.baseClasses.BaseActivity
 import com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard.TwoDimensionsSimpleGameFragment
 
-class MainActivity : AppCompatActivity(), HomeFragment.Listener {
+class MainActivity : BaseActivity(), HomeFragment.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         openHomeFragment()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val manager = supportFragmentManager
+
+        if (manager.fragments.size > 1)
+        manager.beginTransaction().remove(manager.fragments.last()).commit()
     }
 
     override fun onHomeFragmentButtonClick() {

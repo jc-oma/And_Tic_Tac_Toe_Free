@@ -42,14 +42,6 @@ class TicTacToeEngine internal constructor(
         isGameAgainstAi = gameSettingsViewModel.getGameSettings().last().isSecondPlayerAi
     }
 
-    fun getCurrentPlayer(): Int {
-        return currentPlayer
-    }
-
-    fun getCurrentPlayGround(): MutableList<MutableList<MutableList<Int>>> {
-        return playGround
-    }
-
     fun gameTurn(positionX: Int, positionY: Int, positionZ: Int = 0) {
         // switch from last draw to a valid player
         resetCurrentPlayerFromDraw()
@@ -64,17 +56,38 @@ class TicTacToeEngine internal constructor(
 
         val gameOver = checkForWinCondition(positionX, positionY, positionZ)
 
-        if (!gameOver) {
-            switchPlayer()
-        } else if (currentPlayer == 2 && gameOver && isGameAgainstAi) {
-            switchPlayer()
-        } else if (gameOver && !isGameAgainstAi) {
-            switchPlayer()
-        }
+        gameListener.onPlayerTurned(positionX, positionY, positionZ, currentPlayer)
+
+        switchPlayer()
 
         if (currentPlayer == 2 && isGameAgainstAi && !gameOver) {
             aiTurnProcess()
         }
+    }
+
+    private fun aiTurnProcess() {
+        gameListener.onAiIsTurning()
+        var aiTurnX: Int? = null
+        var aiTurnY: Int? = null
+        var aiTurnZ: Int? = null
+
+        //TODO i bit more than random turns
+        while (isPositionDataNullOrOnATakenPosition(aiTurnX, aiTurnY, aiTurnZ)) {
+            aiTurnX = (Math.random() * grid).toInt()
+            aiTurnY = (Math.random() * grid).toInt()
+            aiTurnZ = (Math.random() * grid).toInt()
+        }
+
+        if (is3DBoard) {
+            if (aiTurnX != null && aiTurnY != null && aiTurnZ != null) {
+                gameListener.onPlayerTurned(aiTurnX, aiTurnY, aiTurnZ, currentPlayer)
+            }
+        } else {
+            if (aiTurnX != null && aiTurnY != null) {
+                gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
+            }
+        }
+        switchPlayer()
     }
 
     private fun checkForIllegalStates(
@@ -94,30 +107,6 @@ class TicTacToeEngine internal constructor(
     private fun resetCurrentPlayerFromDraw() {
         if (currentPlayer == 0) {
             currentPlayer = 1
-        }
-    }
-
-    private fun aiTurnProcess() {
-        gameListener.onAiIsTurning()
-        var aiTurnX: Int? = null
-        var aiTurnY: Int? = null
-        var aiTurnZ: Int? = null
-
-        //TODO i bit more than random turns
-        while (isPositionDataNullOrOnATakenPosition(aiTurnX, aiTurnY, aiTurnZ)) {
-            aiTurnX = (Math.random() * grid).toInt()
-            aiTurnY = (Math.random() * grid).toInt()
-            aiTurnZ = (Math.random() * grid).toInt()
-        }
-
-        if (is3DBoard) {
-            if (aiTurnX != null && aiTurnY != null && aiTurnZ != null) {
-                gameListener.onAiTurned(aiTurnX, aiTurnY, aiTurnZ)
-            }
-        } else {
-            if (aiTurnX != null && aiTurnY != null) {
-                gameListener.onAiTurned(aiTurnX, aiTurnY, 0)
-            }
         }
     }
 
@@ -147,7 +136,7 @@ class TicTacToeEngine internal constructor(
         var playStoneCounterInYAxisStraight = 0
         var playStoneCounterInZAxisStraight = 0
         var playStoneCounterIsDiagonal = 0
-        var wonPositions: MutableList<Triple<Int, Int, Int>> = mutableListOf()
+        val wonPositions: MutableList<Triple<Int, Int, Int>> = mutableListOf()
         var emptyCells = 0
 
         //X Straight
@@ -381,6 +370,11 @@ class TicTacToeEngine internal constructor(
         fun onSwitchPlayer(playerNumber: Int)
         fun onInitializeBoard()
         fun onAiIsTurning()
-        fun onAiTurned(positionX: Int, positionY: Int, positionZ: Int)
+        fun onPlayerTurned(
+            positionX: Int,
+            positionY: Int,
+            positionZ: Int,
+            currentPlayer: Int
+        )
     }
 }

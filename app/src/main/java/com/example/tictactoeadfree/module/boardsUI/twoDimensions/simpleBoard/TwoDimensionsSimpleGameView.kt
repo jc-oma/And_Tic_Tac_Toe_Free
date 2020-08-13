@@ -99,13 +99,6 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
     private val groupIds = board_view_group.referencedIds
 
-    private fun getCurrentPlayerPlayStone(isAiTurn: Boolean = false): Drawable? {
-        val currentPlayer = toe.getCurrentPlayer()
-        return if (currentPlayer == 1 && !isAiTurn) context.getDrawable(xImgPlayerStone) else context.getDrawable(
-            oImgPlayerStone
-        )
-    }
-
     private fun restartBoard() {
         toe.initializeBoard()
         game_end_overlay.setOnClickListener {
@@ -136,15 +129,14 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
     private fun initializeClickListenerForPlayerTurn(cellView: ImageView, index: Int) {
         cellView.setOnClickListener {
-            onPlayerTurned(index, cellView)
+            toe.gameTurn(index % grid, index / grid)
         }
     }
 
-    private fun onPlayerTurned(index: Int, cellView: ImageView, isAiTurn: Boolean = false) {
-        toe.gameTurn(index % grid, index / grid)
-        cellView.setImageDrawable(getCurrentPlayerPlayStone(isAiTurn))
-        cellView.clearAnimation()
-        cellView.setOnClickListener {}
+    private fun getCurrentPlayerPlayStone(currentPlayer: Int): Drawable? {
+        return if (currentPlayer == 1) context.getDrawable(xImgPlayerStone) else context.getDrawable(
+            oImgPlayerStone
+        )
     }
 
     private fun startWhobbleAnimation(view: View) {
@@ -206,9 +198,14 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         }
     }
 
-    override fun onAiTurned(positionX: Int, positionY: Int, positionZ: Int) {
+    override fun onPlayerTurned(
+        positionX: Int,
+        positionY: Int,
+        positionZ: Int,
+        currentPlayer: Int
+    ) {
         val playedIndexInGrid = positionX + (positionY * grid)
-        onPlayerTurned(playedIndexInGrid, playGroundViewGrid[playedIndexInGrid], true)
+        playGroundViewGrid[playedIndexInGrid].setImageDrawable(getCurrentPlayerPlayStone(currentPlayer))
         playGroundViewGrid.forEach { cellView ->
             cellView.isClickable = true
         }
