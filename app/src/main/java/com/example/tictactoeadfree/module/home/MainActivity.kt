@@ -1,7 +1,6 @@
 package com.example.tictactoeadfree.module.home
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.tictactoeadfree.R
@@ -20,8 +19,11 @@ class MainActivity : BaseActivity(), HomeFragment.Listener {
         super.onBackPressed()
         val manager = supportFragmentManager
 
-        if (manager.fragments.size > 1)
-        manager.beginTransaction().remove(manager.fragments.last()).commit()
+        if (manager.fragments.size > 1) {
+            manager.beginTransaction().remove(manager.fragments.last()).commit()
+        } else {
+            this.finish()
+        }
     }
 
     override fun onHomeFragmentButtonClick() {

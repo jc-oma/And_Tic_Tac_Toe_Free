@@ -81,10 +81,14 @@ class TicTacToeEngine internal constructor(
         if (is3DBoard) {
             if (aiTurnX != null && aiTurnY != null && aiTurnZ != null) {
                 gameListener.onPlayerTurned(aiTurnX, aiTurnY, aiTurnZ, currentPlayer)
+                playGround[aiTurnX][aiTurnY][aiTurnZ] = currentPlayer
+                checkForWinCondition(aiTurnX, aiTurnY, aiTurnZ)
             }
         } else {
             if (aiTurnX != null && aiTurnY != null) {
                 gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
+                playGround[aiTurnX][aiTurnY][0] = currentPlayer
+                checkForWinCondition(aiTurnX, aiTurnY, 0)
             }
         }
         switchPlayer()

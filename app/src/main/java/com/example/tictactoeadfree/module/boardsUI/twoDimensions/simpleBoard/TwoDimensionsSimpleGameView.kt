@@ -206,6 +206,8 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     ) {
         val playedIndexInGrid = positionX + (positionY * grid)
         playGroundViewGrid[playedIndexInGrid].setImageDrawable(getCurrentPlayerPlayStone(currentPlayer))
+        playGroundViewGrid[playedIndexInGrid].setOnClickListener {  }
+        playGroundViewGrid[playedIndexInGrid].clearAnimation()
         playGroundViewGrid.forEach { cellView ->
             cellView.isClickable = true
         }
