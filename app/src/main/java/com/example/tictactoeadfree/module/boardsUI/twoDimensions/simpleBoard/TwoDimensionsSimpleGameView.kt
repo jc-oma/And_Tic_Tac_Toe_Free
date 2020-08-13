@@ -266,7 +266,5 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
             })
             animSet.start()
         } else winOverlayPreparation(wonPlayer)
-
-        //winOverlayPreparation(wonPlayer)
     }
 }

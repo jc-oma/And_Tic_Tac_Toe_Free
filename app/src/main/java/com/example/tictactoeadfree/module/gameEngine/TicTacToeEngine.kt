@@ -52,17 +52,9 @@ class TicTacToeEngine internal constructor(
 
     fun gameTurn(positionX: Int, positionY: Int, positionZ: Int = 0) {
         // switch from last draw to a valid player
-        if (currentPlayer == 0) {
-            currentPlayer = 1
-        }
+        resetCurrentPlayerFromDraw()
 
-        if (!is3DBoard && positionZ > 0) {
-            throw IllegalArgumentException("postionZ couldn't be calculated in 2D Game")
-        }
-
-        if (playGround[positionX][positionY][positionZ] != 0) {
-            throw IllegalStateException("this position was already taken")
-        }
+        checkForIllegalStates(positionZ, positionX, positionY)
 
         turns++
 
@@ -74,10 +66,32 @@ class TicTacToeEngine internal constructor(
 
         if (!gameOver) {
             switchPlayer()
+        } else if (gameOver && !isGameAgainstAi) {
+            switchPlayer()
         }
 
         if (currentPlayer == 2 && isGameAgainstAi && !gameOver) {
             aiTurnProcess()
+        }
+    }
+
+    private fun checkForIllegalStates(
+        positionZ: Int,
+        positionX: Int,
+        positionY: Int
+    ) {
+        if (!is3DBoard && positionZ > 0) {
+            throw IllegalArgumentException("postionZ couldn't be calculated in 2D Game")
+        }
+
+        if (playGround[positionX][positionY][positionZ] != 0) {
+            throw IllegalStateException("this position was already taken")
+        }
+    }
+
+    private fun resetCurrentPlayerFromDraw() {
+        if (currentPlayer == 0) {
+            currentPlayer = 1
         }
     }
 
