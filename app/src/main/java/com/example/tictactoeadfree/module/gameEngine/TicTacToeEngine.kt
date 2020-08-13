@@ -66,6 +66,8 @@ class TicTacToeEngine internal constructor(
 
         if (!gameOver) {
             switchPlayer()
+        } else if (currentPlayer == 2 && gameOver && isGameAgainstAi) {
+            switchPlayer()
         } else if (gameOver && !isGameAgainstAi) {
             switchPlayer()
         }

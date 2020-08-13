@@ -44,8 +44,8 @@ class GameEndedOverlay @JvmOverloads constructor(
     private fun animateHeadline() {
         ended_game_headline
             .animate()
-            .setDuration(600)
-            .rotationXBy(360f)
+            .setDuration(0)
+            .rotationXBy(0f)
             .withEndAction {
                 setupKonfettiView()
                 startInfiniteSignShake()

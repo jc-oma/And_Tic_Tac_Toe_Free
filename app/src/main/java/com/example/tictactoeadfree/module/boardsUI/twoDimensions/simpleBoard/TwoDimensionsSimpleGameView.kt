@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewPropertyAnimator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -179,18 +178,6 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         deleteBoardListener()
     }
 
-    private fun getOnPositionPreparedAnimation(
-        wonPositions: MutableList<Triple<Int, Int, Int>>?,
-        animatorSet: AnimatorSet?
-    ): List<ViewPropertyAnimator> {
-        val properties: MutableList<ViewPropertyAnimator> = mutableListOf()
-        wonPositions?.forEach { triple ->
-            val toAnimateIndex = triple.first + (triple.second * grid)
-            properties.add(playGroundViewGrid[toAnimateIndex].animate())
-        }
-        return properties
-    }
-
     private fun deleteBoardListener() {
         groupIds.forEach { id ->
             rootView.findViewById<View>(id).setOnClickListener {
@@ -232,39 +219,53 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         wonPosition: MutableList<Triple<Int, Int, Int>>?
     ) {
         if (wonPosition != null && wonPosition.isNotEmpty()) {
-            val objectAnimatorList: MutableList<ObjectAnimator> = mutableListOf()
-            wonPosition.forEach { pos ->
-                val element = ObjectAnimator.ofFloat(
-                    playGroundViewGrid[pos.first + pos.second * grid],
-                    "rotationX",
-                    360f,
-                    0f
-                )
-                element.duration = 800
+            val objectAnimatorList: MutableList<ObjectAnimator> =
+                setupObejectAnimatorListForWinAnimation(wonPosition)
 
-                objectAnimatorList.add(
-                    element
-                )
-            }
-
-            val animSet = AnimatorSet()
-            animSet.playTogether(objectAnimatorList as Collection<Animator>?)
-            animSet.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(p0: Animator?) {
-                }
-
-                override fun onAnimationEnd(p0: Animator?) {
-                    winOverlayPreparation(wonPlayer)
-                }
-
-                override fun onAnimationCancel(p0: Animator?) {
-                }
-
-                override fun onAnimationStart(p0: Animator?) {
-                }
-
-            })
+            val animSet = setupAnimatorSetForWinAnimation(objectAnimatorList, wonPlayer)
             animSet.start()
         } else winOverlayPreparation(wonPlayer)
+    }
+
+    private fun setupAnimatorSetForWinAnimation(
+        objectAnimatorList: MutableList<ObjectAnimator>,
+        wonPlayer: Int
+    ): AnimatorSet {
+        val animSet = AnimatorSet()
+        animSet.playTogether(objectAnimatorList as Collection<Animator>?)
+        animSet.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(p0: Animator?) {
+            }
+
+            override fun onAnimationEnd(p0: Animator?) {
+                winOverlayPreparation(wonPlayer)
+            }
+
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+
+            override fun onAnimationStart(p0: Animator?) {
+            }
+
+        })
+        return animSet
+    }
+
+    private fun setupObejectAnimatorListForWinAnimation(wonPosition: MutableList<Triple<Int, Int, Int>>): MutableList<ObjectAnimator> {
+        val objectAnimatorList: MutableList<ObjectAnimator> = mutableListOf()
+        wonPosition.forEach { pos ->
+            val element = ObjectAnimator.ofFloat(
+                playGroundViewGrid[pos.first + pos.second * grid],
+                "rotationX",
+                360f,
+                0f
+            )
+            element.duration = 800
+
+            objectAnimatorList.add(
+                element
+            )
+        }
+        return objectAnimatorList
     }
 }
