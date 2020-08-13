@@ -161,28 +161,6 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
     private fun getRandomDuration() = ((Math.random() + 2) * 100).toLong()
 
-    override fun onGameEnd(
-        wonPlayer: Int,
-        wonPosition: MutableList<Triple<Int, Int, Int>>?
-    ) {
-        if (wonPosition != null && wonPosition.isNotEmpty()) {
-            val animatorSet: AnimatorSet? = null
-            val animations = getOnPositionPreparedAnimation(wonPosition, animatorSet)
-            animations.forEach { animationItems ->
-                animationItems.duration = 800
-                animationItems.rotationX(360f)
-            }
-
-            animations.last().withEndAction {
-                winOverlayPreparation(wonPlayer)
-            }
-
-            animations.forEach { animationItems -> animationItems.start() }
-        } else winOverlayPreparation(wonPlayer)
-
-        //winOverlayPreparation(wonPlayer)
-    }
-
     private fun winOverlayPreparation(wonPlayer: Int) {
         if (wonPlayer != 0) {
             game_info.text = context.getString(R.string.player_x_won, wonPlayer.toString())
@@ -245,5 +223,27 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         playGroundViewGrid.forEach { cellView ->
             cellView.isClickable = true
         }
+    }
+
+    override fun onGameEnd(
+        wonPlayer: Int,
+        wonPosition: MutableList<Triple<Int, Int, Int>>?
+    ) {
+        if (wonPosition != null && wonPosition.isNotEmpty()) {
+            val animatorSet: AnimatorSet? = null
+            val animations = getOnPositionPreparedAnimation(wonPosition, animatorSet)
+            animations.forEach { animationItems ->
+                animationItems.duration = 800
+                animationItems.rotationX(360f)
+            }
+
+            animations.last().withEndAction {
+                winOverlayPreparation(wonPlayer)
+            }
+
+            animations.forEach { animationItems -> animationItems.start() }
+        } else winOverlayPreparation(wonPlayer)
+
+        //winOverlayPreparation(wonPlayer)
     }
 }
