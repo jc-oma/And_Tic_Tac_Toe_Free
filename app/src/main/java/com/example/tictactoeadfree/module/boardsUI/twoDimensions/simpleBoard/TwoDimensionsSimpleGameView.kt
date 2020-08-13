@@ -237,7 +237,8 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
                 val element = ObjectAnimator.ofFloat(
                     playGroundViewGrid[pos.first + pos.second * grid],
                     "rotationX",
-                    360f
+                    360f,
+                    0f
                 )
                 element.duration = 800
 
