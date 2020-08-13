@@ -1,6 +1,8 @@
 package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard
 
+import android.animation.Animator
 import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
@@ -230,18 +232,38 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         wonPosition: MutableList<Triple<Int, Int, Int>>?
     ) {
         if (wonPosition != null && wonPosition.isNotEmpty()) {
-            val animatorSet: AnimatorSet? = null
-            val animations = getOnPositionPreparedAnimation(wonPosition, animatorSet)
-            animations.forEach { animationItems ->
-                animationItems.duration = 800
-                animationItems.rotationX(360f)
+            val objectAnimatorList: MutableList<ObjectAnimator> = mutableListOf()
+            wonPosition.forEach { pos ->
+                val element = ObjectAnimator.ofFloat(
+                    playGroundViewGrid[pos.first + pos.second * grid],
+                    "rotationX",
+                    360f
+                )
+                element.duration = 300
+
+                objectAnimatorList.add(
+                    element
+                )
             }
 
-            animations.last().withEndAction {
-                winOverlayPreparation(wonPlayer)
-            }
+            val animSet = AnimatorSet()
+            animSet.playTogether(objectAnimatorList as Collection<Animator>?)
+            animSet.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(p0: Animator?) {
+                }
 
-            animations.forEach { animationItems -> animationItems.start() }
+                override fun onAnimationEnd(p0: Animator?) {
+                    winOverlayPreparation(wonPlayer)
+                }
+
+                override fun onAnimationCancel(p0: Animator?) {
+                }
+
+                override fun onAnimationStart(p0: Animator?) {
+                }
+
+            })
+            animSet.start()
         } else winOverlayPreparation(wonPlayer)
 
         //winOverlayPreparation(wonPlayer)
