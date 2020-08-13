@@ -1,10 +1,12 @@
 package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard
 
+import android.animation.AnimatorSet
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewPropertyAnimator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -16,9 +18,9 @@ import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 
 class TwoDimensionsSimpleGameView @JvmOverloads constructor(
-context: Context,
-attrs: AttributeSet? = null,
-defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener {
     init {
         initView(context)
@@ -73,13 +75,15 @@ defStyleAttr: Int = 0
                 R.anim.grid_fall_down_animation
             )
             fallDownAnimation.startOffset = delayTimer
-            fallDownAnimation.setAnimationListener(object : Animation.AnimationListener{
+            fallDownAnimation.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(p0: Animation?) {
                 }
+
                 override fun onAnimationEnd(p0: Animation?) {
                     whobbleAnimation.duration = getRandomDuration()
                     cell.startAnimation(whobbleAnimation)
                 }
+
                 override fun onAnimationStart(p0: Animation?) {
                 }
             })
@@ -157,7 +161,29 @@ defStyleAttr: Int = 0
 
     private fun getRandomDuration() = ((Math.random() + 2) * 100).toLong()
 
-    override fun onGameEnd(wonPlayer: Int) {
+    override fun onGameEnd(
+        wonPlayer: Int,
+        wonPosition: MutableList<Triple<Int, Int, Int>>?
+    ) {
+        if (wonPosition != null && wonPosition.isNotEmpty()) {
+            val animatorSet: AnimatorSet? = null
+            val animations = getOnPositionPreparedAnimation(wonPosition, animatorSet)
+            animations.forEach { animationItems ->
+                animationItems.duration = 800
+                animationItems.rotationX(360f)
+            }
+
+            animations.last().withEndAction {
+                winOverlayPreparation(wonPlayer)
+            }
+
+            animations.forEach { animationItems -> animationItems.start() }
+        } else winOverlayPreparation(wonPlayer)
+
+        //winOverlayPreparation(wonPlayer)
+    }
+
+    private fun winOverlayPreparation(wonPlayer: Int) {
         if (wonPlayer != 0) {
             game_info.text = context.getString(R.string.player_x_won, wonPlayer.toString())
             game_end_overlay.onGameWon(wonPlayer)
@@ -171,6 +197,18 @@ defStyleAttr: Int = 0
         game_end_overlay.isVisible = true
         restart_game.whobbleAnimation(true)
         deleteBoardListener()
+    }
+
+    private fun getOnPositionPreparedAnimation(
+        wonPositions: MutableList<Triple<Int, Int, Int>>?,
+        animatorSet: AnimatorSet?
+    ): List<ViewPropertyAnimator> {
+        val properties: MutableList<ViewPropertyAnimator> = mutableListOf()
+        wonPositions?.forEach { triple ->
+            val toAnimateIndex = triple.first + (triple.second * grid)
+            properties.add(playGroundViewGrid[toAnimateIndex].animate())
+        }
+        return properties
     }
 
     private fun deleteBoardListener() {
@@ -196,7 +234,7 @@ defStyleAttr: Int = 0
     }
 
     override fun onAiIsTurning() {
-        playGroundViewGrid.forEach{ cellView ->
+        playGroundViewGrid.forEach { cellView ->
             cellView.isClickable = false
         }
     }
@@ -204,7 +242,7 @@ defStyleAttr: Int = 0
     override fun onAiTurned(positionX: Int, positionY: Int, positionZ: Int) {
         val playedIndexInGrid = positionX + (positionY * grid)
         onPlayerTurned(playedIndexInGrid, playGroundViewGrid[playedIndexInGrid], true)
-        playGroundViewGrid.forEach{ cellView ->
+        playGroundViewGrid.forEach { cellView ->
             cellView.isClickable = true
         }
     }
