@@ -1,5 +1,6 @@
 package com.example.tictactoeadfree.module.gameEngine
 
+import android.os.Handler
 import com.example.tictactoeadfree.module.data.gameStatistics.GameStatistics
 import com.example.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
@@ -80,15 +81,19 @@ class TicTacToeEngine internal constructor(
 
         if (is3DBoard) {
             if (aiTurnX != null && aiTurnY != null && aiTurnZ != null) {
-                gameListener.onPlayerTurned(aiTurnX, aiTurnY, aiTurnZ, currentPlayer)
-                playGround[aiTurnX][aiTurnY][aiTurnZ] = currentPlayer
-                checkForWinCondition(aiTurnX, aiTurnY, aiTurnZ)
+                Handler().postDelayed({
+                    gameListener.onPlayerTurned(aiTurnX, aiTurnY, aiTurnZ, currentPlayer)
+                    playGround[aiTurnX][aiTurnY][aiTurnZ] = currentPlayer
+                    checkForWinCondition(aiTurnX, aiTurnY, aiTurnZ)
+                }, 500)
             }
         } else {
             if (aiTurnX != null && aiTurnY != null) {
-                gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
-                playGround[aiTurnX][aiTurnY][0] = currentPlayer
-                checkForWinCondition(aiTurnX, aiTurnY, 0)
+                Handler().postDelayed({
+                    gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
+                    playGround[aiTurnX][aiTurnY][0] = currentPlayer
+                    checkForWinCondition(aiTurnX, aiTurnY, 0)
+                }, 500)
             }
         }
         switchPlayer()

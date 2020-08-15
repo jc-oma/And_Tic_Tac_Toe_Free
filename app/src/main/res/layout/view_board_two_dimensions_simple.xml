@@ -191,4 +191,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/game_info" />
+
+    <ImageView
+        android:id="@+id/simple_2d_thinking_witch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:rotation="-30"
+        android:alpha="0"
+        tools:alpha="1"
+        app:layout_constraintTop_toBottomOf="@id/three_three"
+        app:layout_constraintStart_toStartOf="@id/three_two"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_thinking_witch"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

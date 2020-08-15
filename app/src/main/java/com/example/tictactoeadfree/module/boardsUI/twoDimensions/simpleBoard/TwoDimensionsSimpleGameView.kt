@@ -63,6 +63,51 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         restartBoard()
     }
 
+    override fun onSwitchPlayer(playerNumber: Int) {
+        game_info.text = playerNumber.toString()
+    }
+
+    override fun onInitializeBoard() {
+        game_info.text = context.getString(R.string.get_it_started)
+    }
+
+    override fun onAiIsTurning() {
+        playGroundViewGrid.forEach { cellView ->
+            cellView.isClickable = false
+        }
+        animateThinkingAi()
+    }
+
+    override fun onPlayerTurned(
+        positionX: Int,
+        positionY: Int,
+        positionZ: Int,
+        currentPlayer: Int
+    ) {
+        val playedIndexInGrid = positionX + (positionY * grid)
+        playGroundViewGrid[playedIndexInGrid].setImageDrawable(getCurrentPlayerPlayStone(currentPlayer))
+        playGroundViewGrid[playedIndexInGrid].setOnClickListener {  }
+        playGroundViewGrid[playedIndexInGrid].clearAnimation()
+        playGroundViewGrid.forEach { cellView ->
+            cellView.isClickable = true
+        }
+
+        clearThinkingAiAnimation()
+    }
+
+    override fun onGameEnd(
+        wonPlayer: Int,
+        wonPosition: MutableList<Triple<Int, Int, Int>>?
+    ) {
+        if (wonPosition != null && wonPosition.isNotEmpty()) {
+            val objectAnimatorList: MutableList<ObjectAnimator> =
+                setupObejectAnimatorListForWinAnimation(wonPosition)
+
+            val animSet = setupAnimatorSetForWinAnimation(objectAnimatorList, wonPlayer)
+            animSet.start()
+        } else winOverlayPreparation(wonPlayer)
+    }
+
     fun prepareBoardStartAnimations() {
         var delayTimer: Long = 0
         val delayRange = 400
@@ -184,48 +229,6 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         }
     }
 
-    override fun onSwitchPlayer(playerNumber: Int) {
-        game_info.text = playerNumber.toString()
-    }
-
-    override fun onInitializeBoard() {
-        game_info.text = context.getString(R.string.get_it_started)
-    }
-
-    override fun onAiIsTurning() {
-        playGroundViewGrid.forEach { cellView ->
-            cellView.isClickable = false
-        }
-    }
-
-    override fun onPlayerTurned(
-        positionX: Int,
-        positionY: Int,
-        positionZ: Int,
-        currentPlayer: Int
-    ) {
-        val playedIndexInGrid = positionX + (positionY * grid)
-        playGroundViewGrid[playedIndexInGrid].setImageDrawable(getCurrentPlayerPlayStone(currentPlayer))
-        playGroundViewGrid[playedIndexInGrid].setOnClickListener {  }
-        playGroundViewGrid[playedIndexInGrid].clearAnimation()
-        playGroundViewGrid.forEach { cellView ->
-            cellView.isClickable = true
-        }
-    }
-
-    override fun onGameEnd(
-        wonPlayer: Int,
-        wonPosition: MutableList<Triple<Int, Int, Int>>?
-    ) {
-        if (wonPosition != null && wonPosition.isNotEmpty()) {
-            val objectAnimatorList: MutableList<ObjectAnimator> =
-                setupObejectAnimatorListForWinAnimation(wonPosition)
-
-            val animSet = setupAnimatorSetForWinAnimation(objectAnimatorList, wonPlayer)
-            animSet.start()
-        } else winOverlayPreparation(wonPlayer)
-    }
-
     private fun setupAnimatorSetForWinAnimation(
         objectAnimatorList: MutableList<ObjectAnimator>,
         wonPlayer: Int
@@ -266,5 +269,19 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
             )
         }
         return objectAnimatorList
+    }
+
+    private fun animateThinkingAi() {
+        simple_2d_thinking_witch.alpha = 1f
+        val thinkingAnimation =AnimationUtils.loadAnimation(
+            context,
+            R.anim.whobble_animation
+        )
+        simple_2d_thinking_witch.startAnimation(thinkingAnimation)
+    }
+
+    private fun clearThinkingAiAnimation() {
+        simple_2d_thinking_witch.clearAnimation()
+        simple_2d_thinking_witch.alpha = 0f
     }
 }
