@@ -24,24 +24,19 @@ class StatisticsView @JvmOverloads constructor(
         View.inflate(context, R.layout.view_statistics, this)
     }
 
-    //TODO DatenbankService als Singelton implementieren
     private val viewModel: GameStatisticsViewModel by inject()
 
     fun getWonGamesForPlayer(wonPlayer: Int) {
         statistics_view_headline.text = if (wonPlayer == 1) {
-            context.getString(R.string.statistics_view_o)
-        } else {
             context.getString(R.string.statistics_view_x)
+        } else {
+            context.getString(R.string.statistics_view_o)
         }
 
         val gameStatistics: List<GameStatistics> = viewModel.getGameStatisticsList()
         val filteredGameStatisticForPlayer =
             gameStatistics.filter { it -> it.wonPlayer == wonPlayer }
-        val wonGames = if (filteredGameStatisticForPlayer.count() == 0) {
-            1
-        } else {
-            filteredGameStatisticForPlayer.count()
-        }
+        val wonGames = filteredGameStatisticForPlayer.count()
         statistics_won_games.text = wonGames.toString()
 
         var averageTurns = 0
@@ -50,7 +45,9 @@ class StatisticsView @JvmOverloads constructor(
             .forEach {
                 averageTurns += it.neededTurns ?: 0
             }
-        averageTurns /= wonGames
+        averageTurns = if (wonGames == 0) 0 else {
+            averageTurns / wonGames
+        }
         statistics_needed_turns.text = averageTurns.toString()
 
 
@@ -60,8 +57,10 @@ class StatisticsView @JvmOverloads constructor(
             .forEach {
                 averageTimeTaken += it.timeTakenToWin ?: 0
             }
-        averageTimeTaken /= wonGames
-        //TODO in GameEngine berechnen lassen
+        averageTimeTaken = if (wonGames == 0) 0 else {
+            averageTimeTaken / wonGames
+        }
+
         statistics_needed_time.text = averageTimeTaken.toString()
     }
 }
