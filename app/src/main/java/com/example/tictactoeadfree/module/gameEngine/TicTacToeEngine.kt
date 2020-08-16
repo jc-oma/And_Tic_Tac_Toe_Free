@@ -85,7 +85,8 @@ class TicTacToeEngine internal constructor(
                     gameListener.onPlayerTurned(aiTurnX, aiTurnY, aiTurnZ, currentPlayer)
                     playGround[aiTurnX][aiTurnY][aiTurnZ] = currentPlayer
                     checkForWinCondition(aiTurnX, aiTurnY, aiTurnZ)
-                }, 500)
+                    switchPlayer()
+                }, 1000)
             }
         } else {
             if (aiTurnX != null && aiTurnY != null) {
@@ -93,10 +94,10 @@ class TicTacToeEngine internal constructor(
                     gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
                     playGround[aiTurnX][aiTurnY][0] = currentPlayer
                     checkForWinCondition(aiTurnX, aiTurnY, 0)
-                }, 500)
+                    switchPlayer()
+                }, 1000)
             }
         }
-        switchPlayer()
     }
 
     private fun checkForIllegalStates(
