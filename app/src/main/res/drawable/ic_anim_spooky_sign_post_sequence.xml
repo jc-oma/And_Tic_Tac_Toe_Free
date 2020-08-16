@@ -1,6 +1,6 @@
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="false">
-    <item android:drawable="@drawable/ic_anim_spooky_sign_post_1" android:duration="100" />
+    <item android:drawable="@drawable/ic_anim_spooky_sign_post_1" android:duration="200" />
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_2" android:duration="100" />
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_3" android:duration="100" />
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_4" android:duration="100" />
@@ -9,7 +9,7 @@
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_7" android:duration="100" />
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_8" android:duration="100" />
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_9" android:duration="100" />
-    <item android:drawable="@drawable/ic_anim_spooky_sign_post_10" android:duration="100" />
+    <item android:drawable="@drawable/ic_anim_spooky_sign_post_10" android:duration="1000" />
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_9" android:duration="100" />
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_8" android:duration="100" />
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_7" android:duration="100" />
@@ -18,5 +18,5 @@
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_4" android:duration="100" />
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_3" android:duration="100" />
     <item android:drawable="@drawable/ic_anim_spooky_sign_post_2" android:duration="100" />
-    <item android:drawable="@drawable/ic_anim_spooky_sign_post_1" android:duration="100" />
+    <item android:drawable="@drawable/ic_anim_spooky_sign_post_1" android:duration="200" />
 </animation-list>
