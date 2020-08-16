@@ -2,6 +2,7 @@ package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.AnimationDrawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -26,7 +27,7 @@ class GameEndedOverlay @JvmOverloads constructor(
     }
 
     fun onGameWon(wonPlayer: Int) {
-        animateHeadline()
+        setupAnimations()
         getStatisticsForStatisticViews()
         if (wonPlayer == 0) {
             ended_game_headline.text = context.getString(R.string.draw)
@@ -41,7 +42,17 @@ class GameEndedOverlay @JvmOverloads constructor(
         game_end_overlay_statistics_2.getWonGamesForPlayer(2)
     }
 
-    private fun animateHeadline() {
+    private fun setupAnimations() {
+        setupHeadlineAnimation()
+        setupSignPostAnimation()
+    }
+
+    private fun setupSignPostAnimation() {
+        val animation = game_end_overlay_post_with_pumpkin.background as AnimationDrawable
+        animation.start()
+    }
+
+    private fun setupHeadlineAnimation() {
         ended_game_headline
             .animate()
             .setDuration(0)
