@@ -9,71 +9,69 @@
         android:id="@+id/statistics_play1_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_spooky_grave_stone" />
+        android:src="@drawable/ic_spooky_grave_stone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/statistics_view_headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/berkshire_swash_regular"
         android:text="@string/statistics_view_x"
         android:textSize="40sp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@id/statistics_play1_image"
         app:layout_constraintEnd_toEndOf="@id/statistics_play1_image"
-        app:layout_constraintTop_toTopOf="@id/statistics_play1_image"
-/>
+        app:layout_constraintStart_toStartOf="@id/statistics_play1_image"
+        app:layout_constraintTop_toTopOf="@id/statistics_play1_image" />
 
     <TextView
         android:id="@+id/statistics_won_games_head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
         android:layout_marginStart="48dp"
         android:layout_marginTop="40dp"
         android:fontFamily="@font/berkshire_swash_regular"
         android:text="@string/statistics_view_won_games"
-        app:layout_constraintTop_toBottomOf="@id/statistics_view_headline"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@id/statistics_play1_image"
- />
+        app:layout_constraintTop_toBottomOf="@id/statistics_view_headline" />
 
     <TextView
         android:id="@+id/statistics_won_games"
         android:layout_width="wrap_content"
-        android:textSize="20sp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="48dp"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@id/statistics_play1_image"
         app:layout_constraintTop_toTopOf="@id/statistics_won_games_head"
-        android:fontFamily="@font/berkshire_swash_regular"
         tools:text="200" />
 
     <TextView
         android:id="@+id/statistics_needed_turns_head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
         android:layout_marginStart="48dp"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/berkshire_swash_regular"
         android:text="@string/statistics_average_needed_turns"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@id/statistics_play1_image"
-        app:layout_constraintTop_toBottomOf="@id/statistics_won_games_head"/>
+        app:layout_constraintTop_toBottomOf="@id/statistics_won_games_head" />
 
     <TextView
         android:id="@+id/statistics_needed_turns"
         android:layout_width="wrap_content"
-        android:textSize="20sp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="48dp"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@id/statistics_play1_image"
         app:layout_constraintTop_toTopOf="@id/statistics_needed_turns_head"
-        android:fontFamily="@font/berkshire_swash_regular"
         tools:text="200" />
 
     <TextView
@@ -82,22 +80,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="4dp"
-        android:textSize="20sp"
         android:fontFamily="@font/berkshire_swash_regular"
         android:text="@string/average_needed_time"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@id/statistics_play1_image"
-        app:layout_constraintTop_toBottomOf="@id/statistics_needed_turns_head"/>
+        app:layout_constraintTop_toBottomOf="@id/statistics_needed_turns_head" />
 
     <TextView
         android:id="@+id/statistics_needed_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="48dp"
-        android:textSize="20sp"
         android:fontFamily="@font/berkshire_swash_regular"
-        tools:text="200 s"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@id/statistics_play1_image"
-        app:layout_constraintTop_toTopOf="@id/statistics_needed_time_head"/>
+        app:layout_constraintTop_toTopOf="@id/statistics_needed_time_head"
+        tools:text="200 s" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
