@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_fragment_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/home_headline"
@@ -34,7 +35,7 @@
 
     <ImageView
         android:id="@+id/home_spooky_witch_imageview"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:alpha="0"
@@ -43,7 +44,6 @@
         android:src="@drawable/ic_spooky_witch"
         app:layout_constraintBottom_toBottomOf="@id/home_one_player_button"
         app:layout_constraintEnd_toStartOf="@id/home_one_player_button"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/home_one_player_button" />
 
     <Button
@@ -61,7 +61,7 @@
 
     <ImageView
         android:id="@+id/home_spooky_ghost_imageview"
-        android:layout_width="0dp"
+        android:layout_width="32dp"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:alpha="0"
@@ -70,7 +70,19 @@
         android:src="@drawable/ic_spooky_ghost"
         app:layout_constraintBottom_toBottomOf="@id/home_two_player_button"
         app:layout_constraintEnd_toStartOf="@id/home_two_player_button"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/home_two_player_button" />
+
+    <ImageView
+        android:id="@+id/home_spooky_ghost_imageview_2"
+        android:layout_width="32dp"
+        android:layout_height="0dp"
+        android:alpha="0"
+        android:elevation="10dp"
+        android:rotationY="180"
+        android:scaleType="fitEnd"
+        android:src="@drawable/ic_spooky_ghost"
+        app:layout_constraintBottom_toBottomOf="@id/home_two_player_button"
+        app:layout_constraintEnd_toStartOf="@id/home_spooky_ghost_imageview"
         app:layout_constraintTop_toTopOf="@id/home_two_player_button" />
 
     <ImageView

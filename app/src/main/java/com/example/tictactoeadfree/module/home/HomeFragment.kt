@@ -69,6 +69,7 @@ class HomeFragment : BaseFragment() {
                     home_spooky_witch_imageview.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
                     home_one_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance).withEndAction {
                         home_spooky_ghost_imageview.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
+                        home_spooky_ghost_imageview_2.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
                         home_two_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
                     }.start()
                 }

@@ -54,5 +54,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
     //TODO add a library view where to show all used external libraries
+    implementation "androidx.cardview:cardview:1.0.0"
     implementation 'nl.dionsegijn:konfetti:1.2.2'
 }
