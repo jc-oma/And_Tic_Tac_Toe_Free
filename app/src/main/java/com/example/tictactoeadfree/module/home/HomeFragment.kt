@@ -66,7 +66,9 @@ class HomeFragment : BaseFragment() {
             override fun onAnimationEnd(animation: Animation?) {
                 val alphaOffsetAppearance = 400L
                 home_headline.animate().alpha(1f).setDuration(alphaOffsetAppearance).withEndAction {
+                    home_spooky_witch_imageview.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
                     home_one_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance).withEndAction {
+                        home_spooky_ghost_imageview.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
                         home_two_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
                     }.start()
                 }
