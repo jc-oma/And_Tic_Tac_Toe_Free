@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.baseClasses.BaseFragment
 import com.example.tictactoeadfree.module.data.gameSettings.GameSettings
@@ -31,7 +31,7 @@ class HomeFragment : BaseFragment() {
         if (context is Listener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() )
+            throw RuntimeException(context.toString())
         }
     }
 
@@ -45,12 +45,46 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        home_one_player_button.setOnClickListener{
+        initiateClickListener()
+
+        startIntroAnimation()
+    }
+
+    private fun startIntroAnimation() {
+        val startOffsetBegin: Long = 1000
+        val introAnimationBackGround = AnimationUtils.loadAnimation(
+            context,
+            R.anim.intro_animation_background
+        )
+
+        introAnimationBackGround.fillAfter = true
+        introAnimationBackGround.startOffset = startOffsetBegin
+        introAnimationBackGround.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                val alphaOffsetAppearance = 400L
+                home_headline.animate().alpha(1f).setDuration(alphaOffsetAppearance).withEndAction {
+                    home_one_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance).withEndAction {
+                        home_two_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
+                    }.start()
+                }
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+            }
+        })
+        home_spooky_house_imageview.startAnimation(introAnimationBackGround)
+    }
+
+    private fun initiateClickListener() {
+        home_one_player_button.setOnClickListener {
             listener?.onHomeFragmentButtonClick()
             settingViewModel.createGameSettings(GameSettings(true))
         }
 
-        home_two_player_button.setOnClickListener{
+        home_two_player_button.setOnClickListener {
             listener?.onHomeFragmentButtonClick()
             settingViewModel.createGameSettings(GameSettings(false))
         }

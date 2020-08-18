@@ -334,7 +334,6 @@ class TicTacToeEngine internal constructor(
             return true
         }
 
-        playStoneCounterIsDiagonal = 0
         wonPositions.clear()
 
         // XZ end
