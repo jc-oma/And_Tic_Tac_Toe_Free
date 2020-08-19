@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:clipChildren="false"
     tools:context=".module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardFragment">
 
 
@@ -23,16 +24,10 @@
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardView
         android:id="@+id/fragment_four_in_a_row_playboard"
         android:layout_width="wrap_content"
+        android:clipChildren="false"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_spooky_hand"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

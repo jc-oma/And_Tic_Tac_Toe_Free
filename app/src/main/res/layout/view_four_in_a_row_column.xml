@@ -16,7 +16,7 @@
         app:layout_constraintHeight_default="percent"
         app:layout_constraintHeight_percent="0.06"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/four_in_a_row_start_guideline" />
 
     <ImageView
         android:id="@+id/four_in_a_row_column_second"
@@ -79,9 +79,16 @@
         app:layout_constraintTop_toBottomOf="@id/four_in_a_row_column_fifth" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/four_in_a_row_start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/four_in_a_row_end_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.36" />
+        app:layout_constraintGuide_percent="0.51" />
 </androidx.constraintlayout.widget.ConstraintLayout>
