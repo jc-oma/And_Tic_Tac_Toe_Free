@@ -6,6 +6,12 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "gameSettings")
 data class GameSettings (
     var isSecondPlayerAi: Boolean = false,
+    var gameMode: String,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 )
+
+enum class GameMode {
+    TIC_TAC_TOE,
+    FOUR_IN_A_ROW
+}

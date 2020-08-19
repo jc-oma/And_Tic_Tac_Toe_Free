@@ -1,4 +1,4 @@
-package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleBoard
+package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard
 
 import android.content.Context
 import android.graphics.Color

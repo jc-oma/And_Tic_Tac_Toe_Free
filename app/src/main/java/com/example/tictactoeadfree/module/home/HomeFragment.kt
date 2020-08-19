@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.baseClasses.BaseFragment
 import com.example.tictactoeadfree.module.data.gameSettings.GameSettings
+import com.example.tictactoeadfree.module.data.gameSettings.gameSettingsModule
 import com.example.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
@@ -70,7 +71,10 @@ class HomeFragment : BaseFragment() {
                     home_one_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance).withEndAction {
                         home_spooky_ghost_imageview.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
                         home_spooky_ghost_imageview_2.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
-                        home_two_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
+                        home_two_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance).withEndAction{
+                            home_game_choser.animate().alpha(1f).setDuration(alphaOffsetAppearance).start()
+                        }
+                            .start()
                     }.start()
                 }
             }
@@ -83,13 +87,15 @@ class HomeFragment : BaseFragment() {
 
     private fun initiateClickListener() {
         home_one_player_button.setOnClickListener {
+            val lastGameSettings = settingViewModel.getGameSettings().last()
             listener?.onHomeFragmentButtonClick()
-            settingViewModel.createGameSettings(GameSettings(true))
+            settingViewModel.createGameSettings(GameSettings(true, lastGameSettings.gameMode))
         }
 
         home_two_player_button.setOnClickListener {
+            val lastGameSettings = settingViewModel.getGameSettings().last()
             listener?.onHomeFragmentButtonClick()
-            settingViewModel.createGameSettings(GameSettings(false))
+            settingViewModel.createGameSettings(GameSettings(false, lastGameSettings.gameMode))
         }
     }
 

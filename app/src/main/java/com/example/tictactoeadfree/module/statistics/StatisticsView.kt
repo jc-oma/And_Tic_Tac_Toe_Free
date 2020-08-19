@@ -1,4 +1,4 @@
-package com.example.tictactoeadfree.module.views
+package com.example.tictactoeadfree.module.statistics
 
 import android.content.Context
 import android.util.AttributeSet
