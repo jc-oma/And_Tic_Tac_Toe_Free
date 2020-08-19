@@ -28,7 +28,11 @@ class GameChoserView @JvmOverloads constructor(
     }
 
     private fun initLastChosenGame() {
-        val gameMode = gameSettingsViewModel.getGameSettings().last().gameMode
+        val gameMode = if (gameSettingsViewModel.getGameSettings().isEmpty()) {
+            GameSettings().gameMode
+        } else {
+            gameSettingsViewModel.getGameSettings().last().gameMode
+        }
         presentChosenGame(GameMode.valueOf(gameMode))
     }
 
@@ -43,7 +47,11 @@ class GameChoserView @JvmOverloads constructor(
     }
 
     private fun choseGame(gameMode: GameMode) {
-        val lastSettings = gameSettingsViewModel.getGameSettings().last()
+        val lastSettings = if (gameSettingsViewModel.getGameSettings().isEmpty()) {
+            GameSettings()
+        } else {
+            gameSettingsViewModel.getGameSettings().last()
+        }
         gameSettingsViewModel.createGameSettings(
             GameSettings(
                 lastSettings.isSecondPlayerAi,

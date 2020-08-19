@@ -3,6 +3,7 @@ package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInAR
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
@@ -11,7 +12,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener {
+) : LinearLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener {
     init {
         initView(context)
     }
