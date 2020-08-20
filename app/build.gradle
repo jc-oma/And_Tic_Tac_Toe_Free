@@ -19,6 +19,11 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -58,5 +63,6 @@ dependencies {
     implementation 'nl.dionsegijn:konfetti:1.2.2'
 
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.3'
+    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
 }

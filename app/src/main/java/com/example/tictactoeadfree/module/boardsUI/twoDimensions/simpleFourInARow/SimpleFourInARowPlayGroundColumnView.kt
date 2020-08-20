@@ -2,14 +2,22 @@ package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInAR
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tictactoeadfree.R
+import com.example.tictactoeadfree.module.logo.LogoFragment
+import com.jakewharton.rxbinding4.view.clicks
+import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 import kotlinx.android.synthetic.main.view_four_in_a_row_column.view.*
+import java.lang.reflect.Array.set
 
 class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
     context: Context,
@@ -31,18 +39,18 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         )
     }
 
-    private val playGroundViewColumnPositionList: MutableList<Pair<Float, Float>> = mutableListOf()
+    val click: Observable<Unit> by lazy { four_in_a_row_column_image_button.clicks() }
 
-    private fun initView(context: Context) {
-        View.inflate(context, R.layout.view_four_in_a_row_column, this)
-    }
+    private val playGroundViewColumnPositionList: MutableList<Pair<Float, Float>> = mutableListOf()
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-
-        initListener()
         getColumnCoordinates()
         initAnmation()
+    }
+
+    private fun initView(context: Context) {
+        View.inflate(context, R.layout.view_four_in_a_row_column, this)
     }
 
     private fun getColumnCoordinates() {
@@ -61,11 +69,9 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         four_in_a_row_column_image_button.startAnimation(whobbleAnimation)
     }
 
-    private fun initListener() {
-        four_in_a_row_column_image_button.setOnClickListener {
-            val x = playGroundViewColumnPositionList[5].first
-            val y = playGroundViewColumnPositionList[5].second
-            four_in_a_row_column_playstone_1.animate().x(x).y(y).start()
-        }
+    fun animatePlayStoneDrop(toRow: Int) {
+        val x = playGroundViewColumnPositionList[toRow].first
+        val y = playGroundViewColumnPositionList[toRow].second
+        four_in_a_row_column_playstone_1.animate().x(x).y(y).start()
     }
 }
