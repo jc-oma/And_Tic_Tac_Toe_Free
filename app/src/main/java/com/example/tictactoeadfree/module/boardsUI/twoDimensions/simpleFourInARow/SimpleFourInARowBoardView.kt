@@ -56,10 +56,10 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
             view.click.observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    val toRow = fourEngine.getNextFreeYPosition(1)
+                    val toRow = fourEngine.getNextFreeYPosition(index)
                     if (toRow != null) {
                         view.animatePlayStoneDrop(toRow)
-                        fourEngine.gameTurn(1)
+                        fourEngine.gameTurn(index)
                     }
                 }
         }
