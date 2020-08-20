@@ -2,13 +2,10 @@ package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInAR
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tictactoeadfree.R
-import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
-import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
+import com.example.tictactoeadfree.module.gameEngine.FourInARowEngine
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.view_board_four_in_a_row_simple.view.*
@@ -17,7 +14,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener {
+) : LinearLayout(context, attrs, defStyleAttr), FourInARowEngine.GameListener {
     init {
         initView(context)
     }
@@ -26,8 +23,8 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         View.inflate(context, R.layout.view_board_four_in_a_row_simple, this)
     }
 
-    private val toe: TicTacToeEngine =
-        TicTacToeEngine(listener = this)
+    private val fourEngine: FourInARowEngine =
+        FourInARowEngine(listener = this)
 
     private val playGroundViewGrid: List<SimpleFourInARowPlayGroundColumnView> by lazy {
         listOf(
@@ -46,6 +43,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+        fourEngine.initializeBoard()
         initListener()
     }
 
@@ -54,17 +52,20 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     }
 
     private fun initRowClickListener() {
-        for ((index, view) in playGroundViewGrid.withIndex()){
+        for ((index, view) in playGroundViewGrid.withIndex()) {
             view.click.observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    view.animatePlayStoneDrop(3)
+                    val toRow = fourEngine.getNextFreeYPosition(1)
+                    if (toRow != null) {
+                        view.animatePlayStoneDrop(toRow)
+                        fourEngine.gameTurn(1)
+                    }
                 }
         }
     }
 
-    override fun onGameEnd(wonPlayer: Int, wonPosition: MutableList<Triple<Int, Int, Int>>?) {
-        TODO("Not yet implemented")
+    override fun onGameEnd(wonPlayer: Int, wonPosition: MutableList<Pair<Int, Int>>?) {
     }
 
     override fun onSwitchPlayer(playerNumber: Int) {
@@ -79,7 +80,6 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     override fun onPlayerTurned(
         positionX: Int,
         positionY: Int,
-        positionZ: Int,
         currentPlayer: Int
     ) {
 
