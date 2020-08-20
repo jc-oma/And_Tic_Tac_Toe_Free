@@ -7,6 +7,19 @@
     android:orientation="vertical">
 
     <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:scaleType="fitXY"
+        android:elevation="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_spooky_click_arrow_3d"
+        android:padding="4dp"
+        app:layout_constraintBottom_toTopOf="@id/four_in_a_row_column_first"
+        app:layout_constraintStart_toStartOf="@id/four_in_a_row_column_first"
+        app:layout_constraintEnd_toEndOf="@id/four_in_a_row_column_first"/>
+
+    <ImageView
         android:id="@+id/four_in_a_row_column_first"
         android:layout_width="0dp"
         android:layout_height="0dp"
