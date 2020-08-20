@@ -39,7 +39,7 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         )
     }
 
-    val click: Observable<Unit> by lazy { four_in_a_row_column_image_button.clicks() }
+    val click: Observable<Unit> by lazy { four_in_a_row_column_root.clicks() }
 
     private val playGroundViewColumnPositionList: MutableList<Pair<Float, Float>> = mutableListOf()
 
