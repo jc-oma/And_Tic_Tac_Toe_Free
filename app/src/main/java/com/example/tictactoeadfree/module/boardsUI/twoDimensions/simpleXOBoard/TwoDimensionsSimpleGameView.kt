@@ -114,7 +114,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         playGroundViewGrid.forEach { cell ->
             val whobbleAnimation = AnimationUtils.loadAnimation(
                 context,
-                R.anim.whobble_animation
+                R.anim.whobble_animation_little
             )
             val fallDownAnimation = AnimationUtils.loadAnimation(
                 context,
@@ -187,7 +187,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     private fun startWhobbleAnimation(view: View) {
         val loadAnimation = AnimationUtils.loadAnimation(
             context,
-            R.anim.whobble_animation
+            R.anim.whobble_animation_little
         )
         val randomDuration = getRandomDuration()
         loadAnimation.duration = randomDuration

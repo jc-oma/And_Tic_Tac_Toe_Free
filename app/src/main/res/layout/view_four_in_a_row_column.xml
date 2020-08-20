@@ -6,102 +6,84 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
+    <ImageButton
+        android:background="@color/fullTransparent"
+        android:id="@+id/four_in_a_row_column_image_button"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        android:scaleType="fitXY"
+        android:layout_height="80dp"
+        android:scaleType="fitStart"
         android:elevation="8dp"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_spooky_click_arrow_3d"
+        android:src="@drawable/spooky_arrow_button_styled"
         android:padding="4dp"
-        app:layout_constraintBottom_toTopOf="@id/four_in_a_row_column_first"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="@id/four_in_a_row_column_first"
         app:layout_constraintEnd_toEndOf="@id/four_in_a_row_column_first"/>
 
     <ImageView
+        android:id="@+id/four_in_a_row_column_playstone_1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toTopOf="@id/four_in_a_row_column_first"
+        android:src="@drawable/ic_spooky_kurbis_v3_3d"/>
+
+    <ImageView
         android:id="@+id/four_in_a_row_column_first"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="32dp"
         android:src="@drawable/ic_spooky_fourinarow_playgroundelement"
         app:layout_constraintBottom_toTopOf="@+id/four_in_a_row_column_second"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.06"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/four_in_a_row_start_guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/four_in_a_row_column_image_button" />
 
     <ImageView
         android:id="@+id/four_in_a_row_column_second"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_spooky_fourinarow_playgroundelement"
         app:layout_constraintBottom_toTopOf="@+id/four_in_a_row_column_third"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.06"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/four_in_a_row_column_first" />
 
     <ImageView
         android:id="@+id/four_in_a_row_column_third"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_spooky_fourinarow_playgroundelement"
         app:layout_constraintBottom_toTopOf="@+id/four_in_a_row_column_fourth"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.06"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/four_in_a_row_column_second" />
 
     <ImageView
         android:id="@+id/four_in_a_row_column_fourth"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_spooky_fourinarow_playgroundelement"
         app:layout_constraintBottom_toTopOf="@+id/four_in_a_row_column_fifth"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.06"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/four_in_a_row_column_third" />
 
     <ImageView
         android:id="@+id/four_in_a_row_column_fifth"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_spooky_fourinarow_playgroundelement"
         app:layout_constraintBottom_toTopOf="@+id/four_in_a_row_column_sixth"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.06"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/four_in_a_row_column_fourth" />
 
     <ImageView
         android:id="@+id/four_in_a_row_column_sixth"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_spooky_fourinarow_playgroundelement"
-        app:layout_constraintBottom_toBottomOf="@+id/four_in_a_row_end_guideline"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.06"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/four_in_a_row_column_fifth" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/four_in_a_row_start_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/four_in_a_row_end_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.51" />
 </androidx.constraintlayout.widget.ConstraintLayout>

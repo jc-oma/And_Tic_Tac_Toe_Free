@@ -25,16 +25,5 @@ class SimpleFourInARowBoardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        moveBoard()
-    }
-
-    private fun moveBoard() {
-        val fallDownAnimation = AnimationUtils.loadAnimation(
-            context,
-            R.anim.move_for_in_a_row_a_bit
-        )
-
-        fragment_four_in_a_row_playboard.startAnimation(fallDownAnimation)
     }
 }

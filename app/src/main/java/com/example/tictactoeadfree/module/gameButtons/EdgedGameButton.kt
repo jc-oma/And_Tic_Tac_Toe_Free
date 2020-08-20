@@ -29,7 +29,7 @@ class EdgedGameButton @JvmOverloads constructor(
             edge_button_root.startAnimation(
                 AnimationUtils.loadAnimation(
                     context,
-                    R.anim.whobble_animation
+                    R.anim.whobble_animation_little
                 )
             )
         } else {

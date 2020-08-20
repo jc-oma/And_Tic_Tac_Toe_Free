@@ -9,7 +9,6 @@
     android:focusable="true"
     tools:context=".module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardFragment">
 
-
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -25,7 +24,8 @@
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardView
         android:id="@+id/fragment_four_in_a_row_playboard"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
         android:clipChildren="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
