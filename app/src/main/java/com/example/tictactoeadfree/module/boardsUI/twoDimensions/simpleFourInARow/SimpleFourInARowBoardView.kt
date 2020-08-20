@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
+import kotlinx.android.synthetic.main.view_board_four_in_a_row_simple.view.*
 
 class SimpleFourInARowBoardView @JvmOverloads constructor(
     context: Context,
@@ -24,9 +25,16 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     private val toe: TicTacToeEngine =
         TicTacToeEngine(listener = this)
 
-    //TODO private val playGroundViewGrid: List<ImageView> by lazy { listOf() }
+    private val playGroundViewGrid: List<SimpleFourInARowPlayGroundColumnView> by lazy { listOf(
+        bord_row_1,
+        bord_row_2,
+        bord_row_3,
+        bord_row_4,
+        bord_row_5,
+        bord_row_6,
+        bord_row_7
+    ) }
 
-    //Todo make dynamic
     private val gridx = 7
     private val gridy = 6
 

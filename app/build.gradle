@@ -56,4 +56,7 @@ dependencies {
     //TODO add a library view where to show all used external libraries
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'nl.dionsegijn:konfetti:1.2.2'
+
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
 }
