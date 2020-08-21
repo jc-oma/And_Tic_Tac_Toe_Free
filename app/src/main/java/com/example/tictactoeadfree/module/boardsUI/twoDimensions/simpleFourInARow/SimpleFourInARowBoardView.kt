@@ -24,6 +24,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         View.inflate(context, R.layout.view_board_four_in_a_row_simple, this)
     }
 
+    private var isAiTurning: Boolean = false
     private val fourEngine: FourInARowEngine =
         FourInARowEngine(listener = this)
 
@@ -54,16 +55,19 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
             view.click.observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    val toRow = fourEngine.getNextFreeYPosition(index)
-                    if (toRow != null) {
-                        fourEngine.gameTurn(index)
+                    if (!isAiTurning) {
+                        val toRow = fourEngine.getNextFreeYPosition(index)
+                        if (toRow != null) {
+                            fourEngine.gameTurn(index)
+                        }
                     }
                 }
         }
     }
 
     override fun onGameEnd(wonPlayer: Int, wonPosition: MutableList<Pair<Int, Int>>?) {
-        if (wonPlayer==0) board_text_view.text = "unentschieden!!" else board_text_view.text = "Gewonnen!!"
+        if (wonPlayer == 0) board_text_view.text = "unentschieden!!" else board_text_view.text =
+            "Gewonnen!!"
     }
 
     override fun onSwitchPlayer(playerNumber: Int) {
@@ -73,6 +77,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     }
 
     override fun onAiIsTurning() {
+        isAiTurning = true
     }
 
     override fun onPlayerTurned(
@@ -80,6 +85,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         positionY: Int,
         currentPlayer: Int
     ) {
+        isAiTurning = false
         playGroundViewGrid[positionX].animatePlayStoneDrop(positionY, currentPlayer)
     }
 

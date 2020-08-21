@@ -94,7 +94,7 @@ class FourInARowEngine internal constructor(
         if (aiTurnX != null) {
             android.os.Handler().postDelayed({
                 gameListener.onPlayerTurned(aiTurnX, getNextFreeYPosition(aiTurnX)!!, currentPlayer)
-                switchPlayer()
+                gameTurn(aiTurnX)
             }, 1000)
         }
     }
