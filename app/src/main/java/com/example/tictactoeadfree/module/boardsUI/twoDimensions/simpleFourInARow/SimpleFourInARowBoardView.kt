@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.FourInARowEngine
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -55,7 +56,6 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
                 .subscribe {
                     val toRow = fourEngine.getNextFreeYPosition(index)
                     if (toRow != null) {
-                        view.animatePlayStoneDrop(toRow, fourEngine.currentPlayer)
                         fourEngine.gameTurn(index)
                     }
                 }
@@ -63,6 +63,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     }
 
     override fun onGameEnd(wonPlayer: Int, wonPosition: MutableList<Pair<Int, Int>>?) {
+        if (wonPlayer==0) board_text_view.text = "unentschieden!!" else board_text_view.text = "Gewonnen!!"
     }
 
     override fun onSwitchPlayer(playerNumber: Int) {
@@ -79,7 +80,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         positionY: Int,
         currentPlayer: Int
     ) {
-
+        playGroundViewGrid[positionX].animatePlayStoneDrop(positionY, currentPlayer)
     }
 
 }

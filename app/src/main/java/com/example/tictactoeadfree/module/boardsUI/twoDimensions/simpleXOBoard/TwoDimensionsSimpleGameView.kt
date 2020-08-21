@@ -146,8 +146,8 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
     private fun restartBoard() {
         toe.initializeBoard()
-        game_end_overlay.setOnClickListener {
-            game_end_overlay.isVisible = false
+        simple_two_dim_tic_game_end_overlay.setOnClickListener {
+            simple_two_dim_tic_game_end_overlay.isVisible = false
         }
 
         for ((index, cellView) in playGroundViewGrid.withIndex()) {
@@ -202,15 +202,15 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     private fun winOverlayPreparation(wonPlayer: Int) {
         if (wonPlayer != 0) {
             game_info.text = context.getString(R.string.player_x_won, wonPlayer.toString())
-            game_end_overlay.onGameWon(wonPlayer)
+            simple_two_dim_tic_game_end_overlay.onGameWon(wonPlayer)
         } else {
             game_info.text = context.getString(R.string.draw)
-            game_end_overlay.onGameWon(wonPlayer)
+            simple_two_dim_tic_game_end_overlay.onGameWon(wonPlayer)
         }
         for (cellView in playGroundViewGrid) {
             cellView.clearAnimation()
         }
-        game_end_overlay.isVisible = true
+        simple_two_dim_tic_game_end_overlay.isVisible = true
         restart_game.whobbleAnimation(true)
         deleteBoardListener()
     }

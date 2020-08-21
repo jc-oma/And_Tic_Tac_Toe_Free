@@ -48,7 +48,11 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         val playStone = createNewPlayStoneView(currentPlayer)
         val x = playGroundViewColumnPositionList[toRow].first
         val y = playGroundViewColumnPositionList[toRow].second
-        playStone.animate().x(x).y(y).start()
+        val animation = playStone.animate()
+        animation.duration = 1200
+        animation.rotationBy(360f)
+        animation.x(x).y(y)
+        animation.start()
     }
 
     private fun initView(context: Context) {

@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.GameEndedOverlay
-        android:id="@+id/game_end_overlay"
+        android:id="@+id/simple_two_dim_tic_game_end_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:translationZ="40dp"

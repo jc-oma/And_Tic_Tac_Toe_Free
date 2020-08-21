@@ -11,7 +11,7 @@ class FourInARowEngine internal constructor(
     listener: GameListener
 ) : KoinComponent {
 
-    var currentPlayer = 1
+    private var currentPlayer = 1
 
     private val gameStatisticsViewModel by inject<GameStatisticsViewModel>()
 
@@ -51,26 +51,26 @@ class FourInARowEngine internal constructor(
 
         gameListener.onSwitchPlayer(playerNumber = currentPlayer)
 
-        val takenYPosition = getNextFreeYPosition(positionX)
+        val positionY = getNextFreeYPosition(positionX)
 
-        if (takenYPosition != null) {
-            val gameOver = checkForWinCondition(positionX, takenYPosition)
+        if (positionY != null) {
+            playGround[positionX][positionY] = currentPlayer
 
-            gameListener.onPlayerTurned(positionX, takenYPosition, currentPlayer)
+            val gameOver = checkForWinCondition(positionX, positionY)
 
-            playGround[positionX][takenYPosition] = currentPlayer
+            gameListener.onPlayerTurned(positionX, positionY, currentPlayer)
 
             switchPlayer()
 
             if (currentPlayer == 2 && isGameAgainstAi && !gameOver) {
-                //aiTurnProcess()
+                aiTurnProcess()
             }
         }
     }
 
     fun getNextFreeYPosition(positionX: Int): Int? {
         for ((index, cell) in playGround[positionX].withIndex()) {
-            if (cell != 0 && index == 0){
+            if (cell != 0 && index == 0) {
                 return null
             }
             if (cell != 0) {
@@ -90,6 +90,12 @@ class FourInARowEngine internal constructor(
         //TODO i bit more than random turns
         while (isPositionDataNullOrOnATakenPosition(aiTurnX)) {
             aiTurnX = (Math.random() * gridX).toInt()
+        }
+        if (aiTurnX != null) {
+            android.os.Handler().postDelayed({
+                gameListener.onPlayerTurned(aiTurnX, getNextFreeYPosition(aiTurnX)!!, currentPlayer)
+                switchPlayer()
+            }, 1000)
         }
     }
 
@@ -246,10 +252,6 @@ class FourInARowEngine internal constructor(
 
         wonPositions.clear()
 
-        // XZ end
-        // TODO XZY diagonal
-        // Diagonal end
-
         for (column in playGround) {
             for (cell in column) {
                 if (cell == 0) {
@@ -259,7 +261,7 @@ class FourInARowEngine internal constructor(
         }
 
         //check for Draw
-        if (emptyCells == 0) {
+        if (emptyCells - 1 == 0) {
             currentPlayer = 0
             doOnGameEnd(wonPositions)
             return true
