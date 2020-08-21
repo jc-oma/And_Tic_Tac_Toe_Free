@@ -44,6 +44,13 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         initAnmation()
     }
 
+    fun animatePlayStoneDrop(toRow: Int, currentPlayer: Int) {
+        val playStone = createNewPlayStoneView(currentPlayer)
+        val x = playGroundViewColumnPositionList[toRow].first
+        val y = playGroundViewColumnPositionList[toRow].second
+        playStone.animate().x(x).y(y).start()
+    }
+
     private fun initView(context: Context) {
         View.inflate(context, R.layout.view_four_in_a_row_column, this)
     }
@@ -64,23 +71,24 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         four_in_a_row_column_image_button.startAnimation(whobbleAnimation)
     }
 
-    fun animatePlayStoneDrop(toRow: Int) {
-        val playStone = createNewPlayStoneView()
-        val x = playGroundViewColumnPositionList[toRow].first
-        val y = playGroundViewColumnPositionList[toRow].second
-        playStone.animate().x(x).y(y).start()
-    }
-
-    private fun createNewPlayStoneView(): ImageView {
+    private fun createNewPlayStoneView(currentPlayer: Int): ImageView {
         val widthAndHeightDP = 50f
         val marginBottomDP = 5f
 
         val imageView = ImageView(context)
         val scale =
-            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthAndHeightDP, resources.displayMetrics)
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                widthAndHeightDP,
+                resources.displayMetrics
+            )
                 .toInt()
         val marginBottom =
-            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginBottomDP, resources.displayMetrics)
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                marginBottomDP,
+                resources.displayMetrics
+            )
                 .toInt()
 
         val params = LayoutParams(
@@ -93,7 +101,7 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
 
         imageView.id = View.generateViewId()
         imageView.scaleType = ImageView.ScaleType.FIT_XY
-        imageView.setImageResource(R.drawable.ic_spooky_kurbis_v3_3d_tinted)
+        imageView.setImageResource(getCurrentPlayerStone(currentPlayer))
         four_in_a_row_column_root.addView(imageView)
 
         val set = ConstraintSet()
@@ -108,5 +116,11 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         )
         set.applyTo(four_in_a_row_column_root)
         return imageView
+    }
+
+    private fun getCurrentPlayerStone(currentPlayer: Int): Int {
+        return if (currentPlayer == 1) {
+            R.drawable.ic_spooky_kurbis_v3_3d
+        } else R.drawable.ic_spooky_kurbis_v3_3d_tinted
     }
 }

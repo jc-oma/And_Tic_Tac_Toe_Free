@@ -11,6 +11,8 @@ class FourInARowEngine internal constructor(
     listener: GameListener
 ) : KoinComponent {
 
+    var currentPlayer = 1
+
     private val gameStatisticsViewModel by inject<GameStatisticsViewModel>()
 
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
@@ -18,8 +20,6 @@ class FourInARowEngine internal constructor(
     private var gameListener: GameListener = listener
 
     private var playGround: MutableList<MutableList<Int>> = mutableList()
-
-    private var currentPlayer = 1
 
     private var turns = 0
 

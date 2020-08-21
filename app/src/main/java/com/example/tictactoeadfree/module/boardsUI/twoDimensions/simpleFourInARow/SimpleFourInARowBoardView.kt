@@ -38,9 +38,6 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         )
     }
 
-    private val gridx = 7
-    private val gridy = 6
-
     override fun onFinishInflate() {
         super.onFinishInflate()
         fourEngine.initializeBoard()
@@ -58,7 +55,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
                 .subscribe {
                     val toRow = fourEngine.getNextFreeYPosition(index)
                     if (toRow != null) {
-                        view.animatePlayStoneDrop(toRow)
+                        view.animatePlayStoneDrop(toRow, fourEngine.currentPlayer)
                         fourEngine.gameTurn(index)
                     }
                 }
