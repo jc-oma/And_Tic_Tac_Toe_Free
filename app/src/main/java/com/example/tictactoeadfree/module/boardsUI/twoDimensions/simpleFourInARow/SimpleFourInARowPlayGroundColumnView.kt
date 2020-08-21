@@ -2,22 +2,17 @@ package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInAR
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
+import android.util.TypedValue
 import android.view.View
-import android.view.ViewTreeObserver
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import com.example.tictactoeadfree.R
-import com.example.tictactoeadfree.module.logo.LogoFragment
 import com.jakewharton.rxbinding4.view.clicks
-import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 import kotlinx.android.synthetic.main.view_four_in_a_row_column.view.*
-import java.lang.reflect.Array.set
+
 
 class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
     context: Context,
@@ -70,8 +65,48 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
     }
 
     fun animatePlayStoneDrop(toRow: Int) {
+        val playStone = createNewPlayStoneView()
         val x = playGroundViewColumnPositionList[toRow].first
         val y = playGroundViewColumnPositionList[toRow].second
-        four_in_a_row_column_playstone_1.animate().x(x).y(y).start()
+        playStone.animate().x(x).y(y).start()
+    }
+
+    private fun createNewPlayStoneView(): ImageView {
+        val widthAndHeightDP = 50f
+        val marginBottomDP = 5f
+
+        val imageView = ImageView(context)
+        val scale =
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthAndHeightDP, resources.displayMetrics)
+                .toInt()
+        val marginBottom =
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginBottomDP, resources.displayMetrics)
+                .toInt()
+
+        val params = LayoutParams(
+            scale,
+            scale
+        )
+
+        params.setMargins(0, 0, 0, marginBottom)
+        imageView.layoutParams = params
+
+        imageView.id = View.generateViewId()
+        imageView.scaleType = ImageView.ScaleType.FIT_XY
+        imageView.setImageResource(R.drawable.ic_spooky_kurbis_v3_3d_tinted)
+        four_in_a_row_column_root.addView(imageView)
+
+        val set = ConstraintSet()
+        set.clone(four_in_a_row_column_root)
+
+        set.connect(imageView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+        set.connect(
+            imageView.id,
+            ConstraintSet.BOTTOM,
+            four_in_a_row_column_first.id,
+            ConstraintSet.TOP
+        )
+        set.applyTo(four_in_a_row_column_root)
+        return imageView
     }
 }
