@@ -1,6 +1,7 @@
 package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow
 
 import android.content.Context
+import android.graphics.drawable.AnimationDrawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -8,10 +9,12 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import com.example.tictactoeadfree.R
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.view_four_in_a_row_column.view.*
+import kotlinx.android.synthetic.main.view_overlay_two_dimension_simple_overlay.view.*
 
 
 class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
@@ -37,6 +40,11 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
     val click: Observable<Unit> by lazy { four_in_a_row_column_root.clicks() }
 
     private val playGroundViewColumnPositionList: MutableList<Pair<Float, Float>> = mutableListOf()
+
+    fun animateStackelement(toAnimateElementIndex: Int) {
+        val animation = playGroundViewColumnList[toAnimateElementIndex].background as AnimationDrawable
+        animation.start()
+    }
 
     override fun onFinishInflate() {
         super.onFinishInflate()

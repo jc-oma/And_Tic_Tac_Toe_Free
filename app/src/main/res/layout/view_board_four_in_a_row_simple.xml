@@ -55,16 +55,4 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/bord_row_6"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/board_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:fontFamily="@font/berk_shire"
-        tools:text="dfgdfg"
-        app:layout_constraintTop_toBottomOf="@id/bord_row_1"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,8 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@drawable/ic_anim_spooky_fourinarow_playgroundelement_1" android:duration="400" />
+    <item android:drawable="@drawable/ic_anim_spooky_fourinarow_playgroundelement_2" android:duration="200" />
+    <item android:drawable="@drawable/ic_anim_spooky_fourinarow_playgroundelement_3" android:duration="200" />
+    <item android:drawable="@drawable/ic_anim_spooky_fourinarow_playgroundelement_4" android:duration="200" />
+    <item android:drawable="@drawable/ic_anim_spooky_fourinarow_playgroundelement_5" android:duration="400" />
+</animation-list>

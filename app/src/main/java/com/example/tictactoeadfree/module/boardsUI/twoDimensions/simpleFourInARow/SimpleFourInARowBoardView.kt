@@ -4,10 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import androidx.core.view.isVisible
 import com.example.tictactoeadfree.R
 import com.example.tictactoeadfree.module.gameEngine.FourInARowEngine
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.processors.PublishProcessor
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.view_board_four_in_a_row_simple.view.*
 
@@ -19,6 +20,12 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     init {
         initView(context)
     }
+
+    //https://medium.com/@tylerwalker/event-based-systems-on-android-feat-rxjava-and-kotlin-7896279dfb07
+    data class GameEndEvent(val wonPlayer: Int)
+
+    val appEventProcessor: PublishProcessor<GameEndEvent> = PublishProcessor.create()
+    val appEventFlowable = appEventProcessor as Flowable<GameEndEvent>
 
     private fun initView(context: Context) {
         View.inflate(context, R.layout.view_board_four_in_a_row_simple, this)
@@ -66,8 +73,13 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     }
 
     override fun onGameEnd(wonPlayer: Int, wonPosition: MutableList<Pair<Int, Int>>?) {
-        if (wonPlayer == 0) board_text_view.text = "unentschieden!!" else board_text_view.text =
-            "Gewonnen!!"
+        appEventProcessor.onNext(GameEndEvent(wonPlayer))
+
+        if (wonPosition != null) {
+            for (position in wonPosition) {
+                playGroundViewGrid[position.first].animateStackelement(position.second)
+            }
+        }
     }
 
     override fun onSwitchPlayer(playerNumber: Int) {
