@@ -7,7 +7,6 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class FourInARowEngine internal constructor(
-    private val is3DBoard: Boolean = false,
     listener: GameListener
 ) : KoinComponent {
 
@@ -274,7 +273,7 @@ class FourInARowEngine internal constructor(
             GameStatistics(
                 wonPlayer = currentPlayer,
                 neededTurns = turns,
-                wasThreeDimensional = is3DBoard
+                wasThreeDimensional = false
             )
         )
         gameListener.onGameEnd(currentPlayer, wonPosition)
