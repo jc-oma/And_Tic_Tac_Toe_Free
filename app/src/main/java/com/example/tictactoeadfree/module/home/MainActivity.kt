@@ -7,6 +7,7 @@ import com.example.tictactoeadfree.module.baseClasses.BaseActivity
 import com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardFragment
 import com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.TwoDimensionsSimpleGameFragment
 import com.example.tictactoeadfree.module.data.gameSettings.GameMode
+import com.example.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.example.tictactoeadfree.module.logo.LogoFragment
 import com.example.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import org.koin.android.ext.android.inject
@@ -33,8 +34,7 @@ class MainActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     override fun onBackPressed() {
         super.onBackPressed()
 
-        //LoadingScreen + 1
-        if (manager.fragments.size > 2) {
+        if (manager.fragments.size > 1) {
             manager.beginTransaction().remove(manager.fragments.last()).commit()
         } else {
             this.finish()
@@ -46,7 +46,11 @@ class MainActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     }
 
     override fun onHomeFragmentButtonClick() {
-        val gameSettings = gameSettingsViewModel.getGameSettings().last()
+        val gameSettings = if (gameSettingsViewModel.getGameSettings().isEmpty()) {
+            GameSettings()
+        } else {
+            gameSettingsViewModel.getGameSettings().last()
+        }
         val gameMode = GameMode.valueOf(gameSettings.gameMode)
         if (gameMode == GameMode.TIC_TAC_TOE) {
             openTwoDimensionalFragment()
@@ -69,7 +73,7 @@ class MainActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
 
     private fun openHomeFragment() {
         val transaction: FragmentTransaction = manager.beginTransaction()
-        transaction.add(R.id.main_activity_root, HomeFragment.newInstance())
+        transaction.replace(R.id.main_activity_root, HomeFragment.newInstance())
         transaction.commit()
     }
 }

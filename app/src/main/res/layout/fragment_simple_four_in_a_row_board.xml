@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:clickable="true"
-    android:focusable="true"
     tools:context=".module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardFragment">
 
     <ImageView
@@ -26,15 +24,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:clipChildren="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/spooky_blender_button"
+        app:layout_constraintEnd_toEndOf="@id/four_in_a_row_button_text"
+        app:layout_constraintStart_toStartOf="@id/four_in_a_row_button_text"
+        app:layout_constraintTop_toTopOf="@+id/four_in_a_row_button_text"
+        app:layout_constraintBottom_toBottomOf="@id/four_in_a_row_button_text"/>
+
+    <TextView
+        android:id="@+id/four_in_a_row_button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/berk_shire"
+        android:text="@string/restart_game"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="40dp"
+        android:textSize="22sp"
+        android:paddingTop="40dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_four_in_a_row_playboard" />
+
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.GameEndedOverlay
         android:id="@+id/four_in_a_row_game_end_overlay"
-        android:visibility="invisible"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

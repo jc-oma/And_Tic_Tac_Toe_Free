@@ -7,6 +7,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.BounceInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.example.tictactoeadfree.R
 import kotlinx.android.synthetic.main.view_button_edged.view.*
 
@@ -25,7 +26,7 @@ class EdgedGameButton @JvmOverloads constructor(
     }
 
     fun whobbleAnimation(isWhobble: Boolean) {
-        if(isWhobble) {
+        if (isWhobble) {
             edge_button_root.startAnimation(
                 AnimationUtils.loadAnimation(
                     context,
@@ -44,7 +45,12 @@ class EdgedGameButton @JvmOverloads constructor(
         val scaleFrom = 1f
 
         if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-            edged_button_image.setImageDrawable(context.getDrawable(R.drawable.blender_buttonedge2_touched))
+            edged_button_image.setImageDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.blender_buttonedge2_touched
+                )
+            )
             edge_button_root.animate().scaleX(scaleTo).setInterpolator(BounceInterpolator())
                 .setDuration(
                     clickInDuration
@@ -54,7 +60,12 @@ class EdgedGameButton @JvmOverloads constructor(
                     clickInDuration
                 ).start()
         } else if (motionEvent.action == MotionEvent.ACTION_UP) {
-            edged_button_image.setImageDrawable(context.getDrawable(R.drawable.blender_buttonedge2))
+            edged_button_image.setImageDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.blender_buttonedge2
+                )
+            )
             edge_button_root.animate().scaleX(scaleFrom).setInterpolator(BounceInterpolator())
                 .setDuration(
                     clickOutDuration

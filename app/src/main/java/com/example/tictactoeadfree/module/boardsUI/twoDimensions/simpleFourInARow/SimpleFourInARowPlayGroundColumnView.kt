@@ -6,15 +6,16 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.view.animation.BounceInterpolator
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
 import com.example.tictactoeadfree.R
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.view_four_in_a_row_column.view.*
-import kotlinx.android.synthetic.main.view_overlay_two_dimension_simple_overlay.view.*
+import kotlin.math.sqrt
+import kotlin.random.Random.Default.nextBoolean
 
 
 class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
@@ -57,8 +58,11 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         val x = playGroundViewColumnPositionList[toRow].first
         val y = playGroundViewColumnPositionList[toRow].second
         val animation = playStone.animate()
-        animation.duration = 1200
-        animation.rotationBy(360f)
+        val randomRotationDegree = Math.random() * 360f
+        val randomRotationdirection = if (nextBoolean()) 1 else -1
+        animation.duration = 400L * (sqrt(toRow.toDouble()).toLong() + 1)
+        animation.interpolator = BounceInterpolator()
+        animation.rotationBy((randomRotationDegree * randomRotationdirection).toFloat())
         animation.x(x).y(y)
         animation.start()
     }
