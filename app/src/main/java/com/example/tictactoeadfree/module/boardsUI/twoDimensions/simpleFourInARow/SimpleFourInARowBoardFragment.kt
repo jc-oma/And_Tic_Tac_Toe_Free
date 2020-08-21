@@ -43,5 +43,9 @@ class SimpleFourInARowBoardFragment : Fragment() {
         four_in_a_row_game_end_overlay.setOnClickListener {
             four_in_a_row_game_end_overlay.isVisible = false
         }
+
+        four_in_a_row_button_text.setOnClickListener {
+            fragment_four_in_a_row_playboard.restartBoard()
+        }
     }
 }

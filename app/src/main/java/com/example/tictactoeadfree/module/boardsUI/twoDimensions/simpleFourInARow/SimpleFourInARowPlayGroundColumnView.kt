@@ -5,7 +5,9 @@ import android.graphics.drawable.AnimationDrawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewManager
 import android.view.animation.AnimationUtils
+import android.view.animation.AnticipateInterpolator
 import android.view.animation.BounceInterpolator
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -38,13 +40,32 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         )
     }
 
+    private val createdPlaystones: MutableList<View> = mutableListOf()
+
     val click: Observable<Unit> by lazy { four_in_a_row_column_root.clicks() }
 
     private val playGroundViewColumnPositionList: MutableList<Pair<Float, Float>> = mutableListOf()
 
     fun animateStackelement(toAnimateElementIndex: Int) {
-        val animation = playGroundViewColumnList[toAnimateElementIndex].background as AnimationDrawable
+        val animation =
+            playGroundViewColumnList[toAnimateElementIndex].background as AnimationDrawable
         animation.start()
+    }
+
+    fun restartBoard() {
+        var offset = 200L
+        for (stone in createdPlaystones) {
+            val animation = stone.animate()
+            animation.y(0f)
+            animation.alpha(0.5f)
+            animation.duration = 200
+            animation.interpolator = AnticipateInterpolator()
+            if (offset < 2000L) {
+                offset += (offset * Math.random()).toLong()
+            }
+            animation.setStartDelay(offset)
+            animation.withEndAction { (stone.parent as ViewManager).removeView(stone) }
+        }
     }
 
     override fun onFinishInflate() {
@@ -54,10 +75,10 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
     }
 
     fun animatePlayStoneDrop(toRow: Int, currentPlayer: Int) {
-        val playStone = createNewPlayStoneView(currentPlayer)
+        createdPlaystones.add(createNewPlayStoneView(currentPlayer))
         val x = playGroundViewColumnPositionList[toRow].first
         val y = playGroundViewColumnPositionList[toRow].second
-        val animation = playStone.animate()
+        val animation = createdPlaystones.last().animate()
         val randomRotationDegree = Math.random() * 360f
         val randomRotationdirection = if (nextBoolean()) 1 else -1
         animation.duration = 400L * (sqrt(toRow.toDouble()).toLong() + 1)

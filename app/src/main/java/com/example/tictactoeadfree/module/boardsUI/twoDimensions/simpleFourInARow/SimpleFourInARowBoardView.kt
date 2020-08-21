@@ -53,6 +53,14 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         initListener()
     }
 
+    fun restartBoard() {
+        for (column in playGroundViewGrid) {
+            column.restartBoard()
+        }
+
+        fourEngine.initializeBoard()
+    }
+
     private fun initListener() {
         initRowClickListener()
     }
