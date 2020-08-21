@@ -15,7 +15,9 @@ import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.example.tictactoeadfree.R
+import com.example.tictactoeadfree.module.data.gameSettings.GameMode
 import com.example.tictactoeadfree.module.gameEngine.TicTacToeEngine
+import com.example.tictactoeadfree.module.statistics.StatisticsUtils
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 
 class TwoDimensionsSimpleGameView @JvmOverloads constructor(
@@ -200,12 +202,13 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     private fun getRandomDuration() = ((Math.random() + 2) * 100).toLong()
 
     private fun winOverlayPreparation(wonPlayer: Int) {
+        val drawablePair = StatisticsUtils(context).getDrawablesPair(GameMode.TIC_TAC_TOE)
         if (wonPlayer != 0) {
             game_info.text = context.getString(R.string.player_x_won, wonPlayer.toString())
-            simple_two_dim_tic_game_end_overlay.onGameWon(wonPlayer)
+            simple_two_dim_tic_game_end_overlay.onGameWon(wonPlayer, drawablePair)
         } else {
             game_info.text = context.getString(R.string.draw)
-            simple_two_dim_tic_game_end_overlay.onGameWon(wonPlayer)
+            simple_two_dim_tic_game_end_overlay.onGameWon(wonPlayer, drawablePair)
         }
         for (cellView in playGroundViewGrid) {
             cellView.clearAnimation()

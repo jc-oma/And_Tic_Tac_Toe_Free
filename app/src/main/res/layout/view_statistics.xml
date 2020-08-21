@@ -16,14 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <ImageView
         android:id="@+id/statistics_view_headline"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/berkshire_swash_regular"
-        android:text="@string/statistics_view_x"
-        android:textSize="40sp"
+        android:layout_height="48dp"
+        android:layout_marginTop="18dp"
+        android:elevation="8dp"
+        tools:src ="@drawable/ic_spooky_kurbis_v3_3d_tinted"
         app:layout_constraintEnd_toEndOf="@id/statistics_play1_image"
         app:layout_constraintStart_toStartOf="@id/statistics_play1_image"
         app:layout_constraintTop_toTopOf="@id/statistics_play1_image" />

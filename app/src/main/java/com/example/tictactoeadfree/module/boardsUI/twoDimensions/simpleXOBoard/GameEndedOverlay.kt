@@ -3,6 +3,7 @@ package com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -26,9 +27,9 @@ class GameEndedOverlay @JvmOverloads constructor(
         View.inflate(context, R.layout.view_overlay_two_dimension_simple_overlay, this)
     }
 
-    fun onGameWon(wonPlayer: Int) {
+    fun onGameWon(wonPlayer: Int, drawablePair: Pair<Drawable?, Drawable?>?) {
         setupAnimations()
-        getStatisticsForStatisticViews()
+        getStatisticsForStatisticViews(drawablePair)
         if (wonPlayer == 0) {
             ended_game_headline.text = context.getString(R.string.draw)
         } else {
@@ -37,9 +38,9 @@ class GameEndedOverlay @JvmOverloads constructor(
         }
     }
 
-    private fun getStatisticsForStatisticViews() {
-        game_end_overlay_statistics_1.getWonGamesForPlayer(1)
-        game_end_overlay_statistics_2.getWonGamesForPlayer(2)
+    private fun getStatisticsForStatisticViews(drawablePair: Pair<Drawable?, Drawable?>?) {
+        game_end_overlay_statistics_1.getWonGamesForPlayer(1, drawablePair?.first)
+        game_end_overlay_statistics_2.getWonGamesForPlayer(2, drawablePair?.second)
     }
 
     private fun setupAnimations() {

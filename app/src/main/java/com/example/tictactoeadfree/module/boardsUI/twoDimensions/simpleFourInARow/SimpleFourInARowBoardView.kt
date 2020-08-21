@@ -30,7 +30,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     private fun initView(context: Context) {
         View.inflate(context, R.layout.view_board_four_in_a_row_simple, this)
     }
-
+    private var gameOver: Boolean = false
     private var isAiTurning: Boolean = false
     private val fourEngine: FourInARowEngine =
         FourInARowEngine(listener = this)
@@ -57,6 +57,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         for (column in playGroundViewGrid) {
             column.restartBoard()
         }
+        gameOver = false
 
         fourEngine.initializeBoard()
     }
@@ -70,7 +71,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
             view.click.observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    if (!isAiTurning) {
+                    if (!isAiTurning && !gameOver) {
                         val toRow = fourEngine.getNextFreeYPosition(index)
                         if (toRow != null) {
                             fourEngine.gameTurn(index)
@@ -83,9 +84,11 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     override fun onGameEnd(wonPlayer: Int, wonPosition: MutableList<Pair<Int, Int>>?) {
         appEventProcessor.onNext(GameEndEvent(wonPlayer))
 
+        gameOver = true
+
         if (wonPosition != null) {
             for (position in wonPosition) {
-                playGroundViewGrid[position.first].animateStackelement(position.second)
+                playGroundViewGrid[position.first].animateStackElement(position.second)
             }
         }
     }

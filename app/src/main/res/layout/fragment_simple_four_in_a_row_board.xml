@@ -29,6 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
+        android:id="@+id/four_in_a_row_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/spooky_blender_button"

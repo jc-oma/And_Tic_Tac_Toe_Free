@@ -1,6 +1,7 @@
 package com.example.tictactoeadfree.module.statistics
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -26,12 +27,8 @@ class StatisticsView @JvmOverloads constructor(
 
     private val viewModel: GameStatisticsViewModel by inject()
 
-    fun getWonGamesForPlayer(wonPlayer: Int) {
-        statistics_view_headline.text = if (wonPlayer == 1) {
-            context.getString(R.string.statistics_view_x)
-        } else {
-            context.getString(R.string.statistics_view_o)
-        }
+    fun getWonGamesForPlayer(wonPlayer: Int, drawableAsHeadline: Drawable?) {
+        statistics_view_headline.setImageDrawable(drawableAsHeadline)
 
         val gameStatistics: List<GameStatistics> = viewModel.getGameStatisticsList()
         val filteredGameStatisticForPlayer =

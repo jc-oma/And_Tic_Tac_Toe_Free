@@ -46,7 +46,7 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
 
     private val playGroundViewColumnPositionList: MutableList<Pair<Float, Float>> = mutableListOf()
 
-    fun animateStackelement(toAnimateElementIndex: Int) {
+    fun animateStackElement(toAnimateElementIndex: Int) {
         val animation =
             playGroundViewColumnList[toAnimateElementIndex].background as AnimationDrawable
         animation.start()
@@ -65,6 +65,12 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
             }
             animation.setStartDelay(offset)
             animation.withEndAction { (stone.parent as ViewManager).removeView(stone) }
+        }
+
+        for (stackElement in playGroundViewColumnList) {
+            val stackAnimation = stackElement.background as AnimationDrawable
+            stackAnimation.stop()
+            stackAnimation.selectDrawable(0)
         }
     }
 
