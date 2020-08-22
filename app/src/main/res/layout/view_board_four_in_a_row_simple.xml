@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="5dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_spooky_fourinarow_playgroundelement_socket_sides"
+        app:layout_constraintBottom_toBottomOf="@id/bord_row_7"
+        app:layout_constraintStart_toEndOf="@id/bord_row_7"
+        app:layout_constraintTop_toTopOf="@id/bord_row_7" />
+
+    <ImageView
+        android:id="@+id/bord_row_socket_side_left"
+        android:layout_width="5dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_spooky_fourinarow_playgroundelement_socket_sides"
+        app:layout_constraintBottom_toBottomOf="@id/bord_row_7"
+        app:layout_constraintEnd_toStartOf="@id/bord_row_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bord_row_7" />
 
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
         android:id="@+id/bord_row_1"
         android:layout_width="wrap_content"
-        android:background="@color/spooky_green"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/spooky_green"
+        app:layout_constraintStart_toEndOf="@+id/bord_row_socket_side_left"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
@@ -49,8 +67,8 @@
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
         android:id="@+id/bord_row_6"
         android:layout_width="wrap_content"
-        android:background="@color/spooky_green"
         android:layout_height="wrap_content"
+        android:background="@color/spooky_green"
         app:layout_constraintStart_toEndOf="@+id/bord_row_5"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,21 +79,32 @@
         android:background="@color/spooky_green"
         app:layout_constraintStart_toEndOf="@+id/bord_row_6"
         app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:layout_width="0dp"
         android:layout_height="5dp"
-        android:background="@drawable/shape_spooky_socket_gradient"
-        app:layout_constraintStart_toStartOf="@id/bord_row_1"
+        android:background="@drawable/shape_spooky_socket_gradient_90"
+        app:layout_constraintBottom_toTopOf="@id/four_in_a_row_socket"
         app:layout_constraintEnd_toEndOf="@id/bord_row_7"
-        app:layout_constraintBottom_toTopOf="@id/four_in_a_row_socket"/>
+        app:layout_constraintStart_toStartOf="@id/bord_row_1" />
+
     <ImageView
         android:id="@+id/four_in_a_row_socket"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_spooky_fourinarow_playgroundelement_socket"
-        app:layout_constraintStart_toStartOf="@id/bord_row_1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/bord_row_7"
-        app:layout_constraintTop_toBottomOf="@id/bord_row_1"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="@id/bord_row_1"
+        app:layout_constraintTop_toBottomOf="@id/bord_row_1" />
+
+    <ImageView
+        android:id="@+id/bord_row_socket_side_left_gradient"
+        android:layout_width="5dp"
+        android:layout_height="0dp"
+        android:src="@drawable/shape_spooky_socket_gradient_0"
+        app:layout_constraintBottom_toBottomOf="@id/bord_row_7"
+        app:layout_constraintStart_toStartOf="@id/bord_row_1"
+        app:layout_constraintTop_toTopOf="@id/bord_row_7" />
 </androidx.constraintlayout.widget.ConstraintLayout>
