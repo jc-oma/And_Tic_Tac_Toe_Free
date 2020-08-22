@@ -101,7 +101,7 @@
 
     <ImageView
         android:id="@+id/bord_row_socket_side_left_gradient"
-        android:layout_width="5dp"
+        android:layout_width="15dp"
         android:layout_height="0dp"
         android:src="@drawable/shape_spooky_socket_gradient_0"
         app:layout_constraintBottom_toBottomOf="@id/bord_row_7"
