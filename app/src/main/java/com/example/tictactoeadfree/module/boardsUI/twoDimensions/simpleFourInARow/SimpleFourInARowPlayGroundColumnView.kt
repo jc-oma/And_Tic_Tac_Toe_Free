@@ -53,14 +53,14 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
     }
 
     fun restartBoard() {
-        var offset = 200L
+        var offset = 100L
         for (stone in createdPlaystones) {
             val animation = stone.animate()
             animation.y(0f)
             animation.alpha(0.5f)
             animation.duration = 200
             animation.interpolator = AnticipateInterpolator()
-            if (offset < 2000L) {
+            if (offset < 1000L) {
                 offset += (offset * Math.random()).toLong()
             }
             animation.setStartDelay(offset)
