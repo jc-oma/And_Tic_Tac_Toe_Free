@@ -1,6 +1,7 @@
 package com.example.tictactoeadfree.module.gameEngine
 
 import android.os.Handler
+import com.example.tictactoeadfree.module.data.gameSettings.GameMode
 import com.example.tictactoeadfree.module.data.gameStatistics.GameStatistics
 import com.example.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
@@ -364,7 +365,8 @@ class TicTacToeEngine internal constructor(
             GameStatistics(
                 wonPlayer = currentPlayer,
                 neededTurns = turns,
-                wasThreeDimensional = is3DBoard
+                wasThreeDimensional = is3DBoard,
+                gameMode = GameMode.TIC_TAC_TOE.toString()
             )
         )
         gameListener.onGameEnd(currentPlayer, wonPosition)

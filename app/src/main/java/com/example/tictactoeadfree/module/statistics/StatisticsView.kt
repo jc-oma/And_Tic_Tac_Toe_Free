@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tictactoeadfree.R
+import com.example.tictactoeadfree.module.data.gameSettings.GameMode
 import com.example.tictactoeadfree.module.data.gameStatistics.GameStatistics
 import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
 import kotlinx.android.synthetic.main.view_statistics.view.*
@@ -27,18 +28,22 @@ class StatisticsView @JvmOverloads constructor(
 
     private val viewModel: GameStatisticsViewModel by inject()
 
-    fun getWonGamesForPlayer(wonPlayer: Int, drawableAsHeadline: Drawable?) {
+    fun getWonGamesForPlayer(
+        wonPlayer: Int,
+        drawableAsHeadline: Drawable?,
+        gameMode: GameMode
+    ) {
         statistics_view_headline.setImageDrawable(drawableAsHeadline)
 
         val gameStatistics: List<GameStatistics> = viewModel.getGameStatisticsList()
         val filteredGameStatisticForPlayer =
-            gameStatistics.filter { it -> it.wonPlayer == wonPlayer }
+            gameStatistics.filter { it -> it.wonPlayer == wonPlayer && it.gameMode == gameMode.toString() }
         val wonGames = filteredGameStatisticForPlayer.count()
         statistics_won_games.text = wonGames.toString()
 
         var averageTurns = 0
         filteredGameStatisticForPlayer
-            .filter { it -> it.neededTurns != null }
+            .filter { it -> it.neededTurns != null && it.gameMode == gameMode.toString()}
             .forEach {
                 averageTurns += it.neededTurns ?: 0
             }
@@ -49,6 +54,7 @@ class StatisticsView @JvmOverloads constructor(
 
 
         var averageTimeTaken: Long = 0
+
         filteredGameStatisticForPlayer
             .filter { it -> it.timeTakenToWin != null }
             .forEach {

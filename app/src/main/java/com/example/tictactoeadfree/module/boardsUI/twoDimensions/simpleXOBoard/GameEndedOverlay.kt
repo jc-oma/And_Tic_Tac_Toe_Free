@@ -9,6 +9,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tictactoeadfree.R
+import com.example.tictactoeadfree.module.data.gameSettings.GameMode
 import kotlinx.android.synthetic.main.view_overlay_two_dimension_simple_overlay.view.*
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
@@ -27,9 +28,13 @@ class GameEndedOverlay @JvmOverloads constructor(
         View.inflate(context, R.layout.view_overlay_two_dimension_simple_overlay, this)
     }
 
-    fun onGameWon(wonPlayer: Int, drawablePair: Pair<Drawable?, Drawable?>?) {
+    fun onGameWon(
+        wonPlayer: Int,
+        drawablePair: Pair<Drawable?, Drawable?>?,
+        gameMode: GameMode
+    ) {
         setupAnimations()
-        getStatisticsForStatisticViews(drawablePair)
+        getStatisticsForStatisticViews(drawablePair, gameMode)
         if (wonPlayer == 0) {
             ended_game_headline.text = context.getString(R.string.draw)
         } else {
@@ -38,9 +43,12 @@ class GameEndedOverlay @JvmOverloads constructor(
         }
     }
 
-    private fun getStatisticsForStatisticViews(drawablePair: Pair<Drawable?, Drawable?>?) {
-        game_end_overlay_statistics_1.getWonGamesForPlayer(1, drawablePair?.first)
-        game_end_overlay_statistics_2.getWonGamesForPlayer(2, drawablePair?.second)
+    private fun getStatisticsForStatisticViews(
+        drawablePair: Pair<Drawable?, Drawable?>?,
+        gameMode: GameMode
+    ) {
+        game_end_overlay_statistics_1.getWonGamesForPlayer(1, drawablePair?.first, gameMode)
+        game_end_overlay_statistics_2.getWonGamesForPlayer(2, drawablePair?.second, gameMode)
     }
 
     private fun setupAnimations() {

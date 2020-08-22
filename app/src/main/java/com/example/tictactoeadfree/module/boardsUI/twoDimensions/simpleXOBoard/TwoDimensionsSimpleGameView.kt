@@ -205,10 +205,18 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         val drawablePair = StatisticsUtils(context).getDrawablesPair(GameMode.TIC_TAC_TOE)
         if (wonPlayer != 0) {
             game_info.text = context.getString(R.string.player_x_won, wonPlayer.toString())
-            simple_two_dim_tic_game_end_overlay.onGameWon(wonPlayer, drawablePair)
+            simple_two_dim_tic_game_end_overlay.onGameWon(
+                wonPlayer,
+                drawablePair,
+                GameMode.TIC_TAC_TOE
+            )
         } else {
             game_info.text = context.getString(R.string.draw)
-            simple_two_dim_tic_game_end_overlay.onGameWon(wonPlayer, drawablePair)
+            simple_two_dim_tic_game_end_overlay.onGameWon(
+                wonPlayer,
+                drawablePair,
+                GameMode.TIC_TAC_TOE
+            )
         }
         for (cellView in playGroundViewGrid) {
             cellView.clearAnimation()

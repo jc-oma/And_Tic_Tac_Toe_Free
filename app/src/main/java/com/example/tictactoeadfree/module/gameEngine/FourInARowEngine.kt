@@ -1,5 +1,6 @@
 package com.example.tictactoeadfree.module.gameEngine
 
+import com.example.tictactoeadfree.module.data.gameSettings.GameMode
 import com.example.tictactoeadfree.module.data.gameStatistics.GameStatistics
 import com.example.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.example.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
@@ -273,7 +274,8 @@ class FourInARowEngine internal constructor(
             GameStatistics(
                 wonPlayer = currentPlayer,
                 neededTurns = turns,
-                wasThreeDimensional = false
+                wasThreeDimensional = false,
+                gameMode = GameMode.FOUR_IN_A_ROW.toString()
             )
         )
         gameListener.onGameEnd(currentPlayer, wonPosition)
