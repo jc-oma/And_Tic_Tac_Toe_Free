@@ -46,9 +46,15 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initToolbar()
+
         initiateClickListener()
 
         startIntroAnimation()
+    }
+
+    private fun initToolbar() {
+        home_toolbar.inflateMenu(R.menu.menu_fragment_home)
     }
 
     private fun startIntroAnimation() {
