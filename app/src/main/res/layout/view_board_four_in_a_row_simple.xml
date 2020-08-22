@@ -4,12 +4,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/spooky_green"
     android:orientation="horizontal">
 
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
         android:id="@+id/bord_row_1"
         android:layout_width="wrap_content"
+        android:background="@color/spooky_green"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,6 +18,7 @@
         android:id="@+id/bord_row_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/spooky_green"
         app:layout_constraintStart_toEndOf="@+id/bord_row_1"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,6 +26,7 @@
         android:id="@+id/bord_row_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/spooky_green"
         app:layout_constraintStart_toEndOf="@+id/bord_row_2"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,6 +34,7 @@
         android:id="@+id/bord_row_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/spooky_green"
         app:layout_constraintStart_toEndOf="@+id/bord_row_3"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,12 +42,14 @@
         android:id="@+id/bord_row_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/spooky_green"
         app:layout_constraintStart_toEndOf="@+id/bord_row_4"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
         android:id="@+id/bord_row_6"
         android:layout_width="wrap_content"
+        android:background="@color/spooky_green"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/bord_row_5"
         app:layout_constraintTop_toTopOf="parent" />
@@ -53,6 +58,16 @@
         android:id="@+id/bord_row_7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/spooky_green"
         app:layout_constraintStart_toEndOf="@+id/bord_row_6"
         app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_spooky_fourinarow_playgroundelement_socket"
+        app:layout_constraintStart_toStartOf="@id/bord_row_1"
+        app:layout_constraintEnd_toEndOf="@id/bord_row_7"
+        app:layout_constraintTop_toBottomOf="@id/bord_row_1"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
