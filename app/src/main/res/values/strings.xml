@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">TicTacToeAdFree</string>
 
+
+    <string name="tic_tac_toe">Tic Tac Toe</string>
+    <string name="four_in_a_row">Four In A Row</string>
+
     <string name="won">Sieg!</string>
     <string name="draw">Unentschieden!</string>
     <string name="restart_game">Spiel neu Starten</string>
@@ -8,15 +12,15 @@
     <string name="game_has_ended_hint">Das spiel wurde beendet. Bitte Spiel neu starten!</string>
     <string name="player_x_won">Spieler %s hat das Spiel gewonnen</string>
     <string name="player_x_won_headline">Spieler %s\ngewinnt!</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="average_needed_time">ø Zeit:</string>
+    <string name="home_one_play_button">ein Spieler</string>
+    <string name="home_two_player_button">zwei Spieler</string>
 
     <!-- statistics view -->
     <string name="statistics_view_x">X</string>
     <string name="statistics_view_o">O</string>
     <string name="statistics_view_won_games">Siege:</string>
     <string name="statistics_average_needed_turns">ø Züge:</string>
-    <string name="average_needed_time">ø Zeit:</string>
-    <string name="home_one_play_button">ein Spieler</string>
-    <string name="home_two_player_button">zwei Spieler</string>
 </resources>
