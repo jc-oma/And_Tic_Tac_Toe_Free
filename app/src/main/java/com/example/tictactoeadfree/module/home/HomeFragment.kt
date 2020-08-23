@@ -74,23 +74,21 @@ class HomeFragment : BaseFragment() {
 
             override fun onAnimationEnd(animation: Animation?) {
                 val alphaOffsetAppearance = 400L
-                home_headline.animate().alpha(1f).setDuration(alphaOffsetAppearance).withEndAction {
-                    home_spooky_witch_imageview.animate().alpha(1f)
-                        .setDuration(alphaOffsetAppearance).start()
-                    home_one_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance)
-                        .withEndAction {
-                            home_spooky_ghost_imageview.animate().alpha(1f)
-                                .setDuration(alphaOffsetAppearance).start()
-                            home_spooky_ghost_imageview_2.animate().alpha(1f)
-                                .setDuration(alphaOffsetAppearance).start()
-                            home_two_player_button.animate().alpha(1f)
-                                .setDuration(alphaOffsetAppearance).withEndAction {
-                                    home_game_choser.animate().alpha(1f)
-                                        .setDuration(alphaOffsetAppearance).start()
-                                }
-                                .start()
-                        }.start()
-                }
+                home_spooky_witch_imageview.animate().alpha(1f)
+                    .setDuration(alphaOffsetAppearance).start()
+                home_one_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance)
+                    .withEndAction {
+                        home_spooky_ghost_imageview.animate().alpha(1f)
+                            .setDuration(alphaOffsetAppearance).start()
+                        home_spooky_ghost_imageview_2.animate().alpha(1f)
+                            .setDuration(alphaOffsetAppearance).start()
+                        home_two_player_button.animate().alpha(1f)
+                            .setDuration(alphaOffsetAppearance).withEndAction {
+                                home_game_choser.animate().alpha(1f)
+                                    .setDuration(alphaOffsetAppearance).start()
+                            }
+                            .start()
+                    }.start()
             }
 
             override fun onAnimationStart(animation: Animation?) {

@@ -19,21 +19,6 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView
-        android:id="@+id/home_headline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:alpha="0"
-        android:elevation="4dp"
-        android:fontFamily="@font/berkshire_swash_regular"
-        android:text="@string/app_name"
-        android:textSize="38sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_toolbar"
-        tools:alpha="1" />
-
     <Button
         android:id="@+id/home_one_player_button"
         android:layout_width="wrap_content"
@@ -45,7 +30,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_headline"
+        app:layout_constraintTop_toBottomOf="@+id/home_toolbar"
         tools:alpha="1" />
 
     <ImageView
