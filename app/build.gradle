@@ -6,6 +6,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
+        //TODO Rename here and in Firebase
         applicationId "com.example.tictactoeadfree"
         minSdkVersion 21
         targetSdkVersion 29
@@ -33,10 +34,20 @@ android {
 }
 
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
+
+
 
 dependencies {
     //adMob
     implementation 'com.google.android.gms:play-services-ads:19.3.0'
+    implementation 'com.google.firebase:firebase-appindexing:19.1.0'
+    implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.1'
+    implementation 'com.google.firebase:firebase-perf:19.0.8'
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
