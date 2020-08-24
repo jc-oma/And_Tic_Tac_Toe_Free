@@ -12,6 +12,7 @@ import com.example.tictactoeadfree.module.baseClasses.BaseFragment
 import com.example.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.example.tictactoeadfree.module.data.gameSettings.gameSettingsModule
 import com.example.tictactoeadfree.module.viewmodels.GameSettingsViewModel
+import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
 
@@ -46,11 +47,18 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initAds()
+
         initToolbar()
 
         initiateClickListener()
 
         startIntroAnimation()
+    }
+
+    private fun initAds() {
+        val adRequest = AdRequest.Builder().build()
+        home_fragment_ad_view.loadAd(adRequest)
     }
 
     private fun initToolbar() {

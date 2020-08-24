@@ -10,9 +10,10 @@ import com.example.tictactoeadfree.module.data.gameSettings.GameMode
 import com.example.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.example.tictactoeadfree.module.logo.LogoFragment
 import com.example.tictactoeadfree.module.viewmodels.GameSettingsViewModel
+import com.google.android.gms.ads.MobileAds
 import org.koin.android.ext.android.inject
 
-class MainActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listener {
+class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listener {
     private val activity = this
     private val manager = activity.supportFragmentManager
 
@@ -23,6 +24,8 @@ class MainActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         setContentView(R.layout.activity_main)
 
         openLogoFragment()
+
+        MobileAds.initialize(this) {}
     }
 
     private fun openLogoFragment() {
