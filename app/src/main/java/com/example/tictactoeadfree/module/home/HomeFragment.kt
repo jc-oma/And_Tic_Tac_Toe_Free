@@ -117,7 +117,8 @@ class HomeFragment : BaseFragment() {
         }
 
         home_two_player_button.setOnClickListener {
-            val lastGameSettings = settingViewModel.getGameSettings().last()
+            val gameSettings = settingViewModel.getGameSettings()
+            val lastGameSettings = if (gameSettings.isNotEmpty()) gameSettings.last() else GameSettings()
             listener?.onHomeFragmentButtonClick()
             settingViewModel.createGameSettings(GameSettings(false, lastGameSettings.gameMode))
         }
