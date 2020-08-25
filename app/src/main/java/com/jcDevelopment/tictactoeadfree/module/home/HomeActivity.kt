@@ -1,5 +1,6 @@
 package com.jcDevelopment.tictactoeadfree.module.home
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.fragment.app.FragmentTransaction
 import com.jcDevelopment.tictactoeadfree.R
@@ -26,6 +27,8 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         openLogoFragment()
 
         MobileAds.initialize(this) {}
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_NOSENSOR
     }
 
     private fun openLogoFragment() {
