@@ -10,6 +10,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/home_toolbar"
+        android:alpha="0"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:titleTextAppearance="@font/berkshire_swash_regular"
@@ -102,7 +103,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:alpha="0" />
 
-    <com.example.tictactoeadfree.module.gameChoser.GameChoserView
+    <com.jcDevelopment.tictactoeadfree.module.gameChoser.GameChoserView
         android:id="@+id/home_game_choser"
         android:layout_width="0dp"
         android:alpha="0"
@@ -123,6 +124,7 @@
         android:background="@drawable/spooky_button_purpel_set"
         android:fontFamily="@font/berk_shire"
         android:text="Spiel Starten"
+        android:alpha="0"
         android:scaleType="fitXY"
         app:layout_constraintTop_toBottomOf="@+id/home_game_choser"
         app:layout_constraintStart_toStartOf="parent"

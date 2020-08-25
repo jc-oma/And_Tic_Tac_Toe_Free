@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.GameEndedOverlay
+    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.GameEndedOverlay
         android:id="@+id/simple_two_dim_tic_game_end_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -175,7 +175,7 @@
         app:layout_constraintTop_toBottomOf="@+id/three_three"
         tools:text="Spieler 1" />
 
-    <com.example.tictactoeadfree.module.gameButtons.EdgedGameButton
+    <com.jcDevelopment.tictactoeadfree.module.gameButtons.EdgedGameButton
         android:id="@+id/restart_game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

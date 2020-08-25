@@ -34,6 +34,43 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789838201606:android:3ba6abeb602ac99ef41487",
+        "android_client_info": {
+          "package_name": "com.jcDevelopment.tictactoeadfree"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789838201606-vr06hro01rgsctf0cjf41li9nie6ki0m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jcDevelopment.tictactoeadfree",
+            "certificate_hash": "5c4ce1899d0e921c26d746e64d732c1569d29df0"
+          }
+        },
+        {
+          "client_id": "789838201606-s4quntu074rfnus048lucavlfr50trfu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxrfCFKrx1gmTU32WisszpcpiSHfqgPgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "789838201606-s4quntu074rfnus048lucavlfr50trfu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

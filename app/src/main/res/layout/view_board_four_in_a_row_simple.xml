@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/bord_row_7" />
 
-    <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
+    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
         android:id="@+id/bord_row_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         app:layout_constraintStart_toEndOf="@+id/bord_row_socket_side_left"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
+    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
         android:id="@+id/bord_row_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         app:layout_constraintStart_toEndOf="@+id/bord_row_1"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
+    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
         android:id="@+id/bord_row_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
         app:layout_constraintStart_toEndOf="@+id/bord_row_2"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
+    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
         android:id="@+id/bord_row_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
         app:layout_constraintStart_toEndOf="@+id/bord_row_3"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
+    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
         android:id="@+id/bord_row_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
         app:layout_constraintStart_toEndOf="@+id/bord_row_4"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
+    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
         android:id="@+id/bord_row_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
         app:layout_constraintStart_toEndOf="@+id/bord_row_5"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
+    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowPlayGroundColumnView
         android:id="@+id/bord_row_7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
