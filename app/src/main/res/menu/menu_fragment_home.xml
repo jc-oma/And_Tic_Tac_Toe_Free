@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="Benutzte Bibliotheken"
+        android:title="@string/used_Libraries_toolbar_item"
         android:id="@+id/action_used_libraries"
         android:orderInCategory="9"
         app:showAsAction="never" />

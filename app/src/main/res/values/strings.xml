@@ -26,4 +26,5 @@
 
     <!-- external Libraries Fragment -->
     <string name="external_libraries_headline">Verwendete externe Bibliotheken</string>
+    <string name="used_Libraries_toolbar_item">Benutzte Bibliotheken</string>
 </resources>
