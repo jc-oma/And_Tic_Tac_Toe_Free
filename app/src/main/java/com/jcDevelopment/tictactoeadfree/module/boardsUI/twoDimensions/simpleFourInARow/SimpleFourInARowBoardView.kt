@@ -3,6 +3,7 @@ package com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFo
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.gameEngine.FourInARowEngine
@@ -11,6 +12,7 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.processors.PublishProcessor
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.view_board_four_in_a_row_simple.view.*
+import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 
 class SimpleFourInARowBoardView @JvmOverloads constructor(
     context: Context,
@@ -81,6 +83,20 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         }
     }
 
+    private fun animateThinkingAi() {
+        simple_2d_thinking_frankenstein.alpha = 1f
+        val thinkingAnimation = AnimationUtils.loadAnimation(
+            context,
+            R.anim.thinking_witch_appear
+        )
+        simple_2d_thinking_frankenstein.startAnimation(thinkingAnimation)
+    }
+
+    private fun clearThinkingAiAnimation() {
+        simple_2d_thinking_frankenstein.clearAnimation()
+        simple_2d_thinking_frankenstein.alpha = 0f
+    }
+
     override fun onGameEnd(wonPlayer: Int, wonPosition: MutableList<Pair<Int, Int>>?) {
         appEventProcessor.onNext(GameEndEvent(wonPlayer))
 
@@ -101,6 +117,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
 
     override fun onAiIsTurning() {
         isAiTurning = true
+        animateThinkingAi()
     }
 
     override fun onPlayerTurned(
@@ -110,6 +127,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     ) {
         isAiTurning = false
         playGroundViewGrid[positionX].animatePlayStoneDrop(positionY, currentPlayer)
+        clearThinkingAiAnimation()
     }
 
 }
