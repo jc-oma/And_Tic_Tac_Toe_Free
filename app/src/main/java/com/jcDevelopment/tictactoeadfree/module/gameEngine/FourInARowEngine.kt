@@ -33,6 +33,8 @@ class FourInARowEngine internal constructor(
 
     private val gridY = 6
 
+    private var nextAiTurnX: Pair<Int?, Int?>? = null
+
     fun initializeBoard() {
         currentPlayer = 1
         gameListener.onInitializeBoard()
@@ -87,6 +89,12 @@ class FourInARowEngine internal constructor(
         gameListener.onAiIsTurning()
         var aiTurnX: Int? = null
 
+        if (nextAiTurnX?.first != null) {
+            aiTurnX = nextAiTurnX?.first
+        } else if (nextAiTurnX?.second != null) {
+            aiTurnX = nextAiTurnX?.second
+        }
+
         //TODO i bit more than random turns
         while (isPositionDataNullOrOnATakenPosition(aiTurnX)) {
             aiTurnX = (Math.random() * gridX).toInt()
@@ -95,6 +103,8 @@ class FourInARowEngine internal constructor(
             android.os.Handler().postDelayed({
                 gameListener.onPlayerTurned(aiTurnX, getNextFreeYPosition(aiTurnX)!!, currentPlayer)
                 gameTurn(aiTurnX)
+
+                nextAiTurnX = null
             }, 1000)
         }
     }
@@ -123,6 +133,9 @@ class FourInARowEngine internal constructor(
         aiTurnX: Int?
     ): Boolean {
         if (aiTurnX == null) {
+            return true
+        }
+        if (aiTurnX >= gridX || aiTurnX < 0) {
             return true
         }
         val nextFreeYPosition = getNextFreeYPosition(aiTurnX)
@@ -156,6 +169,11 @@ class FourInARowEngine internal constructor(
                 doOnGameEnd(wonPositions)
                 return true
             }
+
+            //ai conditions
+            if (rowAmountToWin - 1 == playStoneCounterInXAxisStraight) {
+                nextAiTurnX = Pair(x + 1, x - (rowAmountToWin - 1))
+            }
         }
 
         //Y Straight
@@ -171,6 +189,11 @@ class FourInARowEngine internal constructor(
             if (rowAmountToWin == playStoneCounterInYAxisStraight) {
                 doOnGameEnd(wonPositions)
                 return true
+            }
+
+            //ai conditions
+            if (rowAmountToWin - 1 == playStoneCounterInYAxisStraight) {
+                nextAiTurnX = Pair(positionX, null)
             }
         }
 
