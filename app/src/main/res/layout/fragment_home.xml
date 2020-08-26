@@ -8,19 +8,6 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/home_toolbar"
-        android:alpha="0"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:titleTextAppearance="@font/berkshire_swash_regular"
-        app:titleTextColor="@color/black"
-        android:background="@color/colorPrimary"
-        android:elevation="8dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <Button
         android:id="@+id/home_one_player_button"
         android:layout_width="wrap_content"
@@ -32,7 +19,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         tools:alpha="1" />
 
     <ImageView

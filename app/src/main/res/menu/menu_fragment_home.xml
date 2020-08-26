@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="@string/app_name"
-        android:id="@+id/action_settings"
+        android:title="Benutzte Bibliotheken"
+        android:id="@+id/action_used_libraries"
         android:orderInCategory="9"
         app:showAsAction="never" />
 </menu>

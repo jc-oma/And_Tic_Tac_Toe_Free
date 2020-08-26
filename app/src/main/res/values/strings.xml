@@ -23,4 +23,7 @@
     <string name="statistics_view_o">O</string>
     <string name="statistics_view_won_games">Siege:</string>
     <string name="statistics_average_needed_turns">ø Züge:</string>
+
+    <!-- external Libraries Fragment -->
+    <string name="external_libraries_headline">Verwendete externe Bibliotheken</string>
 </resources>

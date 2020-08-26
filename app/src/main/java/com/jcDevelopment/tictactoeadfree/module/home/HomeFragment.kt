@@ -48,8 +48,6 @@ class HomeFragment : BaseFragment() {
 
         initAds()
 
-        initToolbar()
-
         initiateClickListener()
 
         startIntroAnimation()
@@ -58,12 +56,6 @@ class HomeFragment : BaseFragment() {
     private fun initAds() {
         val adRequest = AdRequest.Builder().build()
         home_fragment_ad_view.loadAd(adRequest)
-    }
-
-    private fun initToolbar() {
-        home_toolbar.inflateMenu(R.menu.menu_fragment_home)
-        home_toolbar.title = context?.getText(R.string.app_name)
-        home_toolbar.setTitleTextAppearance(context, R.style.berkshireTextStyle)
     }
 
     private fun startIntroAnimation() {
