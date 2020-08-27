@@ -296,7 +296,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         simple_2d_thinking_witch.alpha = 1f
         val thinkingAnimation = AnimationUtils.loadAnimation(
             context,
-            R.anim.thinking_witch_appear
+            R.anim.thinking_ai_on_board_appear
         )
         simple_2d_thinking_witch.startAnimation(thinkingAnimation)
     }
