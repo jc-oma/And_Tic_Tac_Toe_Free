@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Spooky Halloween Tic Tac Toe</string>
+
+    <string name="tic_tac_toe">Tic Tac Toe</string>
+    <string name="four_in_a_row">Four In A Row</string>
+
+    <string name="one_player">&lt; One Player &gt;</string>
+    <string name="two_player">&lt; Two Player &gt;</string>
+    <string name="start_game">Start Game</string>
+
+    <string name="won">You won!</string>
+    <string name="draw">Draw!</string>
+    <string name="restart_game">Restart Game</string>
+    <string name="get_it_started">Let\'s go!</string>
+    <string name="game_has_ended_hint">The Game Ended. Please Restart!</string>
+    <string name="player_x_won">Player %s won the game</string>
+    <string name="player_x_won_headline">Player %s\nwins!</string>
+
+
+    <string name="average_needed_time">ø Time:</string>
+    <string name="home_one_play_button">one Player</string>
+    <string name="home_two_player_button">two Player</string>
+
+    <!-- statistics view -->
+    <string name="statistics_view_x">X</string>
+    <string name="statistics_view_o">O</string>
+    <string name="statistics_view_won_games">Wins:</string>
+    <string name="statistics_average_needed_turns">ø Turns:</string>
+
+    <!-- external Libraries Fragment -->
+    <string name="external_libraries_headline">Used external Libraries</string>
+    <string name="used_Libraries_toolbar_item">Used Libraries</string>
+</resources>
