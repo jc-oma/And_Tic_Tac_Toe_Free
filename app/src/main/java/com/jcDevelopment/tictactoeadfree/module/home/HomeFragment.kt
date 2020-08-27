@@ -73,7 +73,15 @@ class HomeFragment : BaseFragment() {
 
             override fun onAnimationEnd(animation: Animation?) {
                 val alphaOffsetAppearance = 400L
-                home_spooky_witch_imageview.animate().alpha(1f)
+                home_player_toggle.animate().alpha(1f)
+                    .setDuration(alphaOffsetAppearance).withEndAction{
+                        home_game_choser.animate().alpha(1f)
+                            .setDuration(alphaOffsetAppearance).withEndAction{
+                                home_start_game_button.animate().alpha(1f)
+                                    .setDuration(alphaOffsetAppearance).start()
+                            }.start()
+                    }.start()
+                /*home_spooky_witch_imageview.animate().alpha(1f)
                     .setDuration(alphaOffsetAppearance).start()
                 home_one_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance)
                     .withEndAction {
@@ -87,7 +95,7 @@ class HomeFragment : BaseFragment() {
                                     .setDuration(alphaOffsetAppearance).start()
                             }
                             .start()
-                    }.start()
+                    }.start()*/
             }
 
             override fun onAnimationStart(animation: Animation?) {
@@ -97,7 +105,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initiateClickListener() {
-        home_one_player_button.setOnClickListener {
+        /*home_one_player_button.setOnClickListener {
             val lastGameSettings = if (settingViewModel.getGameSettings().isEmpty()) {
                 GameSettings()
             } else {
@@ -112,7 +120,7 @@ class HomeFragment : BaseFragment() {
             val lastGameSettings = if (gameSettings.isNotEmpty()) gameSettings.last() else GameSettings()
             listener?.onHomeFragmentButtonClick()
             settingViewModel.createGameSettings(GameSettings(false, lastGameSettings.gameMode))
-        }
+        }*/
     }
 
     interface Listener {

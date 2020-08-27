@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">TicTacToeAdFree</string>
 
-
     <string name="tic_tac_toe">Tic Tac Toe</string>
     <string name="four_in_a_row">Four In A Row</string>
+
+    <string name="one_player">Ein Spieler</string>
+    <string name="two_player">Zwei Spieler</string>
 
     <string name="won">Sieg!</string>
     <string name="draw">Unentschieden!</string>

@@ -19,7 +19,7 @@
         android:elevation="8dp"
         android:focusable="false"
         android:scaleType="fitStart"
-        android:background="@drawable/spooky_arrow_button_styled"
+        android:background="@drawable/button_spooky_arrow_button_styled"
         app:layout_constraintEnd_toEndOf="@id/four_in_a_row_column_first"
         app:layout_constraintStart_toStartOf="@id/four_in_a_row_column_first"
         app:layout_constraintTop_toTopOf="parent" />
