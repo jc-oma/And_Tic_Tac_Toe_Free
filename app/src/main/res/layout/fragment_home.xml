@@ -20,23 +20,68 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:alpha="0" />
 
-    <ToggleButton
+    <ImageView
+        android:id="@+id/home_spooky_ghost_imageview"
+        android:layout_width="32dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:alpha="0"
-        tools:alpha="1"
-        android:background="@color/spooky_green"
-        android:padding="10dp"
+        android:elevation="10dp"
+        android:scaleType="fitEnd"
+        android:src="@drawable/ic_spooky_ghost"
+        ads:layout_constraintEnd_toStartOf="@+id/home_spooky_ghost_imageview_2"
+        ads:layout_constraintHorizontal_chainStyle="packed"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent"
+        tools:alpha="1" />
+
+    <ImageView
+        android:id="@+id/home_spooky_ghost_imageview_2"
+        android:layout_width="32dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="32dp"
+        android:alpha="0"
+        android:elevation="10dp"
+        android:rotationY="180"
+        android:scaleType="fitEnd"
+        android:src="@drawable/ic_spooky_ghost"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toEndOf="@+id/home_spooky_ghost_imageview"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:alpha="1" />
+
+    <TextSwitcher
         android:id="@+id/home_player_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:alpha="0"
         android:fontFamily="@font/berk_shire"
-        android:textOn="@string/one_player"
-        android:textOff="@string/two_player"
+        android:inAnimation="@anim/choser_check_appear"
         android:orientation="horizontal"
-        android:layout_marginTop="80dp"
-        ads:layout_constraintTop_toTopOf="parent"
+        android:outAnimation="@anim/fragment_close_exit"
+        android:padding="10dp"
+        android:scrollbarFadeDuration="550"
+        ads:layout_constraintTop_toBottomOf="@+id/home_spooky_ghost_imageview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-    </ToggleButton>
+        app:layout_constraintStart_toStartOf="parent"
+        tools:alpha="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/berkshire_swash_regular"
+            android:text="@string/one_player"
+            android:textSize="28sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/berkshire_swash_regular"
+            android:text="@string/two_player"
+            android:textSize="28sp" />
+    </TextSwitcher>
 
     <com.jcDevelopment.tictactoeadfree.module.gameChoser.GameChoserView
         android:id="@+id/home_game_choser"
@@ -54,17 +99,19 @@
     <Button
         android:id="@+id/home_start_game_button"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:alpha="0"
         android:background="@drawable/button_spooky_button_purple_set"
+        android:elevation="8dp"
         android:fontFamily="@font/berk_shire"
         android:scaleType="fitXY"
-        android:text="Spiel Starten"
+        android:text="@string/start_game"
+        android:textSize="20sp"
+        ads:layout_constraintBottom_toTopOf="@id/home_fragment_ad_view"
         app:layout_constraintDimensionRatio="31:10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_game_choser"
-        ads:layout_constraintBottom_toTopOf="@id/home_fragment_ad_view"/>
+        app:layout_constraintTop_toBottomOf="@+id/home_game_choser" />
 
     <!--- TODO test Ad Unitid entfernen ads:adUnitId="ca-app-pub-5121116206728666/2913789055" -->
     <!-- TODO nicht vergessen auch in admob online zu stellen -->

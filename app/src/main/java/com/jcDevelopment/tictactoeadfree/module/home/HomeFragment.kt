@@ -27,6 +27,9 @@ class HomeFragment : BaseFragment() {
 
     private val settingViewModel by inject<GameSettingsViewModel>()
 
+    private var switchViewCount = 0
+    private var isSecondPlayerAi = true
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is Listener) {
@@ -46,11 +49,28 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initSettingsPresentation()
+
         initAds()
 
         initiateClickListener()
 
         startIntroAnimation()
+    }
+
+    private fun initSettingsPresentation() {
+        val gameSettings = settingViewModel.getGameSettings()
+        if (gameSettings.isNotEmpty()) {
+            if (settingViewModel.getGameSettings().last().isSecondPlayerAi) {
+                switchViewCount = 2
+                home_spooky_ghost_imageview_2.alpha = 0f
+                home_player_toggle.setText(getString(R.string.one_player))
+            } else {
+                switchViewCount = 1
+                home_spooky_ghost_imageview_2.alpha = 1f
+                home_player_toggle.setText(getString(R.string.two_player))
+            }
+        }
     }
 
     private fun initAds() {
@@ -65,7 +85,7 @@ class HomeFragment : BaseFragment() {
             R.anim.intro_animation_background
         )
 
-        introAnimationBackGround.fillAfter = true
+        introAnimationBackGround.fillAfter = isSecondPlayerAi
         introAnimationBackGround.startOffset = startOffsetBegin
         introAnimationBackGround.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationRepeat(animation: Animation?) {
@@ -73,29 +93,22 @@ class HomeFragment : BaseFragment() {
 
             override fun onAnimationEnd(animation: Animation?) {
                 val alphaOffsetAppearance = 400L
+                home_spooky_ghost_imageview.animate().alpha(1f)
+                    .setDuration(alphaOffsetAppearance).start()
+                if (settingViewModel.getGameSettings()
+                        .isNotEmpty() && !settingViewModel.getGameSettings().last().isSecondPlayerAi
+                ) {
+                    home_spooky_ghost_imageview_2.animate().alpha(1f)
+                        .setDuration(alphaOffsetAppearance).start()
+                }
                 home_player_toggle.animate().alpha(1f)
-                    .setDuration(alphaOffsetAppearance).withEndAction{
+                    .setDuration(alphaOffsetAppearance).withEndAction {
                         home_game_choser.animate().alpha(1f)
-                            .setDuration(alphaOffsetAppearance).withEndAction{
+                            .setDuration(alphaOffsetAppearance).withEndAction {
                                 home_start_game_button.animate().alpha(1f)
                                     .setDuration(alphaOffsetAppearance).start()
                             }.start()
                     }.start()
-                /*home_spooky_witch_imageview.animate().alpha(1f)
-                    .setDuration(alphaOffsetAppearance).start()
-                home_one_player_button.animate().alpha(1f).setDuration(alphaOffsetAppearance)
-                    .withEndAction {
-                        home_spooky_ghost_imageview.animate().alpha(1f)
-                            .setDuration(alphaOffsetAppearance).start()
-                        home_spooky_ghost_imageview_2.animate().alpha(1f)
-                            .setDuration(alphaOffsetAppearance).start()
-                        home_two_player_button.animate().alpha(1f)
-                            .setDuration(alphaOffsetAppearance).withEndAction {
-                                home_game_choser.animate().alpha(1f)
-                                    .setDuration(alphaOffsetAppearance).start()
-                            }
-                            .start()
-                    }.start()*/
             }
 
             override fun onAnimationStart(animation: Animation?) {
@@ -105,22 +118,34 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initiateClickListener() {
-        /*home_one_player_button.setOnClickListener {
+        home_player_toggle.setOnClickListener {
+            switchViewCount++
+            if (switchViewCount % 2 == 0) {
+                isSecondPlayerAi = true
+                home_spooky_ghost_imageview_2.alpha = 0f
+                home_player_toggle.setText(getString(R.string.one_player))
+            } else {
+                isSecondPlayerAi = false
+                home_spooky_ghost_imageview_2.alpha = 1f
+                home_player_toggle.setText(getString(R.string.two_player))
+            }
+        }
+
+        home_start_game_button.setOnClickListener {
             val lastGameSettings = if (settingViewModel.getGameSettings().isEmpty()) {
                 GameSettings()
             } else {
                 settingViewModel.getGameSettings().last()
             }
-            listener?.onHomeFragmentButtonClick()
-            settingViewModel.createGameSettings(GameSettings(true, lastGameSettings.gameMode))
-        }
+            settingViewModel.createGameSettings(
+                GameSettings(
+                    isSecondPlayerAi,
+                    lastGameSettings.gameMode
+                )
+            )
 
-        home_two_player_button.setOnClickListener {
-            val gameSettings = settingViewModel.getGameSettings()
-            val lastGameSettings = if (gameSettings.isNotEmpty()) gameSettings.last() else GameSettings()
             listener?.onHomeFragmentButtonClick()
-            settingViewModel.createGameSettings(GameSettings(false, lastGameSettings.gameMode))
-        }*/
+        }
     }
 
     interface Listener {

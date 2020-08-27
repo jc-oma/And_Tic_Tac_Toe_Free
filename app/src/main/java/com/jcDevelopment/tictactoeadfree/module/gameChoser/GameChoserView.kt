@@ -92,12 +92,12 @@ class GameChoserView @JvmOverloads constructor(
             )
         )
 
-        val duration = 300L
+        val duration = 150L
         val scaleToXY = 1.05f
         val scaleBackXY = 1f
         when(gameMode) {
             GameMode.TIC_TAC_TOE -> {
-                game_choser_game_one.animate().scaleX(scaleToXY).scaleY(scaleToXY).setDuration(duration).start()
+                game_choser_game_one.animate().scaleX(scaleToXY).scaleY(scaleToXY).setDuration(duration).setInterpolator(OvershootInterpolator()).start()
                 game_choser_game_two.animate().scaleX(scaleBackXY).scaleY(scaleBackXY).setDuration(duration).start()
                 game_choser_game_one_check.alpha = 1f
                 game_choser_game_one_check.startAnimation(loadAnimation)
@@ -105,7 +105,7 @@ class GameChoserView @JvmOverloads constructor(
             }
             GameMode.FOUR_IN_A_ROW -> {
                 game_choser_game_one.animate().scaleX(scaleBackXY).scaleY(scaleBackXY).setDuration(duration).start()
-                game_choser_game_two.animate().scaleX(scaleToXY).scaleY(scaleToXY).setDuration(duration).start()
+                game_choser_game_two.animate().scaleX(scaleToXY).scaleY(scaleToXY).setDuration(duration).setInterpolator(OvershootInterpolator()).start()
                 game_choser_game_one_check.alpha = 0f
                 game_choser_game_two_check.alpha = 1f
                 game_choser_game_two_check.startAnimation(loadAnimation)
