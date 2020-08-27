@@ -12,7 +12,6 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.processors.PublishProcessor
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.view_board_four_in_a_row_simple.view.*
-import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 
 class SimpleFourInARowBoardView @JvmOverloads constructor(
     context: Context,
@@ -32,7 +31,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     private fun initView(context: Context) {
         View.inflate(context, R.layout.view_board_four_in_a_row_simple, this)
     }
-    private var gameOver: Boolean = false
+    private var isGameOver: Boolean = false
     private var isAiTurning: Boolean = false
     private val fourEngine: FourInARowEngine =
         FourInARowEngine(listener = this)
@@ -59,7 +58,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         for (column in playGroundViewGrid) {
             column.restartBoard()
         }
-        gameOver = false
+        isGameOver = false
 
         fourEngine.initializeBoard()
     }
@@ -73,7 +72,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
             view.click.observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    if (!isAiTurning && !gameOver) {
+                    if (!isAiTurning && !isGameOver) {
                         val toRow = fourEngine.getNextFreeYPosition(index)
                         if (toRow != null) {
                             fourEngine.gameTurn(index)
@@ -100,7 +99,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     override fun onGameEnd(wonPlayer: Int, wonPosition: MutableList<Pair<Int, Int>>?) {
         appEventProcessor.onNext(GameEndEvent(wonPlayer))
 
-        gameOver = true
+        isGameOver = true
 
         if (wonPosition != null) {
             for (position in wonPosition) {

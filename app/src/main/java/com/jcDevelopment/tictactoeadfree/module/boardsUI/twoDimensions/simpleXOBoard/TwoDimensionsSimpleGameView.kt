@@ -37,6 +37,8 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         View.inflate(context, R.layout.view_board_two_dimensions_simple, this)
     }
 
+    private var isGameOver: Boolean = false
+
     private val toe: TicTacToeEngine =
         TicTacToeEngine(listener = this)
 
@@ -87,8 +89,12 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         currentPlayer: Int
     ) {
         val playedIndexInGrid = positionX + (positionY * grid)
-        playGroundViewGrid[playedIndexInGrid].setImageDrawable(getCurrentPlayerPlayStone(currentPlayer))
-        playGroundViewGrid[playedIndexInGrid].setOnClickListener {  }
+        playGroundViewGrid[playedIndexInGrid].setImageDrawable(
+            getCurrentPlayerPlayStone(
+                currentPlayer
+            )
+        )
+        playGroundViewGrid[playedIndexInGrid].setOnClickListener { }
         playGroundViewGrid[playedIndexInGrid].clearAnimation()
         playGroundViewGrid.forEach { cellView ->
             cellView.isClickable = true
@@ -101,6 +107,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         wonPlayer: Int,
         wonPosition: MutableList<Triple<Int, Int, Int>>?
     ) {
+        isGameOver = true
         if (wonPosition != null && wonPosition.isNotEmpty()) {
             val objectAnimatorList: MutableList<ObjectAnimator> =
                 setupObejectAnimatorListForWinAnimation(wonPosition)
@@ -147,6 +154,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     private val groupIds = board_view_group.referencedIds
 
     private fun restartBoard() {
+        isGameOver = false
         toe.initializeBoard()
         simple_two_dim_tic_game_end_overlay.setOnClickListener {
             simple_two_dim_tic_game_end_overlay.isVisible = false
@@ -176,7 +184,9 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
     private fun initializeClickListenerForPlayerTurn(cellView: ImageView, index: Int) {
         cellView.setOnClickListener {
-            toe.gameTurn(index % grid, index / grid)
+            if (!isGameOver) {
+                toe.gameTurn(index % grid, index / grid)
+            }
         }
     }
 
@@ -284,7 +294,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
     private fun animateThinkingAi() {
         simple_2d_thinking_witch.alpha = 1f
-        val thinkingAnimation =AnimationUtils.loadAnimation(
+        val thinkingAnimation = AnimationUtils.loadAnimation(
             context,
             R.anim.thinking_witch_appear
         )
