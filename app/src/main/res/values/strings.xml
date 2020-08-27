@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TicTacToeAdFree</string>
+    <string name="app_name">Spooky Halloween Tic Tac Toe</string>
 
     <string name="tic_tac_toe">Tic Tac Toe</string>
     <string name="four_in_a_row">Four In A Row</string>

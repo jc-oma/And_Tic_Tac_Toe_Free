@@ -10,7 +10,7 @@
 
     <style name="berkshireTextStyle" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:fontFamily">@font/berk_shire</item>
-        <item name="android:textSize">38sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
 

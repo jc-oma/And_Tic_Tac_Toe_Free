@@ -63,11 +63,9 @@ class HomeFragment : BaseFragment() {
         if (gameSettings.isNotEmpty()) {
             if (settingViewModel.getGameSettings().last().isSecondPlayerAi) {
                 switchViewCount = 2
-                home_spooky_ghost_imageview_2.alpha = 0f
                 home_player_toggle.setText(getString(R.string.one_player))
             } else {
                 switchViewCount = 1
-                home_spooky_ghost_imageview_2.alpha = 1f
                 home_player_toggle.setText(getString(R.string.two_player))
             }
         }
