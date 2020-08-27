@@ -1,6 +1,7 @@
 package com.jcDevelopment.tictactoeadfree.module.home
 
 import android.content.Context
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.view_overlay_two_dimension_simple_overlay.view.*
 import org.koin.android.ext.android.inject
 
 
@@ -77,6 +79,9 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun startIntroAnimation() {
+        val animation = home_lightning_sequence.background as AnimationDrawable
+        animation.start()
+
         val startOffsetBegin: Long = 1000
         val introAnimationBackGround = AnimationUtils.loadAnimation(
             context,

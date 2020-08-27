@@ -1,0 +1,7 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item android:drawable="@drawable/ic_spooky_lightning1" android:duration="200" />
+    <item android:drawable="@drawable/ic_spooky_lightning2" android:duration="200" />
+    <item android:drawable="@drawable/ic_spooky_lightning3" android:duration="200" />
+    <item android:drawable="@color/fullTransparent" android:duration="200" />
+</animation-list>
