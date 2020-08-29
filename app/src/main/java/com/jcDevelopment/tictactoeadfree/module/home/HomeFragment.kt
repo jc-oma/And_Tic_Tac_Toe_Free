@@ -134,6 +134,10 @@ class HomeFragment : BaseFragment() {
             }
         }
 
+        home_spooky_ghost_imageview_click_holder.setOnClickListener {
+            home_player_toggle.performClick()
+        }
+
         home_start_game_button.setOnClickListener {
             val lastGameSettings = if (settingViewModel.getGameSettings().isEmpty()) {
                 GameSettings()

@@ -61,6 +61,15 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:alpha="1" />
 
+    <View
+        android:id="@+id/home_spooky_ghost_imageview_click_holder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        ads:layout_constraintStart_toStartOf="@id/home_spooky_ghost_imageview"
+        ads:layout_constraintEnd_toEndOf="@id/home_spooky_ghost_imageview_2"
+        ads:layout_constraintTop_toTopOf="@id/home_spooky_ghost_imageview"
+        ads:layout_constraintBottom_toBottomOf="@id/home_spooky_ghost_imageview_2"/>
+
     <ImageView
         android:id="@+id/home_lightning_sequence"
         android:layout_width="wrap_content"
@@ -77,9 +86,9 @@
         android:layout_marginTop="8dp"
         android:alpha="0"
         android:fontFamily="@font/berk_shire"
-        android:inAnimation="@anim/choser_check_appear"
+        android:inAnimation="@anim/textswitcher_in"
         android:orientation="horizontal"
-        android:outAnimation="@anim/fragment_close_exit"
+        android:outAnimation="@anim/textswitcher_out"
         android:padding="10dp"
         android:scrollbarFadeDuration="550"
         ads:layout_constraintTop_toBottomOf="@+id/home_spooky_ghost_imageview"
