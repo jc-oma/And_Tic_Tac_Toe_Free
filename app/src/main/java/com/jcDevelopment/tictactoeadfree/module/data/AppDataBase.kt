@@ -12,9 +12,12 @@ import org.koin.dsl.module
 
 val roomDatabaseModule = module {
 
-    //Fixme not on main thread
     single {
         Room.databaseBuilder(get(), AppDatabase::class.java, "gameSettings")
+                //FIXME - remove before Release
+                //Drop DB when changes in DB
+            .fallbackToDestructiveMigration()
+                //Fixme not on main thread
             .allowMainThreadQueries().build()
     }
 
@@ -22,7 +25,7 @@ val roomDatabaseModule = module {
 
 @Database(
     entities = [GameStatistics::class, GameSettings::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

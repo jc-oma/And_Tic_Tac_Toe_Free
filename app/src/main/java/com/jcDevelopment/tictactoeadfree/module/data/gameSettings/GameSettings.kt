@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class GameSettings (
     var isSecondPlayerAi: Boolean = false,
     var gameMode: String = GameMode.TIC_TAC_TOE.toString(),
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     var id: Int = 0
 )
 

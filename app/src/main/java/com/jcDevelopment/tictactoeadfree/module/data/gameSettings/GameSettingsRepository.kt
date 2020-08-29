@@ -22,13 +22,23 @@ class GameSettingsRepository constructor(
     private val gameSettingsDao: GameSettingsDao
 ) {
 
-    fun createNewGameSettings(gameSettings: GameSettings) {
-        gameSettingsDao.insertAll(gameSettings)
-    }
-
     fun removeGameSettings(gameSettings: GameSettings) {
         gameSettingsDao.delete(gameSettings)
     }
 
-    fun getGameStettings() = gameSettingsDao.getAll()
+    fun updateGameSettings(gameSettings: GameSettings){
+        gameSettingsDao.insertAll(gameSettings)
+    }
+
+    fun getGameStettings() : List<GameSettings> {
+        val settingList = gameSettingsDao.getAll()
+        return if (settingList.isEmpty()) {
+            createNewGameSettings(GameSettings())
+            listOf(GameSettings())
+        } else settingList
+    }
+
+    private fun createNewGameSettings(gameSettings: GameSettings) {
+        gameSettingsDao.insertAll(gameSettings)
+    }
 }

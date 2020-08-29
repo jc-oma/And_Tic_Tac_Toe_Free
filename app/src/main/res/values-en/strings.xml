@@ -30,4 +30,8 @@
     <!-- external Libraries Fragment -->
     <string name="external_libraries_headline">Used external Libraries</string>
     <string name="used_Libraries_toolbar_item">Used Libraries</string>
+
+    <!-- two player mode chooser -->
+    <string name="bluetooth">Bluetooth</string>
+    <string name="hot_seat">hot seat</string>
 </resources>

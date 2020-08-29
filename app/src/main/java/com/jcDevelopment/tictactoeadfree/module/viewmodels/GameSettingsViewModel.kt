@@ -9,13 +9,13 @@ import kotlinx.coroutines.launch
 class GameSettingsViewModel(
     private val gameSettingsRepository: GameSettingsRepository
 ) : ViewModel() {
-    fun createGameSettings(gameSettings: GameSettings) {
-        viewModelScope.launch {
-            gameSettingsRepository.createNewGameSettings(gameSettings)
-        }
-    }
-
     fun getGameSettings(): List<GameSettings> {
         return gameSettingsRepository.getGameStettings()
+    }
+
+    fun updateGameSettings(gameSettings: GameSettings) {
+        viewModelScope.launch {
+            gameSettingsRepository.updateGameSettings(gameSettings)
+        }
     }
 }

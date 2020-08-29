@@ -1,18 +1,15 @@
 package com.jcDevelopment.tictactoeadfree.module.data.gameSettings
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface GameSettingsDao {
     @Query("SELECT * FROM gameSettings")
     fun getAll(): List<GameSettings>
 
-    @Insert
-    fun insertAll(vararg arrayOfGameSettings: GameSettings)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(gameSettings: GameSettings)
 
     @Delete
-    fun delete(gameSettings: GameSettings)
+    fun delete(vararg gameSettings: GameSettings)
 }

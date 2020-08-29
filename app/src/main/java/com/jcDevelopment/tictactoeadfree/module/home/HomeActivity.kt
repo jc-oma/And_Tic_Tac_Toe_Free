@@ -14,11 +14,13 @@ import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.logo.LogoFragment
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.google.android.gms.ads.MobileAds
+import com.jcDevelopment.tictactoeadfree.module.bluetooth.TwoPlayerModeChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.usedLibraries.UsedLibrariesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 
-class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listener {
+class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listener,
+    TwoPlayerModeChooserFragment.Listener {
     private val activity = this
     private val manager = activity.supportFragmentManager
 
@@ -62,7 +64,6 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
 
     override fun onBackPressed() {
         super.onBackPressed()
-
         if (manager.fragments.size > 1) {
             manager.beginTransaction().remove(manager.fragments.last()).commit()
         } else {
@@ -74,17 +75,31 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         openHomeFragment()
     }
 
-    override fun onHomeFragmentButtonClick() {
-        val gameSettings = if (gameSettingsViewModel.getGameSettings().isEmpty()) {
-            GameSettings()
+    override fun onHomeFragmentGameStartButtonClick() {
+        if (!getGameSettings().isSecondPlayerAi) {
+            val transaction: FragmentTransaction = manager.beginTransaction()
+            transaction.add(R.id.main_activity_root, TwoPlayerModeChooserFragment.newInstance())
+            transaction.commit()
         } else {
-            gameSettingsViewModel.getGameSettings().last()
+            openGameFragment()
         }
+    }
+
+    private fun openGameFragment() {
+        val gameSettings = getGameSettings()
         val gameMode = GameMode.valueOf(gameSettings.gameMode)
         if (gameMode == GameMode.TIC_TAC_TOE) {
             openTwoDimensionalFragment()
         } else if (gameMode == GameMode.FOUR_IN_A_ROW) {
             openFourInARowFragment()
+        }
+    }
+
+    private fun getGameSettings(): GameSettings {
+        return if (gameSettingsViewModel.getGameSettings().isEmpty()) {
+            GameSettings()
+        } else {
+            gameSettingsViewModel.getGameSettings().last()
         }
     }
 
@@ -105,5 +120,19 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         val transaction: FragmentTransaction = manager.beginTransaction()
         transaction.replace(R.id.main_activity_root, HomeFragment.newInstance())
         transaction.commit()
+    }
+
+    override fun onTwoPlayerModeChooserFragmentBluetoothClick() {
+        if (manager.fragments.size > 0) {
+            manager.fragments.remove(manager.fragments.last())
+        }
+        openGameFragment()
+    }
+
+    override fun onTwoPlayerModeChooserFragmentHotseatClick() {
+        if (manager.fragments.size > 0) {
+            manager.fragments.remove(manager.fragments.last())
+        }
+        openGameFragment()
     }
 }

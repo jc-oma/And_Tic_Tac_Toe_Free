@@ -15,7 +15,6 @@ import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.view_overlay_two_dimension_simple_overlay.view.*
 import org.koin.android.ext.android.inject
 
 
@@ -52,8 +51,6 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initSettingsPresentation()
-
         initAds()
 
         initiateClickListener()
@@ -61,15 +58,23 @@ class HomeFragment : BaseFragment() {
         startIntroAnimation()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        initSettingsPresentation()
+    }
+
     private fun initSettingsPresentation() {
         val gameSettings = settingViewModel.getGameSettings()
         if (gameSettings.isNotEmpty()) {
-            if (settingViewModel.getGameSettings().last().isSecondPlayerAi) {
+            val lastSettings = gameSettings.last()
+            isSecondPlayerAi = lastSettings.isSecondPlayerAi
+            if (isSecondPlayerAi) {
                 switchViewCount = 2
-                home_player_toggle.setText(getString(R.string.one_player))
+                home_player_toggle_text_switcher.setText(getString(R.string.one_player))
             } else {
                 switchViewCount = 1
-                home_player_toggle.setText(getString(R.string.two_player))
+                home_player_toggle_text_switcher.setText(getString(R.string.two_player))
             }
         }
     }
@@ -105,7 +110,7 @@ class HomeFragment : BaseFragment() {
                     home_spooky_ghost_imageview_2.animate().alpha(1f)
                         .setDuration(alphaOffsetAppearance).start()
                 }
-                home_player_toggle.animate().alpha(1f)
+                home_player_toggle_text_switcher.animate().alpha(1f)
                     .setDuration(alphaOffsetAppearance).withEndAction {
                         home_game_choser.animate().alpha(1f)
                             .setDuration(alphaOffsetAppearance).withEndAction {
@@ -123,44 +128,61 @@ class HomeFragment : BaseFragment() {
 
     private fun initiateClickListener() {
         Handler().postDelayed({
-            home_spooky_house_imageview.performClick()
+            home_spooky_house_imageview?.performClick()
         }, 6000)
 
-        home_player_toggle.setOnClickListener {
+        home_player_toggle_text_switcher.setOnClickListener {
             switchViewCount++
             if (switchViewCount % 2 == 0) {
                 isSecondPlayerAi = true
                 home_spooky_ghost_imageview_2.alpha = 0f
-                home_player_toggle.setText(getString(R.string.one_player))
+                home_player_toggle_text_switcher.setText(getString(R.string.one_player))
+                settingViewModel.updateGameSettings(
+                    GameSettings(
+                        isSecondPlayerAi,
+                        getLastGameSettings().gameMode
+                    )
+                )
             } else {
                 isSecondPlayerAi = false
                 home_spooky_ghost_imageview_2.alpha = 1f
-                home_player_toggle.setText(getString(R.string.two_player))
+                home_player_toggle_text_switcher.setText(getString(R.string.two_player))
+                settingViewModel.updateGameSettings(
+                    GameSettings(
+                        isSecondPlayerAi,
+                        getLastGameSettings().gameMode
+                    )
+                )
             }
         }
 
         home_spooky_ghost_imageview_click_holder.setOnClickListener {
-            home_player_toggle.performClick()
+            home_player_toggle_text_switcher.performClick()
         }
 
         home_start_game_button.setOnClickListener {
-            val lastGameSettings = if (settingViewModel.getGameSettings().isEmpty()) {
-                GameSettings()
-            } else {
-                settingViewModel.getGameSettings().last()
-            }
-            settingViewModel.createGameSettings(
+            val lastGameSettings = getLastGameSettings()
+            settingViewModel.updateGameSettings(
                 GameSettings(
                     isSecondPlayerAi,
                     lastGameSettings.gameMode
                 )
             )
 
-            listener?.onHomeFragmentButtonClick()
+            listener?.onHomeFragmentGameStartButtonClick()
+        }
+    }
+
+    private fun getLastGameSettings(): GameSettings {
+        val gameSettings = settingViewModel.getGameSettings()
+        return if (gameSettings.isEmpty()) {
+            GameSettings()
+        } else {
+            gameSettings.last()
         }
     }
 
     interface Listener {
-        fun onHomeFragmentButtonClick()
+        fun onHomeFragmentGameStartButtonClick()
     }
 }

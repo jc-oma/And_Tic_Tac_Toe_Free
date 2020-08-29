@@ -54,7 +54,7 @@ class GameChoserView @JvmOverloads constructor(
         } else {
             gameSettingsViewModel.getGameSettings().last()
         }
-        gameSettingsViewModel.createGameSettings(
+        gameSettingsViewModel.updateGameSettings(
             GameSettings(
                 lastSettings.isSecondPlayerAi,
                 gameMode.toString()

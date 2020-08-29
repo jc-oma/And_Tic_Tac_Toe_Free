@@ -74,13 +74,13 @@
         android:id="@+id/home_lightning_sequence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        ads:layout_constraintTop_toTopOf="@+id/home_player_toggle"
+        ads:layout_constraintTop_toTopOf="@+id/home_player_toggle_text_switcher"
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/ic_anim_spooky_lightning_sequence"/>
 
     <TextSwitcher
-        android:id="@+id/home_player_toggle"
+        android:id="@+id/home_player_toggle_text_switcher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -121,7 +121,7 @@
         android:alpha="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_player_toggle"
+        app:layout_constraintTop_toBottomOf="@+id/home_player_toggle_text_switcher"
         tools:alpha="1" />
 
     <Button

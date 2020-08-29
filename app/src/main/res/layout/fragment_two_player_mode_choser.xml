@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".module.bluetooth.TwoPlayerModeChooserFragment">
+
+    <Button
+        android:id="@+id/two_player_game_mode_bluetooth"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="32dp"
+        android:drawableEnd="@drawable/ic_bluetooth_24px"
+        android:paddingEnd="48dp"
+        android:paddingStart="48dp"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:text="@string/bluetooth"
+        android:background="@drawable/button_spooky_button_purple_set"
+        app:layout_constraintDimensionRatio="31:10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/two_player_game_mode_hotseat"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="32dp"
+        android:drawableEnd="@drawable/ic_hotseat_24px"
+        android:paddingEnd="48dp"
+        android:paddingStart="48dp"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:text="@string/hot_seat"
+        android:background="@drawable/button_spooky_button_purple_set"
+        app:layout_constraintDimensionRatio="31:10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/two_player_game_mode_bluetooth" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
