@@ -3,6 +3,7 @@ package com.jcDevelopment.tictactoeadfree.module.home
 import android.content.Context
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -121,6 +122,10 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initiateClickListener() {
+        Handler().postDelayed({
+            home_spooky_house_imageview.performClick()
+        }, 6000)
+
         home_player_toggle.setOnClickListener {
             switchViewCount++
             if (switchViewCount % 2 == 0) {
