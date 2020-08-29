@@ -15,7 +15,7 @@ val roomDatabaseModule = module {
     single {
         Room.databaseBuilder(get(), AppDatabase::class.java, "gameSettings")
                 //FIXME - remove before Release
-                //Drop DB when changes in DB
+                //Drop DB when changes in DB https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
             .fallbackToDestructiveMigration()
                 //Fixme not on main thread
             .allowMainThreadQueries().build()

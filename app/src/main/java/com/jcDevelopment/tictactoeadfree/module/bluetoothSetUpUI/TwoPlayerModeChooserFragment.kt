@@ -1,4 +1,4 @@
-package com.jcDevelopment.tictactoeadfree.module.bluetooth
+package com.jcDevelopment.tictactoeadfree.module.bluetoothSetUpUI
 
 import android.content.Context
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseFragment
-import com.jcDevelopment.tictactoeadfree.module.home.HomeFragment
 import kotlinx.android.synthetic.main.fragment_two_player_mode_choser.*
 
 class TwoPlayerModeChooserFragment : BaseFragment() {

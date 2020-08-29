@@ -1,23 +1,27 @@
 package com.jcDevelopment.tictactoeadfree.module.home
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
+import com.google.android.gms.ads.MobileAds
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseActivity
+import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
+import com.jcDevelopment.tictactoeadfree.module.bluetoothSetUpUI.TwoPlayerModeChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardFragment
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.TwoDimensionsSimpleGameFragment
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.logo.LogoFragment
-import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
-import com.google.android.gms.ads.MobileAds
-import com.jcDevelopment.tictactoeadfree.module.bluetooth.TwoPlayerModeChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.usedLibraries.UsedLibrariesFragment
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
+
 
 class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listener,
     TwoPlayerModeChooserFragment.Listener {
@@ -37,6 +41,14 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_NOSENSOR
 
         initToolbar()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //TODO REQUEST CODE from BluetoothService
+        if (requestCode == 12 && resultCode == RESULT_OK) {
+            Toast.makeText(this, "BlueTooth aktiv", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun initToolbar() {
@@ -86,6 +98,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     }
 
     private fun openGameFragment() {
+        BlueToothService().checkForBluetoothAdapter(this)
         val gameSettings = getGameSettings()
         val gameMode = GameMode.valueOf(gameSettings.gameMode)
         if (gameMode == GameMode.TIC_TAC_TOE) {
