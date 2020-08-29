@@ -1,11 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion 29
@@ -38,6 +33,13 @@ android {
     }
 }
 
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
+
+
 
 dependencies {
     //adMob
@@ -53,7 +55,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     // Koin for Android
-    implementation "org.koin:koin-androidx-fragment:2.1.6"
+    implementation "org.koin:koin-android:2.1.6"
     implementation "org.koin:koin-androidx-scope:2.1.6"
     implementation "org.koin:koin-androidx-viewmodel:2.1.6"
     implementation "org.koin:koin-androidx-ext:2.1.6"
@@ -68,8 +70,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation "androidx.room:room-runtime:2.3.0-alpha02"
-    kapt "androidx.room:room-compiler:2.3.0-alpha02"
+    implementation "androidx.room:room-runtime:2.2.5"
+    kapt "android.arch.persistence.room:compiler:2.2.5"
 
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
