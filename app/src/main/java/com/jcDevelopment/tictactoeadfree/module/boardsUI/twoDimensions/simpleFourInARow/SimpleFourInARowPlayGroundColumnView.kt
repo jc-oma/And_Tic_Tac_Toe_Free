@@ -60,6 +60,7 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
             animation.alpha(0.5f)
             animation.duration = 200
             animation.interpolator = AnticipateInterpolator()
+            animation.withLayer()
             if (offset < 1000L) {
                 offset += (offset * Math.random()).toLong()
             }
@@ -84,7 +85,7 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         createdPlaystones.add(createNewPlayStoneView(currentPlayer))
         val x = playGroundViewColumnPositionList[toRow].first
         val y = playGroundViewColumnPositionList[toRow].second
-        val animation = createdPlaystones.last().animate()
+        val animation = createdPlaystones.last().animate().withLayer()
         val randomRotationDegree = Math.random() * 360f
         val randomRotationdirection = if (nextBoolean()) 1 else -1
         animation.duration = 400L * (sqrt(toRow.toDouble()).toLong() + 1)
@@ -107,6 +108,7 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
     }
 
     private fun initAnmation() {
+        four_in_a_row_column_image_button.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         val whobbleAnimation = AnimationUtils.loadAnimation(
             context,
             R.anim.whobble_animation_medium
@@ -119,6 +121,7 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         val marginBottomDP = 5f
 
         val imageView = ImageView(context)
+        imageView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         val scale =
             TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,

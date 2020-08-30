@@ -3,6 +3,7 @@ package com.jcDevelopment.tictactoeadfree.module.home
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.Handler
 import android.widget.Toast
 import androidx.core.view.get
 import androidx.core.view.isVisible
@@ -98,7 +99,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     }
 
     private fun openGameFragment() {
-        BlueToothService().checkForBluetoothAdapter(this)
+        BlueToothService(Handler()).checkForBluetoothAdapter(this)
         val gameSettings = getGameSettings()
         val gameMode = GameMode.valueOf(gameSettings.gameMode)
         if (gameMode == GameMode.TIC_TAC_TOE) {

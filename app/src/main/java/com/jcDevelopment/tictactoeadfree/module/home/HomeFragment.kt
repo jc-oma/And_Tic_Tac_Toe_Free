@@ -85,6 +85,20 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun startIntroAnimation() {
+        val toBeAnimatedViews = listOf(
+            home_spooky_background_anim_imageview,
+            home_spooky_house_imageview,
+            home_spooky_ghost_imageview_2,
+            home_lightning_sequence,
+            home_player_toggle_text_switcher,
+            home_game_choser,
+            home_start_game_button
+        )
+
+        toBeAnimatedViews.forEach {
+            it.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+        }
+
         val animation = home_lightning_sequence.background as AnimationDrawable
         animation.start()
 
