@@ -52,16 +52,19 @@ class GameEndedOverlay @JvmOverloads constructor(
     }
 
     private fun setupAnimations() {
+        ended_game_konfetti_view.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         setupHeadlineAnimation()
         setupSignPostAnimation()
     }
 
     private fun setupSignPostAnimation() {
+        game_end_overlay_post_with_pumpkin.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         val animation = game_end_overlay_post_with_pumpkin.background as AnimationDrawable
         animation.start()
     }
 
     private fun setupHeadlineAnimation() {
+        ended_game_headline.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         ended_game_headline
             .animate()
             .setDuration(0)
@@ -98,6 +101,6 @@ class GameEndedOverlay @JvmOverloads constructor(
                 ended_game_headline.x + ended_game_headline.width / 2,
                 ended_game_headline.y - ended_game_headline.width / 2
             )
-            .burst(140)
+            .burst(40)
     }
 }

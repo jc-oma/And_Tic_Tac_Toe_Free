@@ -11,8 +11,8 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
@@ -29,9 +29,10 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         initView(context)
     }
 
-    @DrawableRes
-    private val oImgPlayerStone = R.drawable.blender_o_play_stone
-    private val xImgPlayerStone = R.drawable.blender_x_play_stone
+    private val oImgPlayerStone =
+        ContextCompat.getDrawable(context, R.drawable.blender_o_play_stone)
+    private val xImgPlayerStone =
+        ContextCompat.getDrawable(context, R.drawable.blender_x_play_stone)
 
     private fun initView(context: Context) {
         View.inflate(context, R.layout.view_board_two_dimensions_simple, this)
@@ -56,10 +57,27 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         )
     }
 
+    private val toBeAnimatedViews: List<View> by lazy {
+        listOf(
+            three_one,
+            three_two,
+            three_three,
+            two_one,
+            two_two,
+            two_three,
+            one_one,
+            one_two,
+            one_three,
+            simple_2d_thinking_witch,
+            restart_game
+        )
+    }
+
     //Todo make dynamic
     private val grid = 3
 
-    private val placeHolderDrawable = context.getDrawable(R.drawable.ic_spooky_kurbis_v3_3d)
+    private val placeHolderDrawable =
+        ContextCompat.getDrawable(context, R.drawable.ic_spooky_kurbis_v3_3d)
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -73,6 +91,14 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
 
     override fun onInitializeBoard() {
         game_info.text = context.getString(R.string.get_it_started)
+
+        addViewsToHardwareLayer()
+    }
+
+    private fun addViewsToHardwareLayer() {
+        toBeAnimatedViews.forEach {
+            it.setLayerType(LAYER_TYPE_HARDWARE, null)
+        }
     }
 
     override fun onAiIsTurning() {
@@ -191,9 +217,7 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     }
 
     private fun getCurrentPlayerPlayStone(currentPlayer: Int): Drawable? {
-        return if (currentPlayer == 1) context.getDrawable(xImgPlayerStone) else context.getDrawable(
-            oImgPlayerStone
-        )
+        return if (currentPlayer == 1) xImgPlayerStone else oImgPlayerStone
     }
 
     private fun startWhobbleAnimation(view: View) {
