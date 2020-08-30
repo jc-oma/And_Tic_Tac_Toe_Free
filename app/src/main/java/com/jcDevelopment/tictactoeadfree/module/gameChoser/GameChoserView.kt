@@ -26,12 +26,24 @@ class GameChoserView @JvmOverloads constructor(
         R.anim.choser_check_appear
     )
 
+    private val toBeAnimatedViews by lazy { listOf<View>(
+        game_choser_game_one_check,
+        game_choser_game_two_check
+    ) }
+
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
 
     init {
         initView(context)
         initClickListener()
         initLastChosenGame()
+        initHardwareAcceleration()
+    }
+
+    private fun initHardwareAcceleration() {
+        toBeAnimatedViews.forEach {
+            it.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+        }
     }
 
     private fun initLastChosenGame() {
@@ -93,19 +105,13 @@ class GameChoserView @JvmOverloads constructor(
         )
 
         val duration = 150L
-        val scaleToXY = 1.05f
-        val scaleBackXY = 1f
         when(gameMode) {
             GameMode.TIC_TAC_TOE -> {
-                game_choser_game_one.animate().withLayer().scaleX(scaleToXY).scaleY(scaleToXY).setDuration(duration).setInterpolator(OvershootInterpolator()).start()
-                game_choser_game_two.animate().withLayer().scaleX(scaleBackXY).scaleY(scaleBackXY).setDuration(duration).start()
                 game_choser_game_one_check.alpha = 1f
                 game_choser_game_one_check.startAnimation(loadAnimation)
                 game_choser_game_two_check.alpha = 0f
             }
             GameMode.FOUR_IN_A_ROW -> {
-                game_choser_game_one.animate().withLayer().scaleX(scaleBackXY).scaleY(scaleBackXY).setDuration(duration).start()
-                game_choser_game_two.animate().withLayer().scaleX(scaleToXY).scaleY(scaleToXY).setDuration(duration).setInterpolator(OvershootInterpolator()).start()
                 game_choser_game_one_check.alpha = 0f
                 game_choser_game_two_check.alpha = 1f
                 game_choser_game_two_check.startAnimation(loadAnimation)
