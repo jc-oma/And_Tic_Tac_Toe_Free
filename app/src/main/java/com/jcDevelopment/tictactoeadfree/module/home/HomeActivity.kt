@@ -52,6 +52,38 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         }
     }
 
+    override fun onLogoFragmentLoaded() {
+        openHomeFragment()
+    }
+
+    override fun onHomeFragmentGameStartButtonClick() {
+        if (!getGameSettings().isSecondPlayerAi && isBluetoothAvailable()) {
+            val transaction: FragmentTransaction = manager.beginTransaction()
+            transaction.add(R.id.main_activity_root, TwoPlayerModeChooserFragment.newInstance())
+            transaction.commit()
+        } else {
+            openGameFragment()
+        }
+    }
+
+    override fun onTwoPlayerModeChooserFragmentBluetoothClick() {
+        if (manager.fragments.size > 0) {
+            manager.fragments.remove(manager.fragments.last())
+        }
+        openGameFragment()
+    }
+
+    override fun onTwoPlayerModeChooserFragmentHotseatClick() {
+        if (manager.fragments.size > 0) {
+            manager.fragments.remove(manager.fragments.last())
+        }
+        openGameFragment()
+    }
+
+    override fun onCheckIfBluetoothAvailable(): Boolean {
+        return isBluetoothAvailable()
+    }
+
     private fun initToolbar() {
         home_toolbar.inflateMenu(R.menu.menu_fragment_home)
         home_toolbar.title = this.getText(R.string.app_name)
@@ -84,20 +116,6 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         }
     }
 
-    override fun onLogoFragmentLoaded() {
-        openHomeFragment()
-    }
-
-    override fun onHomeFragmentGameStartButtonClick() {
-        if (!getGameSettings().isSecondPlayerAi) {
-            val transaction: FragmentTransaction = manager.beginTransaction()
-            transaction.add(R.id.main_activity_root, TwoPlayerModeChooserFragment.newInstance())
-            transaction.commit()
-        } else {
-            openGameFragment()
-        }
-    }
-
     private fun openGameFragment() {
         BlueToothService(Handler()).checkForBluetoothAdapter(this)
         val gameSettings = getGameSettings()
@@ -107,6 +125,10 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         } else if (gameMode == GameMode.FOUR_IN_A_ROW) {
             openFourInARowFragment()
         }
+    }
+
+    private fun isBluetoothAvailable(): Boolean {
+        return BlueToothService(Handler()).checkForBluetoothAdapter(this)
     }
 
     private fun getGameSettings(): GameSettings {
@@ -134,19 +156,5 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         val transaction: FragmentTransaction = manager.beginTransaction()
         transaction.replace(R.id.main_activity_root, HomeFragment.newInstance())
         transaction.commit()
-    }
-
-    override fun onTwoPlayerModeChooserFragmentBluetoothClick() {
-        if (manager.fragments.size > 0) {
-            manager.fragments.remove(manager.fragments.last())
-        }
-        openGameFragment()
-    }
-
-    override fun onTwoPlayerModeChooserFragmentHotseatClick() {
-        if (manager.fragments.size > 0) {
-            manager.fragments.remove(manager.fragments.last())
-        }
-        openGameFragment()
     }
 }

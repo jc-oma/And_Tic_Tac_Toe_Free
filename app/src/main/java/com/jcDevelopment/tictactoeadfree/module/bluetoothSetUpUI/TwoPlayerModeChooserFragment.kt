@@ -1,12 +1,15 @@
 package com.jcDevelopment.tictactoeadfree.module.bluetoothSetUpUI
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseFragment
+import com.jcDevelopment.tictactoeadfree.module.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_two_player_mode_choser.*
 
 class TwoPlayerModeChooserFragment : BaseFragment() {
@@ -36,7 +39,12 @@ class TwoPlayerModeChooserFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
         initListener()
+    }
+
+    private fun initView() {
+        two_player_game_mode_bluetooth.isVisible = listener?.onCheckIfBluetoothAvailable() ?: false
     }
 
     private fun initListener() {
@@ -47,5 +55,6 @@ class TwoPlayerModeChooserFragment : BaseFragment() {
     interface Listener {
         fun onTwoPlayerModeChooserFragmentBluetoothClick()
         fun onTwoPlayerModeChooserFragmentHotseatClick()
+        fun onCheckIfBluetoothAvailable():Boolean
     }
 }

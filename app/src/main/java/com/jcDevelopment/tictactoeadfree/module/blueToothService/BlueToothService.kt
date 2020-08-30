@@ -90,12 +90,17 @@ class BlueToothService internal constructor(// handler that gets info from Bluet
     private val REQUEST_ENABLE_BT = 12
     private val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
 
-    fun checkForBluetoothAdapter(homeActivity: Activity) {
-        if (bluetoothAdapter == null) {
+    fun checkForBluetoothAdapter(homeActivity: Activity) : Boolean{
+        return if (bluetoothAdapter == null) {
             Toast.makeText(homeActivity, "BlueTooth nicht gefunden", Toast.LENGTH_LONG).show()
-            return
-        }
+            false
+        } else true
+    }
 
+    fun enableBluetooth(
+        bluetoothAdapter: BluetoothAdapter,
+        homeActivity: Activity
+    ) {
         if (!bluetoothAdapter.isEnabled) {
             val enableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             homeActivity.startActivityForResult(enableIntent, REQUEST_ENABLE_BT)
