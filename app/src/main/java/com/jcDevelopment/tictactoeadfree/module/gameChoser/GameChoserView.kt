@@ -26,7 +26,7 @@ class GameChoserView @JvmOverloads constructor(
         R.anim.choser_check_appear
     )
 
-    private val toBeAnimatedViews by lazy { listOf<View>(
+    private val toBeHardwareAcceleratedViews by lazy { listOf<View>(
         game_choser_game_one_check,
         game_choser_game_two_check
     ) }
@@ -41,7 +41,7 @@ class GameChoserView @JvmOverloads constructor(
     }
 
     private fun initHardwareAcceleration() {
-        toBeAnimatedViews.forEach {
+        toBeHardwareAcceleratedViews.forEach {
             it.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         }
     }
