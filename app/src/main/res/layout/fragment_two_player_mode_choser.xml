@@ -7,37 +7,103 @@
     android:background="@color/white"
     tools:context=".module.bluetoothSetUpUI.TwoPlayerModeChooserFragment">
 
-    <Button
-        android:id="@+id/two_player_game_mode_bluetooth"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="32dp"
-        android:drawableEnd="@drawable/ic_bluetooth_24px"
-        android:paddingEnd="48dp"
-        android:paddingStart="48dp"
-        android:fontFamily="@font/berkshire_swash_regular"
-        android:text="@string/bluetooth"
-        android:background="@drawable/button_spooky_button_purple_set"
-        app:layout_constraintDimensionRatio="31:10"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/two_player_game_mode_first_step"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/two_player_game_mode_hotseat"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="32dp"
-        android:drawableEnd="@drawable/ic_hotseat_24px"
-        android:paddingEnd="48dp"
-        android:paddingStart="48dp"
-        android:fontFamily="@font/berkshire_swash_regular"
-        android:text="@string/hot_seat"
-        android:background="@drawable/button_spooky_button_purple_set"
-        app:layout_constraintDimensionRatio="31:10"
+        <Button
+            android:id="@+id/two_player_game_mode_bluetooth"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_spooky_button_purple_set"
+            android:drawableEnd="@drawable/ic_bluetooth_24px"
+            android:fontFamily="@font/berkshire_swash_regular"
+            android:paddingStart="48dp"
+            android:paddingEnd="48dp"
+            android:text="@string/bluetooth"
+            app:layout_constraintDimensionRatio="31:10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/two_player_game_mode_hotseat"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_spooky_button_purple_set"
+            android:drawableEnd="@drawable/ic_hotseat_24px"
+            android:fontFamily="@font/berkshire_swash_regular"
+            android:paddingStart="48dp"
+            android:paddingEnd="48dp"
+            android:text="@string/hot_seat"
+            app:layout_constraintDimensionRatio="31:10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/two_player_game_mode_bluetooth" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/two_player_game_mode_second_step"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/two_player_game_mode_bluetooth" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/two_player_game_mode_bluetooth_host"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_spooky_button_purple_set"
+            android:fontFamily="@font/berkshire_swash_regular"
+            android:paddingStart="48dp"
+            android:paddingEnd="48dp"
+            android:text="@string/bluetooth_host_game"
+            app:layout_constraintDimensionRatio="31:10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/two_player_game_mode_bluetooth_client"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_spooky_button_purple_set"
+            android:fontFamily="@font/berkshire_swash_regular"
+            android:paddingStart="48dp"
+            android:paddingEnd="48dp"
+            android:text="@string/bluetooth_connect_game"
+            app:layout_constraintDimensionRatio="31:10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/two_player_game_mode_bluetooth_host" />
+
+        <Button
+            android:id="@+id/two_player_game_mode_bluetooth_back_button"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_spooky_button_purple_set"
+            android:fontFamily="@font/berkshire_swash_regular"
+            android:paddingStart="48dp"
+            android:paddingEnd="48dp"
+            android:text="@string/back"
+            app:layout_constraintDimensionRatio="31:10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/two_player_game_mode_bluetooth_client" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

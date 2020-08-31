@@ -4,7 +4,14 @@
 
     <item
         android:title="@string/used_Libraries_toolbar_item"
-        android:id="@+id/action_used_libraries"
+        android:id="@+id/action_used_libraries_item"
         android:orderInCategory="9"
         app:showAsAction="never" />
+
+    <item
+        android:title="@string/share_with_friends"
+        android:id="@+id/share_with_friends_item"
+        android:orderInCategory="9"
+        android:icon="@drawable/ic_share_24_white"
+        app:showAsAction="always" />
 </menu>

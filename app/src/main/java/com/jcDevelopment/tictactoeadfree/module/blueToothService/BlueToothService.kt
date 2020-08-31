@@ -97,14 +97,15 @@ class BlueToothService internal constructor(// handler that gets info from Bluet
         } else true
     }
 
-    fun enableBluetooth(
-        bluetoothAdapter: BluetoothAdapter,
+    fun enableBluetooth (
         homeActivity: Activity
-    ) {
-        if (!bluetoothAdapter.isEnabled) {
+    ):BluetoothAdapter? {
+        val isBluetoothEnabled = bluetoothAdapter?.isEnabled ?: false
+        if (!isBluetoothEnabled) {
             val enableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             homeActivity.startActivityForResult(enableIntent, REQUEST_ENABLE_BT)
         }
+        return bluetoothAdapter
     }
 
     fun getBondedDevices(): Set<BluetoothDevice>? {

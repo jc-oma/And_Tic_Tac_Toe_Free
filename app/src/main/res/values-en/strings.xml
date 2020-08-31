@@ -7,6 +7,7 @@
     <string name="one_player">&lt; One Player &gt;</string>
     <string name="two_player">&lt; Two Player &gt;</string>
     <string name="start_game">Start Game</string>
+    <string name="back">back</string>
 
     <string name="won">You won!</string>
     <string name="draw">Draw!</string>
@@ -31,7 +32,11 @@
     <string name="external_libraries_headline">Used external Libraries</string>
     <string name="used_Libraries_toolbar_item">Used Libraries</string>
 
+    <string name="share_with_friends">Share with friends</string>
+
     <!-- two player mode chooser -->
     <string name="bluetooth">Bluetooth</string>
     <string name="hot_seat">hot seat</string>
+    <string name="bluetooth_host_game">create game</string>
+    <string name="bluetooth_connect_game">connect to game</string>
 </resources>
