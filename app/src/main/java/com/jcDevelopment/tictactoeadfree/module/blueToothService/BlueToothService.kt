@@ -73,11 +73,11 @@ class BlueToothService(context: Context?, handler: Handler) {
 
         // Start the thread to listen on a BluetoothServerSocket
         if (mSecureAcceptThread == null) {
-            mSecureAcceptThread = AcceptThread()
+            mSecureAcceptThread = AcceptThread(true)
             mSecureAcceptThread!!.start()
         }
         if (mInsecureAcceptThread == null) {
-            mInsecureAcceptThread = AcceptThread()
+            mInsecureAcceptThread = AcceptThread(false)
             mInsecureAcceptThread!!.start()
         }
         // Update UI title
@@ -247,7 +247,7 @@ class BlueToothService(context: Context?, handler: Handler) {
      * like a server-side client. It runs until a connection is accepted
      * (or until cancelled).
      */
-    private inner class AcceptThread() : Thread() {
+    private inner class AcceptThread(secure: Boolean) : Thread() {
         // The local server socket
         private val mmServerSocket: BluetoothServerSocket?
         private val mSocketType: String
@@ -289,8 +289,7 @@ class BlueToothService(context: Context?, handler: Handler) {
                                         e
                                     )
                                 }
-                            else -> {
-                            }
+                            else -> {}
                         }
                     }
                 }
@@ -312,14 +311,20 @@ class BlueToothService(context: Context?, handler: Handler) {
 
         init {
             var tmp: BluetoothServerSocket? = null
-            mSocketType = "Insecure"
+            mSocketType = if (secure) "Secure" else "Insecure"
 
             // Create a new listening server socket
             try {
-                tmp = mAdapter.listenUsingInsecureRfcommWithServiceRecord(
-                    NAME_INSECURE,
-                    MY_UUID_INSECURE
-                )
+                tmp = if (secure) {
+                    mAdapter.listenUsingRfcommWithServiceRecord(
+                        NAME_SECURE,
+                        MY_UUID_SECURE
+                    )
+                } else {
+                    mAdapter.listenUsingInsecureRfcommWithServiceRecord(
+                        NAME_INSECURE, MY_UUID_INSECURE
+                    )
+                }
             } catch (e: IOException) {
                 Log.e(TAG, "Socket Type: " + mSocketType + "listen() failed", e)
             }
@@ -391,10 +396,15 @@ class BlueToothService(context: Context?, handler: Handler) {
             // Get a BluetoothSocket for a connection with the
             // given BluetoothDevice
             try {
-                tmp =
+                tmp = if (secure) {
+                    mmDevice.createRfcommSocketToServiceRecord(
+                        MY_UUID_SECURE
+                    )
+                } else {
                     mmDevice.createInsecureRfcommSocketToServiceRecord(
                         MY_UUID_INSECURE
                     )
+                }
             } catch (e: IOException) {
                 Log.e(TAG, "Socket Type: " + mSocketType + "create() failed", e)
             }
@@ -483,10 +493,12 @@ class BlueToothService(context: Context?, handler: Handler) {
         private const val TAG = "BluetoothChatService"
 
         // Name for the SDP record when creating server socket
-        private const val NAME_INSECURE = "SpookyHalloWeenAPP"
+        private const val NAME_SECURE = "SpookyHalloWeenAPP"
+        private const val NAME_INSECURE = "SpookyHalloWeenAPP_insecure"
 
         // Unique UUID for this application
-        private val MY_UUID_INSECURE = UUID.fromString("af8d7c3f-e566-41e2-bec6-a8f82dd77710")
+        private val MY_UUID_SECURE = UUID.fromString("af8d7c3f-e566-41e2-bec6-a8f82dd77710")
+        private val MY_UUID_INSECURE = UUID.fromString("ce36c4d0-0ee3-4dd5-83db-f3077fa19603")
 
         // Constants that indicate the current connection state
         const val STATE_NONE = 0 // we're doing nothing
