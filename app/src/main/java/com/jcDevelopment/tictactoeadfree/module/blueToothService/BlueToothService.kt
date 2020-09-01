@@ -1,3 +1,5 @@
+package com.jcDevelopment.tictactoeadfree.module.blueToothService
+
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothServerSocket
@@ -6,7 +8,6 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import com.jcDevelopment.tictactoeadfree.module.blueToothService.Constants
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -289,7 +290,8 @@ class BlueToothService(context: Context?, handler: Handler) {
                                         e
                                     )
                                 }
-                            else -> {}
+                            else -> {
+                            }
                         }
                     }
                 }
@@ -430,12 +432,14 @@ class BlueToothService(context: Context?, handler: Handler) {
             // Keep listening to the InputStream while connected
             while (mState == STATE_CONNECTED) {
                 try {
-                    // Read from the InputStream
-                    bytes = mmInStream!!.read(buffer)
+                    if (mmInStream != null) {
+                        // Read from the InputStream
+                        bytes = mmInStream.read(buffer)
 
-                    // Send the obtained bytes to the UI Activity
-                    mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
-                        .sendToTarget()
+                        // Send the obtained bytes to the UI Activity
+                        mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
+                            .sendToTarget()
+                    }
                 } catch (e: IOException) {
                     Log.e(TAG, "disconnected", e)
                     connectionLost()

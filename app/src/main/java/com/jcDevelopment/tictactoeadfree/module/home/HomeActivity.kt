@@ -1,15 +1,13 @@
 package com.jcDevelopment.tictactoeadfree.module.home
 
-import BlueToothService
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
+import android.os.Message
+import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.view.get
 import androidx.core.view.isVisible
@@ -17,6 +15,8 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.ads.MobileAds
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseActivity
+import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
+import com.jcDevelopment.tictactoeadfree.module.blueToothService.Constants
 import com.jcDevelopment.tictactoeadfree.module.bluetoothSetUpUI.TwoPlayerModeChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardFragment
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.TwoDimensionsSimpleGameFragment
@@ -34,11 +34,73 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     private val activity = this
     private val manager = activity.supportFragmentManager
 
+    //Bluetooth
+    // Intent request codes
+    private val REQUEST_CONNECT_DEVICE_SECURE: Int = 1
+    private val REQUEST_CONNECT_DEVICE_INSECURE = 2
+    private val REQUEST_ENABLE_BT = 3
+
+    //TODO Rename with context of Game
+    /*** Name of the connected device*/
+    private var mConnectedDeviceName: String? = null
+
+    /*** String buffer for outgoing messages*/
+    private val mOutStringBuffer: StringBuffer? = null
+
+    /*** Local Bluetooth adapter*/
+    private var mBluetoothAdapter: BluetoothAdapter? = null
+
+    /*** Member object for the chat services*/
+    private var mChatService: BlueToothService? = null
+
+    private val mHandler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                Constants.MESSAGE_STATE_CHANGE -> when (msg.arg1) {
+                    BlueToothService.STATE_CONNECTED -> {
+                        makeToast("connected")
+                    }
+                    BlueToothService.STATE_CONNECTING -> makeToast("connecting")
+                    BlueToothService.STATE_LISTEN, BlueToothService.STATE_NONE -> bluetooth_connection_status.text = "connecting"
+                }
+                Constants.MESSAGE_WRITE -> {
+                    val writeBuf = msg.obj as ByteArray
+                    // construct a string from the buffer
+                    val writeMessage = String(writeBuf)
+
+                    bluetooth_connection_status.text = writeMessage
+                }
+                Constants.MESSAGE_READ -> {
+                    val readBuf = msg.obj as ByteArray
+                    // construct a string from the valid bytes in the buffer
+                    val readMessage = String(readBuf, 0, msg.arg1)
+
+                    bluetooth_connection_status.text = readMessage
+                }
+                Constants.MESSAGE_DEVICE_NAME -> {
+                    // save the connected device's name
+                    mConnectedDeviceName = msg.data.getString(Constants.DEVICE_NAME)
+                    if (null != activity) {
+                        bluetooth_connection_status.text = "Connected to $mConnectedDeviceName"
+                    }
+                }
+                Constants.MESSAGE_TOAST -> if (null != activity) {
+                    Toast.makeText(
+                        activity, msg.data.getString(Constants.TOAST),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
         openLogoFragment()
 
@@ -49,12 +111,40 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         initToolbar()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // Performing this check in onResume() covers the case in which BT was
+        // not enabled during onStart(), so we were paused to enable it...
+        // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
+
+        // Performing this check in onResume() covers the case in which BT was
+        // not enabled during onStart(), so we were paused to enable it...
+        // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
+        if (mChatService != null) {
+            // Only if the state is STATE_NONE, do we know that we haven't started already
+            if (mChatService?.getState() == BlueToothService.STATE_NONE) {
+                // Start the Bluetooth chat services
+                mChatService?.start()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mChatService?.stop()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         //TODO REQUEST CODE from BluetoothService
         if (requestCode == 12 && resultCode == RESULT_OK) {
             Toast.makeText(this, "BlueTooth aktiv", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun makeToast(s: String) {
+        Toast.makeText(this, mConnectedDeviceName.toString(), Toast.LENGTH_LONG).show()
     }
 
     override fun onLogoFragmentLoaded() {
@@ -90,34 +180,37 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     }
 
     override fun onBluetoothCreateHostButtonClicked() {
-        val discoverableIntent: Intent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE).apply {
-            putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300)
-        }
-        startActivity(discoverableIntent)
-
+        getBluetoothlist()
     }
 
     override fun onBluetoothConnectToGameButtonClicked() {
-        val receiver = object : BroadcastReceiver() {
+        getBluetoothlist()
+    }
 
-            override fun onReceive(context: Context, intent: Intent) {
-                //Fixme "!!"
-                //Fixme unregister onDestroy
-                when(intent.action!!) {
-                    BluetoothDevice.ACTION_FOUND -> {
-                        // Discovery has found a device. Get the BluetoothDevice
-                        // object and its info from the Intent.
-                        val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-                        val deviceName = device?.name
-                        val deviceHardwareAddress = device?.address // MAC address
-                    }
-                }
-            }
+    private fun getBluetoothlist() {
+        val bondedDevices = mBluetoothAdapter?.bondedDevices
+        val arrayAdapter = ArrayAdapter<String>(
+            activity,
+            R.layout.recyclerview_used_library,
+            R.id.used_library_headline,
+            bondedDevices!!.map { it.name.toString() + it.name })
+        home_activity_bluetooth_list.adapter = arrayAdapter
+        home_activity_bluetooth_list.setOnItemClickListener { _, _, position, _ ->
+            home_activity_bluetooth_list.isVisible = false
+            val bondedBluetoothAdapter = mBluetoothAdapter?.getRemoteDevice(
+                bondedDevices.elementAt(
+                    position
+                ).address
+            )
+
+            mChatService = BlueToothService(activity, mHandler)
+            mChatService?.connect(bondedBluetoothAdapter!!, secure = false)
         }
+        home_activity_bluetooth_list.visibility = View.VISIBLE
 
-        // Register for broadcasts when a device is discovered.
-        val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-        registerReceiver(receiver, filter)
+        bluetooth_connection_status.setOnClickListener {
+            mChatService?.write((Math.random().toString()).toByteArray())
+        }
     }
 
     private fun initToolbar() {
