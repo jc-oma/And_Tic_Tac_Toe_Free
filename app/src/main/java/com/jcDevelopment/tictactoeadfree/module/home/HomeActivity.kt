@@ -1,5 +1,6 @@
 package com.jcDevelopment.tictactoeadfree.module.home
 
+import BlueToothService
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
@@ -16,7 +17,6 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.ads.MobileAds
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseActivity
-import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
 import com.jcDevelopment.tictactoeadfree.module.bluetoothSetUpUI.TwoPlayerModeChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardFragment
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.TwoDimensionsSimpleGameFragment
@@ -33,7 +33,6 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     TwoPlayerModeChooserFragment.Listener {
     private val activity = this
     private val manager = activity.supportFragmentManager
-    private val blueToothService by lazy { BlueToothService(Handler()) }
 
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
 
@@ -181,7 +180,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     }
 
     private fun isBluetoothAvailable(): Boolean {
-        return blueToothService.checkForBluetoothAdapter(this)
+        return BluetoothAdapter.getDefaultAdapter() != null
     }
 
     private fun getGameSettings(): GameSettings {
