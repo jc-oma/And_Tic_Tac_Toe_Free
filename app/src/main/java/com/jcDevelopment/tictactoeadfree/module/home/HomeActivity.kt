@@ -22,6 +22,7 @@ import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFou
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.TwoDimensionsSimpleGameFragment
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
+import com.jcDevelopment.tictactoeadfree.module.gameDificulty.GameDifficultyChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.logo.LogoFragment
 import com.jcDevelopment.tictactoeadfree.module.usedLibraries.UsedLibrariesFragment
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
@@ -30,7 +31,8 @@ import org.koin.android.ext.android.inject
 
 
 class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listener,
-    TwoPlayerModeChooserFragment.Listener {
+    TwoPlayerModeChooserFragment.Listener, GameDifficultyChooserFragment.Listener {
+    private var isTransactionSafe: Boolean = true
     private val activity = this
     private val manager = activity.supportFragmentManager
 
@@ -61,7 +63,8 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
                         makeToast("connected")
                     }
                     BlueToothService.STATE_CONNECTING -> makeToast("connecting")
-                    BlueToothService.STATE_LISTEN, BlueToothService.STATE_NONE -> bluetooth_connection_status.text = "connecting"
+                    BlueToothService.STATE_LISTEN, BlueToothService.STATE_NONE -> bluetooth_connection_status.text =
+                        "connecting"
                 }
                 Constants.MESSAGE_WRITE -> {
                     val writeBuf = msg.obj as ByteArray
@@ -135,6 +138,16 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         mChatService?.stop()
     }
 
+    override fun onPostResume() {
+        super.onPostResume()
+        isTransactionSafe = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isTransactionSafe = false
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         //TODO REQUEST CODE from BluetoothService
@@ -156,9 +169,17 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
             val transaction: FragmentTransaction = manager.beginTransaction()
             transaction.add(R.id.main_activity_root, TwoPlayerModeChooserFragment.newInstance())
             transaction.commit()
+        } else if (getGameSettings().isSecondPlayerAi) {
+            openAiDifficultyChooserFragment()
         } else {
             openGameFragment()
         }
+    }
+
+    private fun openAiDifficultyChooserFragment() {
+        val transaction: FragmentTransaction = manager.beginTransaction()
+        transaction.add(R.id.main_activity_root, GameDifficultyChooserFragment.newInstance())
+        transaction.commit()
     }
 
     override fun onTwoPlayerModeChooserFragmentBluetoothClick() {
@@ -185,6 +206,13 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
 
     override fun onBluetoothConnectToGameButtonClicked() {
         getBluetoothlist()
+    }
+
+    override fun onAiDifficultyChosen() {
+        if (manager.fragments.size > 0) {
+            manager.fragments.remove(manager.fragments.last())
+        }
+        openGameFragment()
     }
 
     private fun getBluetoothlist() {
@@ -297,9 +325,11 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     }
 
     private fun openHomeFragment() {
-        home_toolbar.isVisible = true
-        val transaction: FragmentTransaction = manager.beginTransaction()
-        transaction.replace(R.id.main_activity_root, HomeFragment.newInstance())
-        transaction.commit()
+        if (isTransactionSafe) {
+            home_toolbar.isVisible = true
+            val transaction: FragmentTransaction = manager.beginTransaction()
+            transaction.replace(R.id.main_activity_root, HomeFragment.newInstance())
+            transaction.commit()
+        }
     }
 }

@@ -128,8 +128,8 @@ class HomeFragment : BaseFragment() {
                     .setDuration(alphaOffsetAppearance).withEndAction {
                         home_game_choser.animate().alpha(1f)
                             .setDuration(alphaOffsetAppearance).withEndAction {
-                                home_start_game_button.animate().alpha(1f)
-                                    .setDuration(alphaOffsetAppearance).start()
+                                home_start_game_button?.animate()?.alpha(1f)
+                                    ?.setDuration(alphaOffsetAppearance)?.start()
                             }.start()
                     }.start()
             }

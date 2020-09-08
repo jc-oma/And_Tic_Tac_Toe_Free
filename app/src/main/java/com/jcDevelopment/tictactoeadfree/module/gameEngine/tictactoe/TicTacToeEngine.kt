@@ -1,6 +1,7 @@
 package com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe
 
 import android.os.Handler
+import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameStatistics.GameStatistics
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
@@ -74,18 +75,32 @@ class TicTacToeEngine internal constructor(
         var aiTurnZ: Int? = null
 
         //TODO a bit more than random turns
-        while (isPositionDataNullOrOnATakenPosition(aiTurnX, aiTurnY, aiTurnZ)) {
+        while (isPositionDataNullOrOnATakenPosition(aiTurnX, aiTurnY, aiTurnZ) && gameSettingsViewModel.getGameSettings()
+                .first().difficulty != GameDifficulty.HARD.toString()) {
             aiTurnX = (Math.random() * grid).toInt()
             aiTurnY = (Math.random() * grid).toInt()
             aiTurnZ = (Math.random() * grid).toInt()
         }
 
         val aiMove = TicTacToeAI.findBestMove(playGround)
-        aiTurnX = aiMove.row
-        aiTurnY = aiMove.col
+
+        if (gameSettingsViewModel.getGameSettings()
+                .first().difficulty == GameDifficulty.HARD.toString()
+        ) {
+            aiTurnX = aiMove.row
+            aiTurnY = aiMove.col
+        } else {
+            val random = Math.random()
+            if (gameSettingsViewModel.getGameSettings()
+                    .first().difficulty == GameDifficulty.MEDIUM.toString() && random > 0.6
+            ) {
+                aiTurnX = aiMove.row
+                aiTurnY = aiMove.col
+            }
+        }
 
         if (is3DBoard) {
-            if (aiTurnZ != null) {
+            if (aiTurnX != null && aiTurnY != null && aiTurnZ != null) {
                 Handler().postDelayed({
                     gameListener.onPlayerTurned(aiTurnX, aiTurnY, aiTurnZ, currentPlayer)
                     playGround[aiTurnX][aiTurnY][aiTurnZ] = currentPlayer
@@ -94,12 +109,14 @@ class TicTacToeEngine internal constructor(
                 }, 1000)
             }
         } else {
-            Handler().postDelayed({
-                gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
-                playGround[aiTurnX][aiTurnY][0] = currentPlayer
-                checkForWinCondition(aiTurnX, aiTurnY, 0)
-                switchPlayer()
-            }, 1000)
+            if (aiTurnX != null && aiTurnY != null) {
+                Handler().postDelayed({
+                    gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
+                    playGround[aiTurnX][aiTurnY][0] = currentPlayer
+                    checkForWinCondition(aiTurnX, aiTurnY, 0)
+                    switchPlayer()
+                }, 1000)
+            }
         }
     }
 

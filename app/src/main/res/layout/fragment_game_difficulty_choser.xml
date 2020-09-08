@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".module.gameDificulty.GameDifficultyChooserFragment">
+
+    <Button
+        android:id="@+id/difficulty_fragment_easy_button"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@drawable/button_spooky_button_purple_set"
+        android:elevation="8dp"
+        android:fontFamily="@font/berk_shire"
+        android:scaleType="fitXY"
+        android:text="@string/game_difficulty_easy"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/difficulty_fragment_medium_button"
+        app:layout_constraintDimensionRatio="31:10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/difficulty_fragment_medium_button"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@drawable/button_spooky_button_purple_set"
+        android:elevation="8dp"
+        android:fontFamily="@font/berk_shire"
+        android:scaleType="fitXY"
+        android:text="@string/game_difficulty_medium"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/difficulty_fragment_hard_button"
+        app:layout_constraintDimensionRatio="31:10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/difficulty_fragment_easy_button" />
+
+    <Button
+        android:id="@+id/difficulty_fragment_hard_button"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@drawable/button_spooky_button_purple_set"
+        android:elevation="8dp"
+        android:fontFamily="@font/berk_shire"
+        android:scaleType="fitXY"
+        android:text="@string/game_difficulty_hard"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="31:10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/difficulty_fragment_medium_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

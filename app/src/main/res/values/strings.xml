@@ -9,6 +9,10 @@
     <string name="start_game">Spiel Starten</string>
     <string name="back">zurück</string>
 
+    <string name="game_difficulty_easy">einfach</string>
+    <string name="game_difficulty_medium">mittel</string>
+    <string name="game_difficulty_hard">schwer</string>
+
     <string name="won">Sieg!</string>
     <string name="draw">Unentschieden!</string>
     <string name="restart_game">Spiel neu Starten</string>
@@ -40,4 +44,6 @@
     <string name="bluetooth_connect_game">mit Spiel verbinden</string>
     <string name="hot_seat">hot seat</string>
     <string name="play_store_link">https://play.google.com/store/apps/details?id=com.jcDevelopment.tictactoeadfree</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

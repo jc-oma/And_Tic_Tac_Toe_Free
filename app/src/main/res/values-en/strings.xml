@@ -9,6 +9,10 @@
     <string name="start_game">Start Game</string>
     <string name="back">back</string>
 
+    <string name="game_difficulty_easy">easy</string>
+    <string name="game_difficulty_medium">medium</string>
+    <string name="game_difficulty_hard">hard</string>
+
     <string name="won">You won!</string>
     <string name="draw">Draw!</string>
     <string name="restart_game">Restart Game</string>
