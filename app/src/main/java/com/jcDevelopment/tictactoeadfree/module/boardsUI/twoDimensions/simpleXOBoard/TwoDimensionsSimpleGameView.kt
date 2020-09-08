@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
-import com.jcDevelopment.tictactoeadfree.module.gameEngine.TicTacToeEngine
+import com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe.TicTacToeEngine
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 
@@ -41,7 +41,9 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     private var isGameOver: Boolean = false
 
     private val toe: TicTacToeEngine =
-        TicTacToeEngine(listener = this)
+        TicTacToeEngine(
+            listener = this
+        )
 
     private val playGroundViewGrid: List<ImageView> by lazy {
         listOf(

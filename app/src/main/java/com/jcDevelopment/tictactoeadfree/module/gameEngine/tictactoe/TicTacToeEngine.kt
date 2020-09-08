@@ -1,4 +1,4 @@
-package com.jcDevelopment.tictactoeadfree.module.gameEngine
+package com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe
 
 import android.os.Handler
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
@@ -73,15 +73,19 @@ class TicTacToeEngine internal constructor(
         var aiTurnY: Int? = null
         var aiTurnZ: Int? = null
 
-        //TODO i bit more than random turns
+        //TODO a bit more than random turns
         while (isPositionDataNullOrOnATakenPosition(aiTurnX, aiTurnY, aiTurnZ)) {
             aiTurnX = (Math.random() * grid).toInt()
             aiTurnY = (Math.random() * grid).toInt()
             aiTurnZ = (Math.random() * grid).toInt()
         }
 
+        val aiMove = TicTacToeAI.findBestMove(playGround)
+        aiTurnX = aiMove.row
+        aiTurnY = aiMove.col
+
         if (is3DBoard) {
-            if (aiTurnX != null && aiTurnY != null && aiTurnZ != null) {
+            if (aiTurnZ != null) {
                 Handler().postDelayed({
                     gameListener.onPlayerTurned(aiTurnX, aiTurnY, aiTurnZ, currentPlayer)
                     playGround[aiTurnX][aiTurnY][aiTurnZ] = currentPlayer
@@ -90,15 +94,28 @@ class TicTacToeEngine internal constructor(
                 }, 1000)
             }
         } else {
-            if (aiTurnX != null && aiTurnY != null) {
-                Handler().postDelayed({
-                    gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
-                    playGround[aiTurnX][aiTurnY][0] = currentPlayer
-                    checkForWinCondition(aiTurnX, aiTurnY, 0)
-                    switchPlayer()
-                }, 1000)
-            }
+            Handler().postDelayed({
+                gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
+                playGround[aiTurnX][aiTurnY][0] = currentPlayer
+                checkForWinCondition(aiTurnX, aiTurnY, 0)
+                switchPlayer()
+            }, 1000)
         }
+    }
+
+    private fun isPositionDataNullOrOnATakenPosition(
+        aiTurnX: Int?,
+        aiTurnY: Int?,
+        aiTurnZ: Int?
+    ): Boolean {
+        return if (aiTurnX == null || aiTurnY == null || aiTurnZ == null) {
+            true
+        } else
+            if (is3DBoard) {
+                playGround[aiTurnX][aiTurnY][aiTurnZ] != 0
+            } else {
+                playGround[aiTurnX][aiTurnY][0] != 0
+            }
     }
 
     private fun checkForIllegalStates(
@@ -123,21 +140,6 @@ class TicTacToeEngine internal constructor(
 
     private fun switchPlayer() {
         currentPlayer = (currentPlayer % playerCount) + 1
-    }
-
-    private fun isPositionDataNullOrOnATakenPosition(
-        aiTurnX: Int?,
-        aiTurnY: Int?,
-        aiTurnZ: Int?
-    ): Boolean {
-        return if (aiTurnX == null || aiTurnY == null || aiTurnZ == null) {
-            true
-        } else
-            if (is3DBoard) {
-                playGround[aiTurnX][aiTurnY][aiTurnZ] != 0
-            } else {
-                playGround[aiTurnX][aiTurnY][0] != 0
-            }
     }
 
     private fun mutableList() = MutableList(grid) { MutableList(grid) { MutableList(grid) { 0 } } }
