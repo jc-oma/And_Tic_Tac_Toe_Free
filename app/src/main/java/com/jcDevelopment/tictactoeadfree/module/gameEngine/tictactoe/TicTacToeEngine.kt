@@ -74,48 +74,55 @@ class TicTacToeEngine internal constructor(
         var aiTurnY: Int? = null
         var aiTurnZ: Int? = null
 
-        //TODO a bit more than random turns
-        while (isPositionDataNullOrOnATakenPosition(aiTurnX, aiTurnY, aiTurnZ) && gameSettingsViewModel.getGameSettings()
-                .first().difficulty != GameDifficulty.HARD.toString()) {
+        val currentGameSetting = gameSettingsViewModel.getGameSettings().first()
+
+        //TODO move to ai object
+        while (isPositionDataNullOrOnATakenPosition(
+                aiTurnX,
+                aiTurnY,
+                aiTurnZ
+            ) && currentGameSetting.difficulty != GameDifficulty.HARD.toString()
+        ) {
             aiTurnX = (Math.random() * grid).toInt()
             aiTurnY = (Math.random() * grid).toInt()
             aiTurnZ = (Math.random() * grid).toInt()
         }
 
-        val aiMove = TicTacToeAI.findBestMove(playGround)
-
-        if (gameSettingsViewModel.getGameSettings()
-                .first().difficulty == GameDifficulty.HARD.toString()
+        if (currentGameSetting.difficulty != GameDifficulty.EASY.toString()
         ) {
-            aiTurnX = aiMove.row
-            aiTurnY = aiMove.col
-        } else {
-            val random = Math.random()
-            if (gameSettingsViewModel.getGameSettings()
-                    .first().difficulty == GameDifficulty.MEDIUM.toString() && random > 0.6
+            val aiMove = TicTacToeAI.findBestMove(playGround)
+
+            if (currentGameSetting.difficulty == GameDifficulty.HARD.toString()
             ) {
                 aiTurnX = aiMove.row
                 aiTurnY = aiMove.col
+            } else {
+                val random = Math.random()
+                if (currentGameSetting.difficulty == GameDifficulty.MEDIUM.toString() && random > 0.6
+                ) {
+                    aiTurnX = aiMove.row
+                    aiTurnY = aiMove.col
+                }
             }
-        }
 
-        if (is3DBoard) {
-            if (aiTurnX != null && aiTurnY != null && aiTurnZ != null) {
-                Handler().postDelayed({
-                    gameListener.onPlayerTurned(aiTurnX, aiTurnY, aiTurnZ, currentPlayer)
-                    playGround[aiTurnX][aiTurnY][aiTurnZ] = currentPlayer
-                    checkForWinCondition(aiTurnX, aiTurnY, aiTurnZ)
-                    switchPlayer()
-                }, 1000)
-            }
-        } else {
-            if (aiTurnX != null && aiTurnY != null) {
-                Handler().postDelayed({
-                    gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
-                    playGround[aiTurnX][aiTurnY][0] = currentPlayer
-                    checkForWinCondition(aiTurnX, aiTurnY, 0)
-                    switchPlayer()
-                }, 1000)
+            if (is3DBoard) {
+                if (aiTurnX != null && aiTurnY != null && aiTurnZ != null) {
+                    Handler().postDelayed({
+                        gameListener.onPlayerTurned(aiTurnX, aiTurnY, aiTurnZ, currentPlayer)
+                        playGround[aiTurnX][aiTurnY][aiTurnZ] = currentPlayer
+                        checkForWinCondition(aiTurnX, aiTurnY, aiTurnZ)
+                        switchPlayer()
+                    }, 1000)
+                }
+            } else {
+                if (aiTurnX != null && aiTurnY != null) {
+                    Handler().postDelayed({
+                        gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
+                        playGround[aiTurnX][aiTurnY][0] = currentPlayer
+                        checkForWinCondition(aiTurnX, aiTurnY, 0)
+                        switchPlayer()
+                    }, 1000)
+                }
             }
         }
     }

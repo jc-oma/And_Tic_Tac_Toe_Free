@@ -1,4 +1,4 @@
-package com.jcDevelopment.tictactoeadfree.module.gameEngine
+package com.jcDevelopment.tictactoeadfree.module.gameEngine.fourInARow
 
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameStatistics.GameStatistics

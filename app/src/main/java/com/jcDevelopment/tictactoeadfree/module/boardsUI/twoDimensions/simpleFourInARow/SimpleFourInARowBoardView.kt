@@ -6,7 +6,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import com.jcDevelopment.tictactoeadfree.R
-import com.jcDevelopment.tictactoeadfree.module.gameEngine.FourInARowEngine
+import com.jcDevelopment.tictactoeadfree.module.gameEngine.fourInARow.FourInARowEngine
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.processors.PublishProcessor
@@ -34,7 +34,9 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     private var isGameOver: Boolean = false
     private var isAiTurning: Boolean = false
     private val fourEngine: FourInARowEngine =
-        FourInARowEngine(listener = this)
+        FourInARowEngine(
+            listener = this
+        )
 
     private val playGroundViewGrid: List<SimpleFourInARowPlayGroundColumnView> by lazy {
         listOf(

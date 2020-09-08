@@ -1,11 +1,11 @@
 package com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe
 
-// Java program to find the
+// program to find the
 // next optimal move for a player
 //TODO make it 3D compatible
 internal object TicTacToeAI {
-    var player = 2
-    var opponent = 1
+    private var player = 2
+    private var opponent = 1
 
     // This function returns true if there are moves
     // remaining on the board. It returns false if
@@ -168,26 +168,8 @@ internal object TicTacToeAI {
         return bestMove
     }
 
-    /*// Driver code
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val board = arrayOf(
-            charArrayOf('x', 'o', 'x'),
-            charArrayOf('o', 'o', 'x'),
-            charArrayOf('_', '_', '_')
-        )
-        val bestMove = findBestMove(board)
-        System.out.printf("The Optimal Move is :\n")
-        System.out.printf(
-            "ROW: %d COL: %d\n\n",
-            bestMove.row, bestMove.col
-        )
-    }*/
-
     internal class Move {
         var row = 0
         var col = 0
     }
 }
-
-// This code is contributed by PrinciRaj1992
