@@ -99,6 +99,12 @@ class FourInARowEngine internal constructor(
         while (isPositionDataNullOrOnATakenPosition(aiTurnX)) {
             aiTurnX = (Math.random() * gridX).toInt()
         }
+
+        if (turns > 4) {
+            val ai = FourInARowAi
+            aiTurnX = ai.getBestMove(playGround)
+        }
+
         if (aiTurnX != null) {
             android.os.Handler().postDelayed({
                 gameListener.onPlayerTurned(aiTurnX, getNextFreeYPosition(aiTurnX)!!, currentPlayer)
