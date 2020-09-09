@@ -2,7 +2,7 @@ package com.jcDevelopment.tictactoeadfree.module.gameEngine.fourInARow
 
 import com.jcDevelopment.tictactoeadfree.module.Utilityis.deepCopy2
 
-internal object FourInARowAi {
+object FourInARowAi {
     private const val rowAmountToWin = 4
     private val currentPlayerList = listOf(1, 2)
 

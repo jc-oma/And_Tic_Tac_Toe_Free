@@ -1,5 +1,6 @@
 package com.jcDevelopment.tictactoeadfree.module.gameEngine.fourInARow
 
+import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameStatistics.GameStatistics
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
@@ -34,6 +35,8 @@ class FourInARowEngine internal constructor(
     private val gridY = 6
 
     private var nextAiTurnX: Pair<Int?, Int?>? = null
+
+    private val ai = FourInARowAi
 
     fun initializeBoard() {
         currentPlayer = 1
@@ -100,8 +103,9 @@ class FourInARowEngine internal constructor(
             aiTurnX = (Math.random() * gridX).toInt()
         }
 
-        if (turns > 4) {
-            val ai = FourInARowAi
+        val gameSettings = gameSettingsViewModel.getGameSettings().last()
+
+        if (turns > 4 && gameSettings.difficulty == GameDifficulty.MEDIUM.toString()) {
             aiTurnX = ai.getBestMove(playGround)
         }
 

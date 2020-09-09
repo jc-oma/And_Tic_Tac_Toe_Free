@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
+import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.home.HomeFragment
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
@@ -45,6 +46,12 @@ class GameDifficultyChooserFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (gameSettingsViewModel.getGameSettings().last().gameMode == GameMode.FOUR_IN_A_ROW.toString()) {
+            difficulty_fragment_hard_button.visibility = View.GONE
+        } else {
+            difficulty_fragment_hard_button.visibility = View.VISIBLE
+        }
 
         initListener()
     }
