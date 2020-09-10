@@ -90,16 +90,12 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
                 Constants.MESSAGE_DEVICE_NAME -> {
                     // save the connected device's name
                     mConnectedDeviceName = msg.data.getString(Constants.DEVICE_NAME)
-                    if (null != activity) {
-                        bluetooth_connection_status.text = "Connected to $mConnectedDeviceName"
-                    }
+                    bluetooth_connection_status.text = "Connected to $mConnectedDeviceName"
                 }
-                Constants.MESSAGE_TOAST -> if (null != activity) {
-                    Toast.makeText(
-                        activity, msg.data.getString(Constants.TOAST),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                Constants.MESSAGE_TOAST -> Toast.makeText(
+                    activity, msg.data.getString(Constants.TOAST),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
