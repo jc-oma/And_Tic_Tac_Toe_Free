@@ -104,27 +104,28 @@ class TicTacToeEngine internal constructor(
                     aiTurnY = aiMove.col
                 }
             }
+        }
 
-            if (is3DBoard) {
-                if (aiTurnX != null && aiTurnY != null && aiTurnZ != null) {
-                    Handler().postDelayed({
-                        gameListener.onPlayerTurned(aiTurnX, aiTurnY, aiTurnZ, currentPlayer)
-                        playGround[aiTurnX][aiTurnY][aiTurnZ] = currentPlayer
-                        checkForWinCondition(aiTurnX, aiTurnY, aiTurnZ)
-                        switchPlayer()
-                    }, 1000)
-                }
-            } else {
-                if (aiTurnX != null && aiTurnY != null) {
-                    Handler().postDelayed({
-                        gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
-                        playGround[aiTurnX][aiTurnY][0] = currentPlayer
-                        checkForWinCondition(aiTurnX, aiTurnY, 0)
-                        switchPlayer()
-                    }, 1000)
-                }
+        if (is3DBoard) {
+            if (aiTurnX != null && aiTurnY != null && aiTurnZ != null) {
+                Handler().postDelayed({
+                    gameListener.onPlayerTurned(aiTurnX, aiTurnY, aiTurnZ, currentPlayer)
+                    playGround[aiTurnX][aiTurnY][aiTurnZ] = currentPlayer
+                    checkForWinCondition(aiTurnX, aiTurnY, aiTurnZ)
+                    switchPlayer()
+                }, 1000)
+            }
+        } else {
+            if (aiTurnX != null && aiTurnY != null) {
+                Handler().postDelayed({
+                    gameListener.onPlayerTurned(aiTurnX, aiTurnY, 0, currentPlayer)
+                    playGround[aiTurnX][aiTurnY][0] = currentPlayer
+                    checkForWinCondition(aiTurnX, aiTurnY, 0)
+                    switchPlayer()
+                }, 1000)
             }
         }
+
     }
 
     private fun isPositionDataNullOrOnATakenPosition(
