@@ -8,6 +8,8 @@ import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettingsDao
 import com.jcDevelopment.tictactoeadfree.module.data.gameStatistics.GameStatistics
 import com.jcDevelopment.tictactoeadfree.module.data.gameStatistics.GameStatisticsDao
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerSettings
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerSettingsDao
 import org.koin.dsl.module
 
 val roomDatabaseModule = module {
@@ -24,13 +26,14 @@ val roomDatabaseModule = module {
 }
 
 @Database(
-    entities = [GameStatistics::class, GameSettings::class],
-    version = 2,
+    entities = [GameStatistics::class, GameSettings::class, MultiplayerSettings::class],
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun gameStatisticsDao(): GameStatisticsDao
     abstract fun gameSettingsDao(): GameSettingsDao
+    abstract fun multiplayerSettingsDao(): MultiplayerSettingsDao
 
     companion object {
 
