@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -20,7 +19,7 @@ import java.util.*
  * incoming connections, a thread for connecting with a device, and a
  * thread for performing data transmissions when connected.
  */
-class BlueToothService(context: Context?, handler: Handler) {
+class BlueToothService(handler: Handler) {
     // Member fields
     private val mAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
     private val mHandler: Handler

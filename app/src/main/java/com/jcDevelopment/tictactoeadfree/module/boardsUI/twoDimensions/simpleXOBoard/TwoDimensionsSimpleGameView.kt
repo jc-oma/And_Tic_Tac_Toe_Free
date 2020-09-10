@@ -104,16 +104,42 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
     }
 
     override fun onAiIsTurning() {
-        playGroundViewGrid.forEach { cellView ->
-            cellView.isClickable = false
-        }
-        animateThinkingAi()
+        opponentIsTurning()
     }
 
     override fun onPlayerTurned(
         positionX: Int,
         positionY: Int,
         positionZ: Int,
+        currentPlayer: Int
+    ) {
+        opponentHasTurned(positionX, positionY, currentPlayer)
+    }
+
+    override fun onGameEnd(
+        wonPlayer: Int,
+        wonPosition: MutableList<Triple<Int, Int, Int>>?
+    ) {
+        isGameOver = true
+        if (wonPosition != null && wonPosition.isNotEmpty()) {
+            val objectAnimatorList: MutableList<ObjectAnimator> =
+                setupObejectAnimatorListForWinAnimation(wonPosition)
+
+            val animSet = setupAnimatorSetForWinAnimation(objectAnimatorList, wonPlayer)
+            animSet.start()
+        } else winOverlayPreparation(wonPlayer)
+    }
+
+    fun opponentIsTurning() {
+        playGroundViewGrid.forEach { cellView ->
+            cellView.isClickable = false
+        }
+        animateThinkingAi()
+    }
+
+    fun opponentHasTurned(
+        positionX: Int,
+        positionY: Int,
         currentPlayer: Int
     ) {
         val playedIndexInGrid = positionX + (positionY * grid)
@@ -129,20 +155,6 @@ class TwoDimensionsSimpleGameView @JvmOverloads constructor(
         }
 
         clearThinkingAiAnimation()
-    }
-
-    override fun onGameEnd(
-        wonPlayer: Int,
-        wonPosition: MutableList<Triple<Int, Int, Int>>?
-    ) {
-        isGameOver = true
-        if (wonPosition != null && wonPosition.isNotEmpty()) {
-            val objectAnimatorList: MutableList<ObjectAnimator> =
-                setupObejectAnimatorListForWinAnimation(wonPosition)
-
-            val animSet = setupAnimatorSetForWinAnimation(objectAnimatorList, wonPlayer)
-            animSet.start()
-        } else winOverlayPreparation(wonPlayer)
     }
 
     fun prepareBoardStartAnimations() {

@@ -244,7 +244,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
 
     private fun openBluetoothAsHost() {
         multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(isHost = true))
-        mChatService = BlueToothService(activity, mHandler)
+        mChatService = BlueToothService(mHandler)
         mChatService?.start()
     }
 
@@ -265,7 +265,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
                 ).address
             )
 
-            mChatService = BlueToothService(activity, mHandler)
+            mChatService = BlueToothService(mHandler)
             mChatService?.connect(bondedBluetoothAdapter!!, secure = false)
         }
 
