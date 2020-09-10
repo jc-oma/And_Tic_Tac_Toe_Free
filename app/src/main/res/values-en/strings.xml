@@ -43,4 +43,6 @@
     <string name="hot_seat">hot seat</string>
     <string name="bluetooth_host_game">create game</string>
     <string name="bluetooth_connect_game">connect to game</string>
+    <string name="result_canceled_info">Whoopsie, an error occurred</string>
+
 </resources>

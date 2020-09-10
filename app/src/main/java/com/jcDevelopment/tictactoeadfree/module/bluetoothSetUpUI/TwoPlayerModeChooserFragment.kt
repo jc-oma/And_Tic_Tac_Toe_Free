@@ -49,7 +49,7 @@ class TwoPlayerModeChooserFragment : BaseFragment() {
     private fun initListener() {
         two_player_game_mode_bluetooth.setOnClickListener { onBluetoothChosen() }
         two_player_game_mode_bluetooth_back_button.setOnClickListener { onBluetoothBack() }
-        two_player_game_mode_hotseat.setOnClickListener { listener?.onTwoPlayerModeChooserFragmentBluetoothClick() }
+        two_player_game_mode_hotseat.setOnClickListener { listener?.onTwoPlayerModeChooserFragmentHotseatClick() }
 
         two_player_game_mode_bluetooth_host.setOnClickListener { listener?.onBluetoothCreateHostButtonClicked() }
         two_player_game_mode_bluetooth_client.setOnClickListener { listener?.onBluetoothConnectToGameButtonClicked() }
@@ -84,7 +84,6 @@ class TwoPlayerModeChooserFragment : BaseFragment() {
     }
 
     interface Listener {
-        fun onTwoPlayerModeChooserFragmentBluetoothClick()
         fun onTwoPlayerModeChooserFragmentHotseatClick()
         fun onCheckIfBluetoothAvailable():Boolean
         fun onBluetoothCreateHostButtonClicked()

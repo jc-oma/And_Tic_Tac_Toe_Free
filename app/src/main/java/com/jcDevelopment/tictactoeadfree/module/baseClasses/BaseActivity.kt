@@ -1,7 +1,9 @@
 package com.jcDevelopment.tictactoeadfree.module.baseClasses
 
 import android.content.Intent
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 open class BaseActivity : AppCompatActivity() {
@@ -19,5 +21,9 @@ open class BaseActivity : AppCompatActivity() {
         if (!handled) {
             super.onBackPressed()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

@@ -1,5 +1,7 @@
 package com.jcDevelopment.tictactoeadfree.module.home
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -22,12 +24,15 @@ import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFou
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.TwoDimensionsSimpleGameFragment
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerSettings
 import com.jcDevelopment.tictactoeadfree.module.gameDificulty.GameDifficultyChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.logo.LogoFragment
 import com.jcDevelopment.tictactoeadfree.module.usedLibraries.UsedLibrariesFragment
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listener,
@@ -38,9 +43,8 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
 
     //Bluetooth
     // Intent request codes
-    private val REQUEST_CONNECT_DEVICE_SECURE: Int = 1
-    private val REQUEST_CONNECT_DEVICE_INSECURE = 2
-    private val REQUEST_ENABLE_BT = 3
+    private val REQUEST_ENABLE_BT_AS_HOST = 3
+    private val REQUEST_ENABLE_BT_AS_CLIENT = 4
 
     //TODO Rename with context of Game
     /*** Name of the connected device*/
@@ -55,12 +59,15 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     /*** Member object for the chat services*/
     private var mChatService: BlueToothService? = null
 
-    private val mHandler: Handler = object : Handler() {
+    //FIXME remove Lint Supress and Fix
+    private val mHandler: Handler = @SuppressLint("HandlerLeak")
+    object : Handler() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 Constants.MESSAGE_STATE_CHANGE -> when (msg.arg1) {
                     BlueToothService.STATE_CONNECTED -> {
                         makeToast("connected")
+                        openGameFragment()
                     }
                     BlueToothService.STATE_CONNECTING -> makeToast("connecting")
                     BlueToothService.STATE_LISTEN, BlueToothService.STATE_NONE -> bluetooth_connection_status.text =
@@ -98,6 +105,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     }
 
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
+    private val multiplayerSettingsViewModel by viewModel<MultiplayerSettingsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,6 +139,11 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
                 mChatService?.start()
             }
         }
+
+
+        bluetooth_connection_status.setOnClickListener {
+            mChatService?.write((Math.random().toString()).toByteArray())
+        }
     }
 
     override fun onDestroy() {
@@ -150,9 +163,12 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        //TODO REQUEST CODE from BluetoothService
-        if (requestCode == 12 && resultCode == RESULT_OK) {
-            Toast.makeText(this, "BlueTooth aktiv", Toast.LENGTH_LONG).show()
+        if (requestCode == REQUEST_ENABLE_BT_AS_HOST && resultCode == RESULT_OK) {
+            openBluetoothAsHost()
+        } else if (requestCode == REQUEST_ENABLE_BT_AS_CLIENT && resultCode == RESULT_OK) {
+            getBluetoothlist()
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            Toast.makeText(this, getString(R.string.result_canceled_info), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -182,13 +198,6 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         transaction.commit()
     }
 
-    override fun onTwoPlayerModeChooserFragmentBluetoothClick() {
-        if (manager.fragments.size > 0) {
-            manager.fragments.remove(manager.fragments.last())
-        }
-        openGameFragment()
-    }
-
     override fun onTwoPlayerModeChooserFragmentHotseatClick() {
         if (manager.fragments.size > 0) {
             manager.fragments.remove(manager.fragments.last())
@@ -201,11 +210,21 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     }
 
     override fun onBluetoothCreateHostButtonClicked() {
-        getBluetoothlist()
+        if (!mBluetoothAdapter!!.isEnabled) {
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT_AS_HOST)
+        } else {
+            openBluetoothAsHost()
+        }
     }
 
     override fun onBluetoothConnectToGameButtonClicked() {
-        getBluetoothlist()
+        if (!mBluetoothAdapter!!.isEnabled) {
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT_AS_CLIENT)
+        } else {
+            getBluetoothlist()
+        }
     }
 
     override fun onAiDifficultyChosen() {
@@ -215,7 +234,26 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         openGameFragment()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        home_activity_bluetooth_list?.visibility = View.GONE
+
+        if (manager.fragments.size > 1) {
+            manager.beginTransaction().remove(manager.fragments.last()).commit()
+        } else {
+            this.finish()
+        }
+    }
+
+    private fun openBluetoothAsHost() {
+        multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(isHost = true))
+        mChatService = BlueToothService(activity, mHandler)
+        mChatService?.start()
+    }
+
     private fun getBluetoothlist() {
+        multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(isHost = false))
         val bondedDevices = mBluetoothAdapter?.bondedDevices
         val arrayAdapter = ArrayAdapter<String>(
             activity,
@@ -234,11 +272,8 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
             mChatService = BlueToothService(activity, mHandler)
             mChatService?.connect(bondedBluetoothAdapter!!, secure = false)
         }
-        home_activity_bluetooth_list.visibility = View.VISIBLE
 
-        bluetooth_connection_status.setOnClickListener {
-            mChatService?.write((Math.random().toString()).toByteArray())
-        }
+        home_activity_bluetooth_list.visibility = View.VISIBLE
     }
 
     private fun initToolbar() {
@@ -279,15 +314,6 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         val transaction: FragmentTransaction = manager.beginTransaction()
         transaction.add(R.id.main_activity_root, LogoFragment.newInstance())
         transaction.commit()
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (manager.fragments.size > 1) {
-            manager.beginTransaction().remove(manager.fragments.last()).commit()
-        } else {
-            this.finish()
-        }
     }
 
     private fun openGameFragment() {

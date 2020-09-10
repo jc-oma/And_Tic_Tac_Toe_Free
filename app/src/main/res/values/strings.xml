@@ -43,5 +43,7 @@
     <string name="bluetooth_host_game">Spiel erstellen</string>
     <string name="bluetooth_connect_game">mit Spiel verbinden</string>
     <string name="hot_seat">hot seat</string>
+    <string name="result_canceled_info">Ups, da ist etwas schiefgelaufen</string>
+
     <string name="play_store_link">https://play.google.com/store/apps/details?id=com.jcDevelopment.tictactoeadfree</string>
 </resources>
