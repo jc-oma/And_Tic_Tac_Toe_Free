@@ -89,7 +89,7 @@ class FourInARowEngine internal constructor(
     }
 
     private fun aiTurnProcess() {
-        gameListener.onAiIsTurning()
+        gameListener.onOpponentIsTurning()
         var aiTurnX: Int? = null
 
         if (nextAiTurnX?.first != null) {
@@ -322,7 +322,7 @@ class FourInARowEngine internal constructor(
 
         fun onSwitchPlayer(playerNumber: Int)
         fun onInitializeBoard()
-        fun onAiIsTurning()
+        fun onOpponentIsTurning()
         fun onPlayerTurned(
             positionX: Int,
             positionY: Int,

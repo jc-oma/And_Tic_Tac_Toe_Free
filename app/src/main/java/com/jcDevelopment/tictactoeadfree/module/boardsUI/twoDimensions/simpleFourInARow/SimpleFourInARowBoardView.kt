@@ -32,7 +32,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         View.inflate(context, R.layout.view_board_four_in_a_row_simple, this)
     }
     private var isGameOver: Boolean = false
-    private var isAiTurning: Boolean = false
+    private var isOpponentTurning: Boolean = false
     private val fourEngine: FourInARowEngine =
         FourInARowEngine(
             listener = this
@@ -74,7 +74,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
             view.click.observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    if (!isAiTurning && !isGameOver) {
+                    if (!isOpponentTurning && !isGameOver) {
                         val toRow = fourEngine.getNextFreeYPosition(index)
                         if (toRow != null) {
                             fourEngine.gameTurn(index)
@@ -84,7 +84,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         }
     }
 
-    private fun animateThinkingAi() {
+    private fun animateThinkingOpponent() {
         simple_2d_thinking_frankenstein.alpha = 1f
         val thinkingAnimation = AnimationUtils.loadAnimation(
             context,
@@ -93,7 +93,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         simple_2d_thinking_frankenstein.startAnimation(thinkingAnimation)
     }
 
-    private fun clearThinkingAiAnimation() {
+    private fun clearThinkingOpponentAnimation() {
         simple_2d_thinking_frankenstein.clearAnimation()
         simple_2d_thinking_frankenstein.alpha = 0f
     }
@@ -116,9 +116,9 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     override fun onInitializeBoard() {
     }
 
-    override fun onAiIsTurning() {
-        isAiTurning = true
-        animateThinkingAi()
+    override fun onOpponentIsTurning() {
+        isOpponentTurning = true
+        animateThinkingOpponent()
     }
 
     override fun onPlayerTurned(
@@ -126,9 +126,8 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         positionY: Int,
         currentPlayer: Int
     ) {
-        isAiTurning = false
+        isOpponentTurning = false
         playGroundViewGrid[positionX].animatePlayStoneDrop(positionY, currentPlayer)
-        clearThinkingAiAnimation()
+        clearThinkingOpponentAnimation()
     }
-
 }
