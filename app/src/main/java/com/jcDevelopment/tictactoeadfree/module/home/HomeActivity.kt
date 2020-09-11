@@ -1,13 +1,10 @@
 package com.jcDevelopment.tictactoeadfree.module.home
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -18,7 +15,6 @@ import com.google.android.gms.ads.MobileAds
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseActivity
 import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
-import com.jcDevelopment.tictactoeadfree.module.blueToothService.Constants
 import com.jcDevelopment.tictactoeadfree.module.bluetoothSetUpUI.TwoPlayerModeChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardFragment
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.TwoDimensionsSimpleGameFragment
@@ -56,50 +52,6 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     /*** Local Bluetooth adapter*/
     private var mBluetoothAdapter: BluetoothAdapter? = null
 
-    /*** Member object for the chat services*/
-    private var mChatService: BlueToothService? = null
-
-    //FIXME remove Lint Supress and Fix
-    private val mHandler: Handler = @SuppressLint("HandlerLeak")
-    object : Handler() {
-        override fun handleMessage(msg: Message) {
-            when (msg.what) {
-                Constants.MESSAGE_STATE_CHANGE -> when (msg.arg1) {
-                    BlueToothService.STATE_CONNECTED -> {
-                        makeToast("connected")
-                        openGameFragment()
-                    }
-                    BlueToothService.STATE_CONNECTING -> makeToast("connecting")
-                    BlueToothService.STATE_LISTEN, BlueToothService.STATE_NONE -> bluetooth_connection_status.text =
-                        "connecting"
-                }
-                Constants.MESSAGE_WRITE -> {
-                    val writeBuf = msg.obj as ByteArray
-                    // construct a string from the buffer
-                    val writeMessage = String(writeBuf)
-
-                    bluetooth_connection_status.text = writeMessage
-                }
-                Constants.MESSAGE_READ -> {
-                    val readBuf = msg.obj as ByteArray
-                    // construct a string from the valid bytes in the buffer
-                    val readMessage = String(readBuf, 0, msg.arg1)
-
-                    bluetooth_connection_status.text = readMessage
-                }
-                Constants.MESSAGE_DEVICE_NAME -> {
-                    // save the connected device's name
-                    mConnectedDeviceName = msg.data.getString(Constants.DEVICE_NAME)
-                    bluetooth_connection_status.text = "Connected to $mConnectedDeviceName"
-                }
-                Constants.MESSAGE_TOAST -> Toast.makeText(
-                    activity, msg.data.getString(Constants.TOAST),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
     private val multiplayerSettingsViewModel by viewModel<MultiplayerSettingsViewModel>()
 
@@ -128,23 +80,28 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         // Performing this check in onResume() covers the case in which BT was
         // not enabled during onStart(), so we were paused to enable it...
         // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
-        if (mChatService != null) {
+        if (BlueToothService != null) {
             // Only if the state is STATE_NONE, do we know that we haven't started already
-            if (mChatService?.getState() == BlueToothService.STATE_NONE) {
+            if (BlueToothService?.getState() == BlueToothService.STATE_NONE) {
                 // Start the Bluetooth chat services
-                mChatService?.start()
+                BlueToothService?.start()
             }
         }
 
 
         bluetooth_connection_status.setOnClickListener {
-            mChatService?.write((Math.random().toString()).toByteArray())
+            BlueToothService?.write((Math.random().toString()).toByteArray())
         }
+
+        BlueToothService.getConnectionObservable().subscribe({makeToast(it.toString() + "connectionObservable")}, {makeToast(it.toString() + "errorconnectionObservable")})
+        BlueToothService.getDeviceNameObservable().subscribe({makeToast(it.toString() + "deviceNameObservable")}, {makeToast(it.toString() + "errordeviceNameObservable")})
+        BlueToothService.getMessageObservable().subscribe({makeToast(it.toString()+ "connectionMessageObservable")}, {makeToast(it.toString() + "errorconnectionMessageObservable")})
+        BlueToothService.getMessageToastObservable().subscribe({makeToast(it.toString()+ "toastnObservable")}, {makeToast(it.toString() + "errortoastnObservable")})
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mChatService?.stop()
+        BlueToothService?.stop()
     }
 
     override fun onPostResume() {
@@ -169,7 +126,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     }
 
     private fun makeToast(s: String) {
-        Toast.makeText(this, mConnectedDeviceName.toString(), Toast.LENGTH_LONG).show()
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show()
     }
 
     override fun onLogoFragmentLoaded() {
@@ -244,8 +201,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
 
     private fun openBluetoothAsHost() {
         multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(isHost = true))
-        mChatService = BlueToothService(mHandler)
-        mChatService?.start()
+        BlueToothService?.start()
     }
 
     private fun getBluetoothlist() {
@@ -265,8 +221,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
                 ).address
             )
 
-            mChatService = BlueToothService(mHandler)
-            mChatService?.connect(bondedBluetoothAdapter!!, secure = false)
+            BlueToothService?.connect(bondedBluetoothAdapter!!, secure = false)
         }
 
         home_activity_bluetooth_list.visibility = View.VISIBLE

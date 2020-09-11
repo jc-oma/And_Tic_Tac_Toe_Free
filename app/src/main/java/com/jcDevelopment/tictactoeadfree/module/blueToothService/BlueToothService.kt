@@ -1,12 +1,16 @@
 package com.jcDevelopment.tictactoeadfree.module.blueToothService
 
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.os.Bundle
 import android.os.Handler
+import android.os.Message
 import android.util.Log
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -19,16 +23,105 @@ import java.util.*
  * incoming connections, a thread for connecting with a device, and a
  * thread for performing data transmissions when connected.
  */
-class BlueToothService(handler: Handler) {
+object BlueToothService {
+    // Debugging
+    private const val TAG = "BluetoothChatService"
+
+    // Name for the SDP record when creating server socket
+    private const val NAME_SECURE = "SpookyHalloWeenAPP"
+    private const val NAME_INSECURE = "SpookyHalloWeenAPP_insecure"
+
+    // Unique UUID for this application
+    private val MY_UUID_SECURE = UUID.fromString("af8d7c3f-e566-41e2-bec6-a8f82dd77710")
+    private val MY_UUID_INSECURE = UUID.fromString("ce36c4d0-0ee3-4dd5-83db-f3077fa19603")
+
+    // Constants that indicate the current connection state
+    const val STATE_NONE = 0 // we're doing nothing
+    const val STATE_LISTEN = 1 // now listening for incoming connections
+    const val STATE_CONNECTING = 2 // now initiating an outgoing connection
+    const val STATE_CONNECTED = 3 // now connected to a remote device
+
     // Member fields
     private val mAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-    private val mHandler: Handler
     private var mSecureAcceptThread: AcceptThread? = null
     private var mInsecureAcceptThread: AcceptThread? = null
     private var mConnectThread: ConnectThread? = null
     private var mConnectedThread: ConnectedThread? = null
     private var mState = 0
     private var mNewState = 0
+
+    //subject to get ConnectionState
+    private val connectionSubject = PublishSubject.create<Int>()
+    fun getConnectionObservable(): Observable<Int> {
+        return connectionSubject
+    }
+
+    //subject to receive StringMessages via bluetooth
+    private val messageSubject = PublishSubject.create<String>()
+    fun getMessageObservable(): Observable<String> {
+        return messageSubject
+    }
+
+    //subject to receive the connected device name
+    private val deviceNameSubject = PublishSubject.create<String>()
+    fun getDeviceNameObservable(): Observable<String> {
+        return deviceNameSubject
+    }
+
+    //dunno this, maybe //TODO remove
+    private val messageToastSubject = PublishSubject.create<String>()
+    fun getMessageToastObservable(): Observable<String> {
+        return messageToastSubject
+    }
+
+    //FIXME remove Lint Supress and Fix
+    private val mHandler: Handler = @SuppressLint("HandlerLeak")
+    object : Handler() {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                Constants.MESSAGE_STATE_CHANGE -> when (msg.arg1) {
+                    STATE_CONNECTED -> {
+                        connectionSubject.onNext(STATE_CONNECTED)
+                    }
+                    STATE_CONNECTING -> {
+                        connectionSubject.onNext(STATE_CONNECTING)
+                    }
+                    STATE_LISTEN, STATE_NONE -> {
+                        connectionSubject.onNext(STATE_LISTEN)
+                    }
+                }
+                Constants.MESSAGE_WRITE -> {
+                    val writeBuf = msg.obj as ByteArray
+                    // construct a string from the buffer
+                    val writeMessage = String(writeBuf)
+                }
+                Constants.MESSAGE_READ -> {
+                    val readBuf = msg.obj as ByteArray
+                    // construct a string from the valid bytes in the buffer
+                    val readMessage = String(readBuf, 0, msg.arg1)
+
+                    messageSubject.onNext(readMessage)
+                }
+                Constants.MESSAGE_DEVICE_NAME -> {
+                    deviceNameSubject.onNext(msg.data.getString(Constants.DEVICE_NAME))
+                }
+                Constants.MESSAGE_TOAST -> {
+                    messageToastSubject.onNext(msg.toString())
+                }
+            }
+        }
+    }
+
+    /**
+     * Constructor. Prepares a new BluetoothChat session.
+     *
+     * @param context The UI Activity Context
+     * @param handler A Handler to send messages back to the UI Activity
+     */
+    init {
+        mState = BlueToothService.STATE_NONE
+        mNewState = mState
+    }
 
     /**
      * Return the current connection state.
@@ -247,7 +340,7 @@ class BlueToothService(handler: Handler) {
      * like a server-side client. It runs until a connection is accepted
      * (or until cancelled).
      */
-    private inner class AcceptThread(secure: Boolean) : Thread() {
+    private class AcceptThread(secure: Boolean) : Thread() {
         // The local server socket
         private val mmServerSocket: BluetoothServerSocket?
         private val mSocketType: String
@@ -272,7 +365,7 @@ class BlueToothService(handler: Handler) {
 
                 // If a connection was accepted
                 if (socket != null) {
-                    synchronized(this@BlueToothService) {
+                    synchronized(BlueToothService) {
                         when (mState) {
                             STATE_LISTEN, STATE_CONNECTING ->                                 // Situation normal. Start the connected thread.
                                 connected(
@@ -339,7 +432,7 @@ class BlueToothService(handler: Handler) {
      * with a device. It runs straight through; the connection either
      * succeeds or fails.
      */
-    private inner class ConnectThread(private val mmDevice: BluetoothDevice, secure: Boolean) :
+    private class ConnectThread(private val mmDevice: BluetoothDevice, secure: Boolean) :
         Thread() {
         private val mmSocket: BluetoothSocket?
         private val mSocketType: String
@@ -373,7 +466,7 @@ class BlueToothService(handler: Handler) {
             }
 
             // Reset the ConnectThread because we're done
-            synchronized(this@BlueToothService) { mConnectThread = null }
+            synchronized(BlueToothService) { mConnectThread = null }
 
             // Start the connected thread
             connected(mmSocket, mmDevice, mSocketType)
@@ -418,7 +511,7 @@ class BlueToothService(handler: Handler) {
      * This thread runs during a connection with a remote device.
      * It handles all incoming and outgoing transmissions.
      */
-    private inner class ConnectedThread(socket: BluetoothSocket?, socketType: String) :
+    private class ConnectedThread(socket: BluetoothSocket?, socketType: String) :
         Thread() {
         private val mmSocket: BluetoothSocket?
         private val mmInStream: InputStream?
@@ -489,36 +582,5 @@ class BlueToothService(handler: Handler) {
             mmOutStream = tmpOut
             mState = STATE_CONNECTED
         }
-    }
-
-    companion object {
-        // Debugging
-        private const val TAG = "BluetoothChatService"
-
-        // Name for the SDP record when creating server socket
-        private const val NAME_SECURE = "SpookyHalloWeenAPP"
-        private const val NAME_INSECURE = "SpookyHalloWeenAPP_insecure"
-
-        // Unique UUID for this application
-        private val MY_UUID_SECURE = UUID.fromString("af8d7c3f-e566-41e2-bec6-a8f82dd77710")
-        private val MY_UUID_INSECURE = UUID.fromString("ce36c4d0-0ee3-4dd5-83db-f3077fa19603")
-
-        // Constants that indicate the current connection state
-        const val STATE_NONE = 0 // we're doing nothing
-        const val STATE_LISTEN = 1 // now listening for incoming connections
-        const val STATE_CONNECTING = 2 // now initiating an outgoing connection
-        const val STATE_CONNECTED = 3 // now connected to a remote device
-    }
-
-    /**
-     * Constructor. Prepares a new BluetoothChat session.
-     *
-     * @param context The UI Activity Context
-     * @param handler A Handler to send messages back to the UI Activity
-     */
-    init {
-        mState = STATE_NONE
-        mNewState = mState
-        mHandler = handler
     }
 }
