@@ -119,7 +119,7 @@ object BlueToothService {
      * @param handler A Handler to send messages back to the UI Activity
      */
     init {
-        mState = BlueToothService.STATE_NONE
+        mState = STATE_NONE
         mNewState = mState
     }
 
@@ -127,7 +127,7 @@ object BlueToothService {
      * Return the current connection state.
      */
     @Synchronized
-    open fun getState(): Int {
+    fun getState(): Int {
         return mState
     }
 
