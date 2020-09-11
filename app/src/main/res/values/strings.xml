@@ -39,11 +39,15 @@
     <string name="share_with_friends">Mit Freunden teilen</string>
 
     <!-- two player mode chooser -->
-    <string name="bluetooth">Bluetooth</string>
-    <string name="bluetooth_host_game">Spiel erstellen</string>
-    <string name="bluetooth_connect_game">mit Spiel verbinden</string>
+    <string name="bluetooth_button">Bluetooth</string>
+    <string name="bluetooth_host_game_button">Spiel erstellen</string>
+    <string name="bluetooth_connect_game_button">mit Spiel verbinden</string>
+    <string name="bluetooth_connecting">verbindet</string>
+    <string name="bluetooth_connected">verbunden</string>
+    <string name="bluetooth_playmode_switched">Spielmodus durch Host auf %s geändert</string>
     <string name="hot_seat">hot seat</string>
     <string name="result_canceled_info">Ups, da ist etwas schiefgelaufen</string>
+    <string name="waiting_for_player">Warte auf Spieler</string>
 
-    <string name="play_store_link">https://play.google.com/store/apps/details?id=com.jcDevelopment.tictactoeadfree</string>
+    <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=com.jcDevelopment.tictactoeadfree</string>
 </resources>

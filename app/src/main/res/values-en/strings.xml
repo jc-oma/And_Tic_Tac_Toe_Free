@@ -39,10 +39,15 @@
     <string name="share_with_friends">Share with friends</string>
 
     <!-- two player mode chooser -->
-    <string name="bluetooth">Bluetooth</string>
+    <string name="bluetooth_button">Bluetooth</string>
     <string name="hot_seat">hot seat</string>
-    <string name="bluetooth_host_game">create game</string>
-    <string name="bluetooth_connect_game">connect to game</string>
+    <string name="bluetooth_host_game_button">create game</string>
+    <string name="bluetooth_connect_game_button">connect to game</string>
+    <string name="bluetooth_connecting">connecting</string>
+    <string name="bluetooth_connected">connected</string>
     <string name="result_canceled_info">Whoopsie, an error occurred</string>
+
+    <string name="waiting_for_player">Waiting for player to connect</string>
+    <string name="bluetooth_playmode_switched">Switched to %s game mode by host</string>
 
 </resources>

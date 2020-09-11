@@ -26,7 +26,7 @@
             android:fontFamily="@font/berkshire_swash_regular"
             android:paddingStart="48dp"
             android:paddingEnd="48dp"
-            android:text="@string/bluetooth"
+            android:text="@string/bluetooth_button"
             app:layout_constraintDimensionRatio="31:10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,7 @@
             android:fontFamily="@font/berkshire_swash_regular"
             android:paddingStart="48dp"
             android:paddingEnd="48dp"
-            android:text="@string/bluetooth_host_game"
+            android:text="@string/bluetooth_host_game_button"
             app:layout_constraintDimensionRatio="31:10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +83,7 @@
             android:fontFamily="@font/berkshire_swash_regular"
             android:paddingStart="48dp"
             android:paddingEnd="48dp"
-            android:text="@string/bluetooth_connect_game"
+            android:text="@string/bluetooth_connect_game_button"
             app:layout_constraintDimensionRatio="31:10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -104,6 +104,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/two_player_game_mode_bluetooth_client" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.jcDevelopment.tictactoeadfree.module.bluetoothSetUpUI.WaitingForPlayerAsHostView
+        android:id="@+id/two_player_game_mode_bluetooth_waiting_for_player_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

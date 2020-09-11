@@ -12,6 +12,7 @@ import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.ads.MobileAds
+import com.google.gson.Gson
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseActivity
 import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
@@ -20,19 +21,27 @@ import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFou
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.TwoDimensionsSimpleGameFragment
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerDataPackage.MultiplayerDataPackage
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerSettings
 import com.jcDevelopment.tictactoeadfree.module.gameDificulty.GameDifficultyChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.logo.LogoFragment
 import com.jcDevelopment.tictactoeadfree.module.usedLibraries.UsedLibrariesFragment
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
+import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_two_player_mode_choser.*
+import kotlinx.android.synthetic.main.view_waiting_for_player_as_host.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listener,
     TwoPlayerModeChooserFragment.Listener, GameDifficultyChooserFragment.Listener {
+    private lateinit var handshakeDisposable: Disposable
+    private lateinit var deviceNameDisposable: Disposable
+    private lateinit var connectionDisposable: Disposable
+
     private var isTransactionSafe: Boolean = true
     private val activity = this
     private val manager = activity.supportFragmentManager
@@ -42,15 +51,10 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     private val REQUEST_ENABLE_BT_AS_HOST = 3
     private val REQUEST_ENABLE_BT_AS_CLIENT = 4
 
-    //TODO Rename with context of Game
-    /*** Name of the connected device*/
-    private var mConnectedDeviceName: String? = null
-
-    /*** String buffer for outgoing messages*/
-    private val mOutStringBuffer: StringBuffer? = null
-
     /*** Local Bluetooth adapter*/
     private var mBluetoothAdapter: BluetoothAdapter? = null
+
+    private val gson = Gson()
 
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
     private val multiplayerSettingsViewModel by viewModel<MultiplayerSettingsViewModel>()
@@ -80,28 +84,86 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         // Performing this check in onResume() covers the case in which BT was
         // not enabled during onStart(), so we were paused to enable it...
         // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
-        if (BlueToothService != null) {
-            // Only if the state is STATE_NONE, do we know that we haven't started already
-            if (BlueToothService?.getState() == BlueToothService.STATE_NONE) {
-                // Start the Bluetooth chat services
-                BlueToothService?.start()
-            }
+        if (BlueToothService.getState() == BlueToothService.STATE_NONE) {
+            // Start the Bluetooth chat services
+            BlueToothService.start()
         }
 
 
         bluetooth_connection_status.setOnClickListener {
-            BlueToothService?.write((Math.random().toString()).toByteArray())
+            BlueToothService.write((Math.random().toString()).toByteArray())
         }
 
-        BlueToothService.getConnectionObservable().subscribe({makeToast(it.toString() + "connectionObservable")}, {makeToast(it.toString() + "errorconnectionObservable")})
-        BlueToothService.getDeviceNameObservable().subscribe({makeToast(it.toString() + "deviceNameObservable")}, {makeToast(it.toString() + "errordeviceNameObservable")})
-        BlueToothService.getMessageObservable().subscribe({makeToast(it.toString()+ "connectionMessageObservable")}, {makeToast(it.toString() + "errorconnectionMessageObservable")})
-        BlueToothService.getMessageToastObservable().subscribe({makeToast(it.toString()+ "toastnObservable")}, {makeToast(it.toString() + "errortoastnObservable")})
+        initBluetoothEventListener()
+    }
+
+
+    private fun initBluetoothEventListener() {
+        connectionDisposable = BlueToothService.getConnectionObservable()
+            .subscribe({ connectionState ->
+                when (connectionState) {
+                    BlueToothService.STATE_CONNECTED -> {
+                        two_player_game_mode_bluetooth_waiting_for_player_overlay?.visibility = View.GONE
+                        bluetooth_connection_status.text =
+                            getString(R.string.bluetooth_connected)
+
+                        BlueToothService.write(
+                            gson.toJson(
+                                MultiplayerDataPackage(
+                                    gameSettings = getGameSettings(),
+                                    multiplayerSettings = multiplayerSettingsViewModel.getMultiplayerSettings()
+                                        .last()
+                                )
+                            ).toByteArray()
+                        )
+                    }
+                    BlueToothService.STATE_CONNECTING -> bluetooth_connection_status.text =
+                        getString(R.string.bluetooth_connecting)
+                }
+            }, { makeToast(getString(R.string.result_canceled_info)) })
+
+        deviceNameDisposable = BlueToothService.getDeviceNameObservable()
+            .subscribe({ makeToast(it.toString()) },
+                {})
+
+        handshakeDisposable = BlueToothService.getMessageObservable()
+            .doOnNext {
+                val gameSettingsComparison = gson.fromJson(it, MultiplayerDataPackage::class.java)
+                if (!multiplayerSettingsViewModel.getMultiplayerSettings().last().isHost) {
+                    gameSettingsComparison.gameSettings?.let { remoteGameSettings ->
+
+                        if (remoteGameSettings.gameMode == gameSettingsViewModel.getGameSettings()
+                                .last().gameMode
+                        ) {
+                            openGameFragment()
+                        } else {
+                            makeToast(
+                                getString(
+                                    R.string.bluetooth_playmode_switched,
+                                    remoteGameSettings.gameMode
+                                )
+                            )
+                            gameSettingsViewModel.updateGameSettings(GameSettings(gameMode = remoteGameSettings.gameMode))
+                            openGameFragment()
+                        }
+
+                        BlueToothService.write(
+                            gson.toJson(MultiplayerDataPackage(ack = true)).toByteArray()
+                        )
+                    }
+                }
+
+                gameSettingsComparison.ack?.let { remoteAck ->
+                    if (remoteAck) {
+                        openGameFragment()
+                    }
+                }
+            }.subscribe()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        BlueToothService?.stop()
+        BlueToothService.stop()
     }
 
     override fun onPostResume() {
@@ -112,6 +174,10 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     override fun onPause() {
         super.onPause()
         isTransactionSafe = false
+
+        //handshakeDisposable?.dispose()
+        deviceNameDisposable?.dispose()
+        connectionDisposable?.dispose()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -268,6 +334,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
     }
 
     private fun openGameFragment() {
+        handshakeDisposable.dispose()
         val gameSettings = getGameSettings()
         val gameMode = GameMode.valueOf(gameSettings.gameMode)
         if (gameMode == GameMode.TIC_TAC_TOE) {

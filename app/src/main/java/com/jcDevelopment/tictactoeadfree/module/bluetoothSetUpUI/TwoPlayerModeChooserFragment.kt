@@ -9,7 +9,12 @@ import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseFragment
+import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerSettings
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.multiplayerSettingsModule
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import kotlinx.android.synthetic.main.fragment_two_player_mode_choser.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TwoPlayerModeChooserFragment : BaseFragment() {
     companion object {
@@ -18,6 +23,7 @@ class TwoPlayerModeChooserFragment : BaseFragment() {
     }
 
     private var listener: Listener? = null
+    private val multiplayerSettingsViewModel by viewModel<MultiplayerSettingsViewModel>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -47,12 +53,24 @@ class TwoPlayerModeChooserFragment : BaseFragment() {
     }
 
     private fun initListener() {
+        two_player_game_mode_bluetooth_waiting_for_player_overlay.closeObservable.subscribe {
+            two_player_game_mode_bluetooth_waiting_for_player_overlay?.visibility = View.GONE
+            BlueToothService.stop()
+        }
         two_player_game_mode_bluetooth.setOnClickListener { onBluetoothChosen() }
         two_player_game_mode_bluetooth_back_button.setOnClickListener { onBluetoothBack() }
         two_player_game_mode_hotseat.setOnClickListener { listener?.onTwoPlayerModeChooserFragmentHotseatClick() }
 
-        two_player_game_mode_bluetooth_host.setOnClickListener { listener?.onBluetoothCreateHostButtonClicked() }
-        two_player_game_mode_bluetooth_client.setOnClickListener { listener?.onBluetoothConnectToGameButtonClicked() }
+        two_player_game_mode_bluetooth_host.setOnClickListener {
+            two_player_game_mode_bluetooth_waiting_for_player_overlay.visibility = View.VISIBLE
+            multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(isHost = true))
+            listener?.onBluetoothCreateHostButtonClicked()
+        }
+        two_player_game_mode_bluetooth_client.setOnClickListener {
+            two_player_game_mode_bluetooth_waiting_for_player_overlay.visibility = View.VISIBLE
+            multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(isHost = false))
+            listener?.onBluetoothConnectToGameButtonClicked()
+        }
     }
 
     private fun onBluetoothBack() {
