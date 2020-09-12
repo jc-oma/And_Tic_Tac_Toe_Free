@@ -20,7 +20,7 @@ import com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe.TicTacToeEn
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 
-class TwoDimensionsSimpleGameView @JvmOverloads constructor(
+class SimpleTicTacToeBoardView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

@@ -50,4 +50,5 @@
     <string name="waiting_for_player">Warte auf Spieler</string>
 
     <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=com.jcDevelopment.tictactoeadfree</string>
+    <string name="different_version_code_error">unterschiedliche Versionen gefunden. Bitte Updaten Sie!</string>
 </resources>

@@ -6,6 +6,8 @@ import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.Multipl
 data class MultiplayerDataPackage(
     val gameSettings: GameSettings? = null,
     val multiplayerSettings: MultiplayerSettings? = null,
+    val gameVersionCode: Int? = null,
+    val gameVersionName: String? = null,
     val turn: Int? = null,
     val x: Int? = null,
     val y: Int? = null,

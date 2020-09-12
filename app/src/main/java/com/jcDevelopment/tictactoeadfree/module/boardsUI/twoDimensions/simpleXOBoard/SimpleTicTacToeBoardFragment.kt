@@ -9,11 +9,11 @@ import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseFragment
 import kotlinx.android.synthetic.main.fragment_two_dimensions_simple_game.*
 
 
-class TwoDimensionsSimpleGameFragment : BaseFragment() {
+class SimpleTicTacToeBoardFragment : BaseFragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            TwoDimensionsSimpleGameFragment()
+            SimpleTicTacToeBoardFragment()
     }
 
     override fun onCreateView(

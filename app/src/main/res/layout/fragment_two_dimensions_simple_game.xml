@@ -5,7 +5,7 @@
     android:clickable="true"
     android:focusable="true">
 
-    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.TwoDimensionsSimpleGameView
+    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.SimpleTicTacToeBoardView
         android:id="@+id/play_board"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

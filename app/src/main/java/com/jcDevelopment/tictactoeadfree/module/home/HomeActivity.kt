@@ -13,12 +13,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.ads.MobileAds
 import com.google.gson.Gson
+import com.jcDevelopment.tictactoeadfree.BuildConfig
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseActivity
 import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
 import com.jcDevelopment.tictactoeadfree.module.bluetoothSetUpUI.TwoPlayerModeChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardFragment
-import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.TwoDimensionsSimpleGameFragment
+import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.SimpleTicTacToeBoardFragment
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerDataPackage.MultiplayerDataPackage
@@ -31,7 +32,6 @@ import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsVi
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_two_player_mode_choser.*
-import kotlinx.android.synthetic.main.view_waiting_for_player_as_host.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -99,11 +99,14 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
 
 
     private fun initBluetoothEventListener() {
+        val multiplayerSettings = multiplayerSettingsViewModel.getMultiplayerSettings().last()
+
         connectionDisposable = BlueToothService.getConnectionObservable()
             .subscribe({ connectionState ->
                 when (connectionState) {
                     BlueToothService.STATE_CONNECTED -> {
-                        two_player_game_mode_bluetooth_waiting_for_player_overlay?.visibility = View.GONE
+                        two_player_game_mode_bluetooth_waiting_for_player_overlay?.visibility =
+                            View.GONE
                         bluetooth_connection_status.text =
                             getString(R.string.bluetooth_connected)
 
@@ -111,8 +114,9 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
                             gson.toJson(
                                 MultiplayerDataPackage(
                                     gameSettings = getGameSettings(),
-                                    multiplayerSettings = multiplayerSettingsViewModel.getMultiplayerSettings()
-                                        .last()
+                                    multiplayerSettings = multiplayerSettings,
+                                    gameVersionCode = BuildConfig.VERSION_CODE,
+                                    gameVersionName = BuildConfig.VERSION_NAME
                                 )
                             ).toByteArray()
                         )
@@ -129,35 +133,48 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
         handshakeDisposable = BlueToothService.getMessageObservable()
             .doOnNext {
                 val gameSettingsComparison = gson.fromJson(it, MultiplayerDataPackage::class.java)
-                if (!multiplayerSettingsViewModel.getMultiplayerSettings().last().isHost) {
-                    gameSettingsComparison.gameSettings?.let { remoteGameSettings ->
+                if (!multiplayerSettings.isHost) {
+                    gameSettingsComparison.gameVersionName?.let {remoteVersionName ->
+                        gameSettingsComparison.gameVersionCode?.let { remoteGameVersion ->
+                            if (remoteGameVersion == BuildConfig.VERSION_CODE && remoteVersionName == BuildConfig.VERSION_NAME) {
+                                gameSettingsComparison.gameSettings?.let { remoteGameSettings ->
 
-                        if (remoteGameSettings.gameMode == gameSettingsViewModel.getGameSettings()
-                                .last().gameMode
-                        ) {
-                            openGameFragment()
-                        } else {
-                            makeToast(
-                                getString(
-                                    R.string.bluetooth_playmode_switched,
-                                    remoteGameSettings.gameMode
-                                )
-                            )
-                            gameSettingsViewModel.updateGameSettings(GameSettings(gameMode = remoteGameSettings.gameMode))
-                            openGameFragment()
-                        }
+                                    if (remoteGameSettings.gameMode == gameSettingsViewModel.getGameSettings()
+                                            .last().gameMode
+                                    ) {
+                                        openGameFragment()
+                                    } else {
+                                        makeToast(
+                                            getString(
+                                                R.string.bluetooth_playmode_switched,
+                                                remoteGameSettings.gameMode
+                                            )
+                                        )
+                                        gameSettingsViewModel.updateGameSettings(
+                                            GameSettings(
+                                                gameMode = remoteGameSettings.gameMode
+                                            )
+                                        )
+                                        openGameFragment()
+                                    }
 
-                        BlueToothService.write(
-                            gson.toJson(MultiplayerDataPackage(ack = true)).toByteArray()
-                        )
-                    }
+                                    BlueToothService.write(
+                                        gson.toJson(MultiplayerDataPackage(ack = true))
+                                            .toByteArray()
+                                    )
+                                } ?: makeToast(getString(R.string.result_canceled_info))
+                            } else {
+                                makeToast(getString(R.string.different_version_code_error))
+                            }
+                        } ?: makeToast(getString(R.string.result_canceled_info))
+                    } ?: makeToast(getString(R.string.result_canceled_info))
                 }
 
                 gameSettingsComparison.ack?.let { remoteAck ->
                     if (remoteAck) {
                         openGameFragment()
                     }
-                }
+                } ?: makeToast(getString(R.string.result_canceled_info))
             }.subscribe()
     }
 
@@ -364,7 +381,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, LogoFragment.Listene
 
     private fun openTwoDimensionalFragment() {
         val transaction: FragmentTransaction = manager.beginTransaction()
-        transaction.add(R.id.main_activity_root, TwoDimensionsSimpleGameFragment.newInstance())
+        transaction.add(R.id.main_activity_root, SimpleTicTacToeBoardFragment.newInstance())
         transaction.commit()
     }
 
