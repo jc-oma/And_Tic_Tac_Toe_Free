@@ -5,13 +5,15 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "multiplayerSettings")
 data class MultiplayerSettings (
-    val multiplayerMode: String = MultiplayerMode.BLUETOOTH.toString(),
+    val multiplayerMode: String = MultiplayerMode.NONE.toString(),
     val isHost: Boolean = false,
     @PrimaryKey
     val id: Int = 0
 )
 
 enum class MultiplayerMode {
+    NONE,
     WIFI,
-    BLUETOOTH
+    BLUETOOTH,
+    HOT_SEAT
 }

@@ -14,6 +14,9 @@ import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseFragment
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.google.android.gms.ads.AdRequest
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerSettings
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
 
@@ -28,6 +31,7 @@ class HomeFragment : BaseFragment() {
     private var listener: Listener? = null
 
     private val settingViewModel by inject<GameSettingsViewModel>()
+    private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
 
     private var switchViewCount = 0
     private var isSecondPlayerAi = true
@@ -61,7 +65,12 @@ class HomeFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
 
+        initSettings()
         initSettingsPresentation()
+    }
+
+    private fun initSettings() {
+        multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(multiplayerMode = MultiplayerMode.NONE.toString()))
     }
 
     private fun initSettingsPresentation() {

@@ -1,11 +1,16 @@
 package com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe
 
 import android.os.Handler
+import com.google.gson.Gson
+import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameStatistics.GameStatistics
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerDataPackage.MultiplayerDataPackage
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -18,6 +23,8 @@ class TicTacToeEngine internal constructor(
     private val gameStatisticsViewModel by inject<GameStatisticsViewModel>()
 
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
+
+    private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
 
     private var gameListener: GameListener = listener
 
@@ -35,6 +42,8 @@ class TicTacToeEngine internal constructor(
         4
     }
 
+    private val gson = Gson()
+
     private val playerCount = 2
 
     fun initializeBoard() {
@@ -45,7 +54,7 @@ class TicTacToeEngine internal constructor(
         isGameAgainstAi = gameSettingsViewModel.getGameSettings().last().isSecondPlayerAi
     }
 
-    fun gameTurn(positionX: Int, positionY: Int, positionZ: Int = 0) {
+    fun gameTurn(positionX: Int, positionY: Int, positionZ: Int = 0, isRemoteTurn: Boolean) {
         // switch from last draw to a valid player
         resetCurrentPlayerFromDraw()
 
@@ -66,10 +75,17 @@ class TicTacToeEngine internal constructor(
         if (currentPlayer == 2 && isGameAgainstAi && !gameOver) {
             aiTurnProcess()
         }
+
+        if (!isRemoteTurn && (multiplayerSettingsViewModel.getMultiplayerSettings()
+                .last().multiplayerMode == MultiplayerMode.BLUETOOTH.toString() || multiplayerSettingsViewModel.getMultiplayerSettings()
+                .last().multiplayerMode == MultiplayerMode.WIFI.toString())
+        ) {
+            gameListener.onOpponentIsTurning()
+        }
     }
 
     private fun aiTurnProcess() {
-        gameListener.onAiIsTurning()
+        gameListener.onOpponentIsTurning()
         var aiTurnX: Int? = null
         var aiTurnY: Int? = null
         var aiTurnZ: Int? = null
@@ -399,6 +415,21 @@ class TicTacToeEngine internal constructor(
         gameListener.onGameEnd(currentPlayer, wonPosition)
     }
 
+    fun initMultiplayerListener() {
+        BlueToothService.getMessageObservable().doOnNext { multiplayerPackageString ->
+            val packageData = gson.fromJson<MultiplayerDataPackage>(
+                multiplayerPackageString,
+                MultiplayerDataPackage::class.java
+            )
+
+            packageData.x?.let { x ->
+                packageData.y?.let { y ->
+                    gameTurn(x, y, isRemoteTurn = true)
+                }
+            }
+        }.subscribe()
+    }
+
     interface GameListener {
         fun onGameEnd(
             wonPlayer: Int,
@@ -407,7 +438,7 @@ class TicTacToeEngine internal constructor(
 
         fun onSwitchPlayer(playerNumber: Int)
         fun onInitializeBoard()
-        fun onAiIsTurning()
+        fun onOpponentIsTurning()
         fun onPlayerTurned(
             positionX: Int,
             positionY: Int,

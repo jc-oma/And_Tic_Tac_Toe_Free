@@ -43,7 +43,7 @@ class LogoFragment : Fragment() {
     private fun startHomeFragmentAfterLoading() {
         Handler().postDelayed({
             listener?.onLogoFragmentLoaded()
-        }, 2500)
+        }, 25)
     }
 
     interface Listener {

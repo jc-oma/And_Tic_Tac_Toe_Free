@@ -16,18 +16,26 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
 import com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe.TicTacToeEngine
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class SimpleTicTacToeBoardView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener {
+) : ConstraintLayout(context, attrs, defStyleAttr), TicTacToeEngine.GameListener, KoinComponent {
     init {
         initView(context)
     }
+
+    private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
+    private val gameSettingsViewModel by inject<GameSettingsViewModel>()
 
     private val oImgPlayerStone =
         ContextCompat.getDrawable(context, R.drawable.blender_o_play_stone)
@@ -97,13 +105,32 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         addViewsToHardwareLayer()
     }
 
+    fun prepareBoardStart() {
+        checkIfPlayerIsPlayerOne()
+        prepareStartAnimations()
+    }
+
+    private fun checkIfPlayerIsPlayerOne() {
+        val gameMode = multiplayerSettingsViewModel.getMultiplayerSettings().last().multiplayerMode
+        val isHost = multiplayerSettingsViewModel.getMultiplayerSettings().last().isHost
+
+        if (gameMode == MultiplayerMode.BLUETOOTH.toString()
+        ) {
+            toe.initMultiplayerListener()
+
+            if (!isHost) {
+                opponentIsTurning()
+            }
+        }
+    }
+
     private fun addViewsToHardwareLayer() {
         toBeAnimatedViews.forEach {
             it.setLayerType(LAYER_TYPE_HARDWARE, null)
         }
     }
 
-    override fun onAiIsTurning() {
+    override fun onOpponentIsTurning() {
         opponentIsTurning()
     }
 
@@ -130,14 +157,14 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         } else winOverlayPreparation(wonPlayer)
     }
 
-    fun opponentIsTurning() {
+    private fun opponentIsTurning() {
         playGroundViewGrid.forEach { cellView ->
             cellView.isClickable = false
         }
-        animateThinkingAi()
+        animateThinkingOpponent()
     }
 
-    fun opponentHasTurned(
+    private fun opponentHasTurned(
         positionX: Int,
         positionY: Int,
         currentPlayer: Int
@@ -154,10 +181,10 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
             cellView.isClickable = true
         }
 
-        clearThinkingAiAnimation()
+        clearThinkingOpponentAnimation()
     }
 
-    fun prepareBoardStartAnimations() {
+    private fun prepareStartAnimations() {
         var delayTimer: Long = 0
         val delayRange = 400
         playGroundViewGrid.forEach { cell ->
@@ -225,7 +252,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
     private fun initializeClickListenerForPlayerTurn(cellView: ImageView, index: Int) {
         cellView.setOnClickListener {
             if (!isGameOver) {
-                toe.gameTurn(index % grid, index / grid)
+                toe.gameTurn(index % grid, index / grid, isRemoteTurn = false)
             }
         }
     }
@@ -330,7 +357,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         return objectAnimatorList
     }
 
-    private fun animateThinkingAi() {
+    private fun animateThinkingOpponent() {
         simple_2d_thinking_witch.alpha = 1f
         val thinkingAnimation = AnimationUtils.loadAnimation(
             context,
@@ -339,7 +366,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         simple_2d_thinking_witch.startAnimation(thinkingAnimation)
     }
 
-    private fun clearThinkingAiAnimation() {
+    private fun clearThinkingOpponentAnimation() {
         simple_2d_thinking_witch.clearAnimation()
         simple_2d_thinking_witch.alpha = 0f
     }

@@ -25,6 +25,6 @@ class SimpleTicTacToeBoardFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        play_board.prepareBoardStartAnimations()
+        play_board.prepareBoardStart()
     }
 }
