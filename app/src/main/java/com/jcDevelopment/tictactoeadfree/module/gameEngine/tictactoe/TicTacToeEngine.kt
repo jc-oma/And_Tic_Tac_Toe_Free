@@ -80,6 +80,7 @@ class TicTacToeEngine internal constructor(
                 .last().multiplayerMode == MultiplayerMode.BLUETOOTH.toString() || multiplayerSettingsViewModel.getMultiplayerSettings()
                 .last().multiplayerMode == MultiplayerMode.WIFI.toString())
         ) {
+            BlueToothService.write(gson.toJson(MultiplayerDataPackage(x = positionX, y = positionY, z = positionZ)).toByteArray())
             gameListener.onOpponentIsTurning()
         }
     }
