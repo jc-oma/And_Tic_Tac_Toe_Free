@@ -8,17 +8,26 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.jakewharton.rxbinding4.view.clicks
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
-import com.jakewharton.rxbinding4.view.clicks
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import kotlinx.android.synthetic.main.fragment_simple_four_in_a_row_board.*
+import org.koin.android.ext.android.inject
 
 class SimpleFourInARowBoardFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() = SimpleFourInARowBoardFragment()
     }
+
+    private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
+
+    private val isOnlineGame = multiplayerSettingsViewModel.getMultiplayerSettings()
+        .last().multiplayerMode != MultiplayerMode.BLUETOOTH.toString() || multiplayerSettingsViewModel.getMultiplayerSettings()
+        .last().multiplayerMode != MultiplayerMode.WIFI.toString()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,18 +41,6 @@ class SimpleFourInARowBoardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initListener()
-
-        fragment_four_in_a_row_playboard.appEventFlowable.subscribe {
-            Handler().postDelayed({
-                four_in_a_row_game_end_overlay.isVisible = true
-                four_in_a_row_game_end_overlay.onGameWon(
-                    it.wonPlayer,
-                    StatisticsUtils(context).getDrawablesPair(GameMode.FOUR_IN_A_ROW),
-                    GameMode.FOUR_IN_A_ROW
-                )
-                whobbleRestartButton(true)
-            }, 1200)
-        }
     }
 
     private fun whobbleRestartButton(isWhobbling: Boolean) {
@@ -61,15 +58,56 @@ class SimpleFourInARowBoardFragment : Fragment() {
     }
 
     private fun initListener() {
+        //listen when opponent left game
+        fragment_four_in_a_row_playboard.opponentLeftEvent.doOnNext { isOpponentGone ->
+            if (isOpponentGone) {
+                four_in_a_row_opponent_left_game_info?.isVisible = true
+            }
+        }.subscribe()
+
         four_in_a_row_game_end_overlay.setOnClickListener {
             four_in_a_row_game_end_overlay.isVisible = false
+
+            if (isOnlineGame) {
+                fragment_four_in_a_row_playboard.restartBoard()
+            }
         }
 
-        val throttleDuration: Long = 5000
-        four_in_a_row_button_text.clicks()
-            .throttleFirst(throttleDuration, java.util.concurrent.TimeUnit.MILLISECONDS).subscribe {
-                fragment_four_in_a_row_playboard.restartBoard()
-                whobbleRestartButton(false)
+        four_in_a_row_opponent_left_game_info?.backPressEvent?.subscribe{
+            if (it) {
+                this.activity?.onBackPressed()
             }
+        }
+
+
+        val throttleDuration: Long = 5000
+
+        if (isOnlineGame) {
+            four_in_a_row_button_text.isVisible = false
+            four_in_a_row_button_text.isClickable = false
+        } else {
+            four_in_a_row_button_text.clicks()
+                .throttleFirst(throttleDuration, java.util.concurrent.TimeUnit.MILLISECONDS)
+                .subscribe {
+                    fragment_four_in_a_row_playboard.restartBoard()
+                    whobbleRestartButton(false)
+                }
+
+            four_in_a_row_button_text.isVisible = true
+            four_in_a_row_button_text.isClickable = true
+        }
+
+        //check weather game ended
+        fragment_four_in_a_row_playboard.appEventFlowable.subscribe {
+            Handler().postDelayed({
+                four_in_a_row_game_end_overlay.isVisible = true
+                four_in_a_row_game_end_overlay.onGameWon(
+                    it.wonPlayer,
+                    StatisticsUtils(context).getDrawablesPair(GameMode.FOUR_IN_A_ROW),
+                    GameMode.FOUR_IN_A_ROW
+                )
+                whobbleRestartButton(true)
+            }, 1200)
+        }
     }
 }

@@ -1,10 +1,15 @@
 package com.jcDevelopment.tictactoeadfree.module.gameEngine.fourInARow
 
+import com.google.gson.Gson
+import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameStatistics.GameStatistics
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerDataPackage.MultiplayerDataPackage
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -17,6 +22,8 @@ class FourInARowEngine internal constructor(
     private val gameStatisticsViewModel by inject<GameStatisticsViewModel>()
 
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
+
+    private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
 
     private var gameListener: GameListener = listener
 
@@ -38,6 +45,11 @@ class FourInARowEngine internal constructor(
 
     private val ai = FourInARowAi
 
+    private val gson = Gson()
+
+    private val isBluetoothGame = multiplayerSettingsViewModel.getMultiplayerSettings()
+        .last().multiplayerMode == MultiplayerMode.BLUETOOTH.toString()
+
     fun initializeBoard() {
         currentPlayer = 1
         gameListener.onInitializeBoard()
@@ -46,7 +58,7 @@ class FourInARowEngine internal constructor(
         isGameAgainstAi = gameSettingsViewModel.getGameSettings().last().isSecondPlayerAi
     }
 
-    fun gameTurn(positionX: Int) {
+    fun gameTurn(positionX: Int, isRemoteTurn: Boolean) {
         // switch from last draw to a valid player
         resetCurrentPlayerFromDraw()
 
@@ -71,6 +83,19 @@ class FourInARowEngine internal constructor(
                 aiTurnProcess()
             }
         }
+
+        if (!isRemoteTurn && isBluetoothGame
+        ) {
+            BlueToothService.write(
+                gson.toJson(
+                    MultiplayerDataPackage(
+                        x = positionX,
+                        y = positionY
+                    )
+                ).toByteArray()
+            )
+            gameListener.onOpponentIsTurning()
+        }
     }
 
     fun getNextFreeYPosition(positionX: Int): Int? {
@@ -86,6 +111,31 @@ class FourInARowEngine internal constructor(
             }
         }
         throw IllegalStateException("(O.o) index out of grid bounds")
+    }
+
+    fun initMultiplayerListener() {
+        BlueToothService.getMessageObservable().doOnNext { multiplayerPackageString ->
+            val packageData = gson.fromJson<MultiplayerDataPackage>(
+                multiplayerPackageString,
+                MultiplayerDataPackage::class.java
+            )
+
+            packageData.leaveGame?.let {
+                if (it) {
+                    gameListener.onOpponentLeftGame()
+                }
+            }
+
+            packageData.x?.let { x ->
+                gameTurn(x, isRemoteTurn = true)
+            }
+        }.subscribe()
+
+        BlueToothService.getConnectionObservable().doOnNext {
+            if (it != BlueToothService.STATE_CONNECTED) {
+                gameListener.onOpponentLeftGame()
+            }
+        }.subscribe()
     }
 
     private fun aiTurnProcess() {
@@ -112,7 +162,7 @@ class FourInARowEngine internal constructor(
         if (aiTurnX != null) {
             android.os.Handler().postDelayed({
                 gameListener.onPlayerTurned(aiTurnX, getNextFreeYPosition(aiTurnX)!!, currentPlayer)
-                gameTurn(aiTurnX)
+                gameTurn(aiTurnX, false)
 
                 nextAiTurnX = null
             }, 1000)
@@ -328,5 +378,7 @@ class FourInARowEngine internal constructor(
             positionY: Int,
             currentPlayer: Int
         )
+
+        fun onOpponentLeftGame()
     }
 }

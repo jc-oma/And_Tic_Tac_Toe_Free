@@ -2,6 +2,7 @@ package com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe
 
 import android.os.Handler
 import com.google.gson.Gson
+import com.google.gson.stream.JsonReader
 import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
@@ -13,6 +14,7 @@ import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameStatisticsViewMod
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.io.StringReader
 
 class TicTacToeEngine internal constructor(
     private val grid: Int = 3,
@@ -35,6 +37,9 @@ class TicTacToeEngine internal constructor(
     private var turns = 0
 
     private var isGameAgainstAi = false
+
+    private val isBluetoothGame = multiplayerSettingsViewModel.getMultiplayerSettings()
+        .last().multiplayerMode == MultiplayerMode.BLUETOOTH.toString()
 
     private val rowAmountToWin = if (grid == 3) {
         3
@@ -76,11 +81,17 @@ class TicTacToeEngine internal constructor(
             aiTurnProcess()
         }
 
-        if (!isRemoteTurn && (multiplayerSettingsViewModel.getMultiplayerSettings()
-                .last().multiplayerMode == MultiplayerMode.BLUETOOTH.toString() || multiplayerSettingsViewModel.getMultiplayerSettings()
-                .last().multiplayerMode == MultiplayerMode.WIFI.toString())
+        if (!isRemoteTurn && isBluetoothGame
         ) {
-            BlueToothService.write(gson.toJson(MultiplayerDataPackage(x = positionX, y = positionY, z = positionZ)).toByteArray())
+            BlueToothService.write(
+                gson.toJson(
+                    MultiplayerDataPackage(
+                        x = positionX,
+                        y = positionY,
+                        z = positionZ
+                    )
+                ).toByteArray()
+            )
             gameListener.onOpponentIsTurning()
         }
     }
@@ -418,15 +429,29 @@ class TicTacToeEngine internal constructor(
 
     fun initMultiplayerListener() {
         BlueToothService.getMessageObservable().doOnNext { multiplayerPackageString ->
+            val reader = JsonReader(StringReader(multiplayerPackageString))
+            reader.isLenient = true
             val packageData = gson.fromJson<MultiplayerDataPackage>(
-                multiplayerPackageString,
+                reader,
                 MultiplayerDataPackage::class.java
             )
+
+            packageData.leaveGame?.let {
+                if (it) {
+                    gameListener.onOpponentLeft()
+                }
+            }
 
             packageData.x?.let { x ->
                 packageData.y?.let { y ->
                     gameTurn(x, y, isRemoteTurn = true)
                 }
+            }
+        }.subscribe()
+
+        BlueToothService.getConnectionObservable().doOnNext {
+            if (it != BlueToothService.STATE_CONNECTED) {
+                gameListener.onOpponentLeft()
             }
         }.subscribe()
     }
@@ -437,6 +462,7 @@ class TicTacToeEngine internal constructor(
             wonPosition: MutableList<Triple<Int, Int, Int>>?
         )
 
+        fun onOpponentLeft()
         fun onSwitchPlayer(playerNumber: Int)
         fun onInitializeBoard()
         fun onOpponentIsTurning()

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/shape_logo_intro_background"
-    tools:context=".module.logo.LogoFragment">
+    tools:context=".module.companyLogo.CompanyLogoFragment">
 
     <ImageView
         android:layout_width="match_parent"

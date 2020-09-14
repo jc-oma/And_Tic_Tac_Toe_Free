@@ -30,9 +30,11 @@ class SimpleTicTacToeBoardFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         play_board.prepareBoardStart()
-    }
 
-    private fun makeToast(s: String) {
-        Toast.makeText(context, s, Toast.LENGTH_LONG).show()
+        play_board.backPressEvent.subscribe{
+            if (it) {
+                this.activity?.onBackPressed()
+            }
+        }
     }
 }

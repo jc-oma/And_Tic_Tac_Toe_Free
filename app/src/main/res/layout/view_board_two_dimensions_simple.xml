@@ -24,6 +24,13 @@
         android:translationZ="40dp"
         android:visibility="gone" />
 
+    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.OpponentLeftInfoView
+        android:id="@+id/simple_two_dim_tic_opponent_left_game_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:translationZ="40dp"
+        android:visibility="gone"/>
+
     <ImageView
         android:id="@+id/one_one"
         android:layout_width="0dp"
@@ -176,7 +183,7 @@
         tools:text="Spieler 1" />
 
     <com.jcDevelopment.tictactoeadfree.module.gameButtons.EdgedGameButton
-        android:id="@+id/restart_game"
+        android:id="@+id/restart_game_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

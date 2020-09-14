@@ -1,4 +1,4 @@
-package com.jcDevelopment.tictactoeadfree.module.logo
+package com.jcDevelopment.tictactoeadfree.module.companyLogo
 
 import android.content.Context
 import android.os.Bundle
@@ -9,11 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.jcDevelopment.tictactoeadfree.R
 
-class LogoFragment : Fragment() {
+class CompanyLogoFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            LogoFragment()
+            CompanyLogoFragment()
     }
 
     private var listener: Listener? = null

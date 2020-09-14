@@ -68,7 +68,7 @@ object BlueToothService {
         return deviceNameSubject
     }
 
-    //dunno this, maybe //TODO remove
+    //dunno this, maybe: //TODO remove
     private val messageToastSubject = PublishSubject.create<String>()
     fun getMessageToastObservable(): Observable<String> {
         return messageToastSubject
@@ -277,6 +277,7 @@ object BlueToothService {
             mInsecureAcceptThread = null
         }
         mState = STATE_NONE
+        connectionSubject.onNext(STATE_NONE)
         // Update UI title
         updateUserInterfaceTitle()
     }

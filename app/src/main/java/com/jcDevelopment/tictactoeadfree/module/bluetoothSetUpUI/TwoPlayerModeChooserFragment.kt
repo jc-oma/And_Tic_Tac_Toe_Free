@@ -12,7 +12,6 @@ import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseFragment
 import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerSettings
-import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.multiplayerSettingsModule
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import kotlinx.android.synthetic.main.fragment_two_player_mode_choser.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,6 +48,11 @@ class TwoPlayerModeChooserFragment : BaseFragment() {
         initListener()
     }
 
+    override fun onResume() {
+        super.onResume()
+        onBluetoothBack()
+    }
+
     private fun initView() {
         two_player_game_mode_bluetooth.isVisible = listener?.onCheckIfBluetoothAvailable() ?: false
     }
@@ -60,27 +64,50 @@ class TwoPlayerModeChooserFragment : BaseFragment() {
         }
 
         two_player_game_mode_bluetooth.setOnClickListener {
-            multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(multiplayerMode = MultiplayerMode.BLUETOOTH.toString()))
-            onBluetoothChosen()
+            multiplayerSettingsViewModel.updateMultiplayersettings(
+                MultiplayerSettings(
+                    multiplayerMode = MultiplayerMode.BLUETOOTH.toString()
+                )
+            )
+
+            if (BlueToothService.getState() == BlueToothService.STATE_CONNECTED) {
+                listener?.onAskForAnotherGame()
+            } else {
+                onBluetoothChosen()
+            }
         }
 
         two_player_game_mode_bluetooth_back_button.setOnClickListener {
-            multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(multiplayerMode = MultiplayerMode.NONE.toString()))
             onBluetoothBack()
         }
 
         two_player_game_mode_hotseat.setOnClickListener {
-            multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(multiplayerMode = MultiplayerMode.HOT_SEAT.toString()))
-            listener?.onTwoPlayerModeChooserFragmentHotseatClick() }
+            multiplayerSettingsViewModel.updateMultiplayersettings(
+                MultiplayerSettings(
+                    multiplayerMode = MultiplayerMode.HOT_SEAT.toString()
+                )
+            )
+            listener?.onTwoPlayerModeChooserFragmentHotseatClick()
+        }
 
         two_player_game_mode_bluetooth_host.setOnClickListener {
             two_player_game_mode_bluetooth_waiting_for_player_overlay.visibility = View.VISIBLE
-            multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(isHost = true, multiplayerMode = MultiplayerMode.BLUETOOTH.toString()))
+            multiplayerSettingsViewModel.updateMultiplayersettings(
+                MultiplayerSettings(
+                    isHost = true,
+                    multiplayerMode = MultiplayerMode.BLUETOOTH.toString()
+                )
+            )
             listener?.onBluetoothCreateHostButtonClicked()
         }
         two_player_game_mode_bluetooth_client.setOnClickListener {
             two_player_game_mode_bluetooth_waiting_for_player_overlay.visibility = View.VISIBLE
-            multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(isHost = false, multiplayerMode = MultiplayerMode.BLUETOOTH.toString()))
+            multiplayerSettingsViewModel.updateMultiplayersettings(
+                MultiplayerSettings(
+                    isHost = false,
+                    multiplayerMode = MultiplayerMode.BLUETOOTH.toString()
+                )
+            )
             listener?.onBluetoothConnectToGameButtonClicked()
         }
     }
@@ -115,8 +142,9 @@ class TwoPlayerModeChooserFragment : BaseFragment() {
 
     interface Listener {
         fun onTwoPlayerModeChooserFragmentHotseatClick()
-        fun onCheckIfBluetoothAvailable():Boolean
+        fun onCheckIfBluetoothAvailable(): Boolean
         fun onBluetoothCreateHostButtonClicked()
         fun onBluetoothConnectToGameButtonClicked()
+        fun onAskForAnotherGame()
     }
 }

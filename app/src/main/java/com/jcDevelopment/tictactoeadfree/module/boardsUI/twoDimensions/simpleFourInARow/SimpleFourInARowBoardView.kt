@@ -6,27 +6,38 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import com.jcDevelopment.tictactoeadfree.R
+import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
+import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
 import com.jcDevelopment.tictactoeadfree.module.gameEngine.fourInARow.FourInARowEngine
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.processors.PublishProcessor
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_board_four_in_a_row_simple.view.*
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class SimpleFourInARowBoardView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), FourInARowEngine.GameListener {
+) : LinearLayout(context, attrs, defStyleAttr), FourInARowEngine.GameListener, KoinComponent {
     init {
         initView(context)
     }
+
+    private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
 
     //https://medium.com/@tylerwalker/event-based-systems-on-android-feat-rxjava-and-kotlin-7896279dfb07
     data class GameEndEvent(val wonPlayer: Int)
 
     val appEventProcessor: PublishProcessor<GameEndEvent> = PublishProcessor.create()
     val appEventFlowable = appEventProcessor as Flowable<GameEndEvent>
+
+    val opponentLeftEvent: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
 
     private fun initView(context: Context) {
         View.inflate(context, R.layout.view_board_four_in_a_row_simple, this)
@@ -54,6 +65,8 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         super.onFinishInflate()
         fourEngine.initializeBoard()
         initListener()
+
+        checkIfPlayerIsPlayerOne()
     }
 
     fun restartBoard() {
@@ -63,6 +76,20 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         isGameOver = false
 
         fourEngine.initializeBoard()
+    }
+
+    private fun checkIfPlayerIsPlayerOne() {
+        val gameMode = multiplayerSettingsViewModel.getMultiplayerSettings().last().multiplayerMode
+        val isHost = multiplayerSettingsViewModel.getMultiplayerSettings().last().isHost
+
+        if (gameMode == MultiplayerMode.BLUETOOTH.toString()
+        ) {
+            fourEngine.initMultiplayerListener()
+
+            if (!isHost) {
+                opponentIsTurning()
+            }
+        }
     }
 
     private fun initListener() {
@@ -77,11 +104,16 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
                     if (!isOpponentTurning && !isGameOver) {
                         val toRow = fourEngine.getNextFreeYPosition(index)
                         if (toRow != null) {
-                            fourEngine.gameTurn(index)
+                            fourEngine.gameTurn(index, false)
                         }
                     }
                 }
         }
+    }
+
+    private fun opponentIsTurning() {
+        isOpponentTurning = true
+        animateThinkingOpponent()
     }
 
     private fun animateThinkingOpponent() {
@@ -117,8 +149,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     }
 
     override fun onOpponentIsTurning() {
-        isOpponentTurning = true
-        animateThinkingOpponent()
+        opponentIsTurning()
     }
 
     override fun onPlayerTurned(
@@ -129,5 +160,9 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
         isOpponentTurning = false
         playGroundViewGrid[positionX].animatePlayStoneDrop(positionY, currentPlayer)
         clearThinkingOpponentAnimation()
+    }
+
+    override fun onOpponentLeftGame() {
+        opponentLeftEvent.onNext(true)
     }
 }

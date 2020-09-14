@@ -21,6 +21,7 @@ import com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe.TicTacToeEn
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
+import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -34,8 +35,9 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         initView(context)
     }
 
+    val backPressEvent: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
+
     private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
-    private val gameSettingsViewModel by inject<GameSettingsViewModel>()
 
     private val oImgPlayerStone =
         ContextCompat.getDrawable(context, R.drawable.blender_o_play_stone)
@@ -79,7 +81,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
             one_two,
             one_three,
             simple_2d_thinking_witch,
-            restart_game
+            restart_game_button
         )
     }
 
@@ -103,6 +105,12 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         game_info.text = context.getString(R.string.get_it_started)
 
         addViewsToHardwareLayer()
+
+        simple_two_dim_tic_opponent_left_game_info?.backPressEvent?.subscribe{
+            if (it) {
+                backPressEvent.onNext(true)
+            }
+        }
     }
 
     fun prepareBoardStart() {
@@ -157,11 +165,20 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         } else winOverlayPreparation(wonPlayer)
     }
 
+    override fun onOpponentLeft() {
+        disableClicksInBoard()
+        simple_two_dim_tic_opponent_left_game_info?.visibility = View.VISIBLE
+    }
+
     private fun opponentIsTurning() {
+        disableClicksInBoard()
+        animateThinkingOpponent()
+    }
+
+    private fun disableClicksInBoard() {
         playGroundViewGrid.forEach { cellView ->
             cellView.isClickable = false
         }
-        animateThinkingOpponent()
     }
 
     private fun opponentHasTurned(
@@ -223,9 +240,6 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
     private fun restartBoard() {
         isGameOver = false
         toe.initializeBoard()
-        simple_two_dim_tic_game_end_overlay.setOnClickListener {
-            simple_two_dim_tic_game_end_overlay.isVisible = false
-        }
 
         for ((index, cellView) in playGroundViewGrid.withIndex()) {
             startWhobbleAnimation(cellView)
@@ -233,10 +247,10 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
             initializeClickListenerForPlayerTurn(cellView, index)
         }
 
-        restart_game.whobbleAnimation(false)
+        restart_game_button.whobbleAnimation(false)
 
-        restart_game.setOnTouchListener { view, motionEvent ->
-            restart_game.changeStyleOnTouchEvent(motionEvent)
+        restart_game_button.setOnTouchListener { view, motionEvent ->
+            restart_game_button.changeStyleOnTouchEvent(motionEvent)
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 view.performClick()
                 restartBoard()
@@ -246,6 +260,21 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
                 }
             }
             return@setOnTouchListener true
+        }
+
+        val multiplayerMode =
+            multiplayerSettingsViewModel.getMultiplayerSettings().last().multiplayerMode
+        if (multiplayerMode == MultiplayerMode.BLUETOOTH.toString() || multiplayerMode == MultiplayerMode.WIFI.toString()) {
+            restart_game_button.isVisible = false
+            simple_two_dim_tic_game_end_overlay.setOnClickListener {
+                simple_two_dim_tic_game_end_overlay.isVisible = false
+                restartBoard()
+            }
+        } else {
+            restart_game_button.isVisible = true
+            simple_two_dim_tic_game_end_overlay.setOnClickListener {
+                simple_two_dim_tic_game_end_overlay.isVisible = false
+            }
         }
     }
 
@@ -297,7 +326,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
             cellView.clearAnimation()
         }
         simple_two_dim_tic_game_end_overlay.isVisible = true
-        restart_game.whobbleAnimation(true)
+        restart_game_button.whobbleAnimation(true)
         deleteBoardListener()
     }
 
@@ -305,7 +334,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         groupIds.forEach { id ->
             rootView.findViewById<View>(id).setOnClickListener {
                 game_info.text = context.getString(R.string.game_has_ended_hint)
-                restart_game.startAnimation(
+                restart_game_button.startAnimation(
                     AnimationUtils.loadAnimation(
                         context,
                         R.anim.shake_animation

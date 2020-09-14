@@ -54,6 +54,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_four_in_a_row_playboard" />
 
+    <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.OpponentLeftInfoView
+        android:id="@+id/four_in_a_row_opponent_left_game_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:translationZ="40dp"
+        android:visibility="gone"/>
+
     <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.GameEndedOverlay
         android:id="@+id/four_in_a_row_game_end_overlay"
         android:layout_width="match_parent"

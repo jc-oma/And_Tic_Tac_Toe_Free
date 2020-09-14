@@ -7,6 +7,8 @@
     <string name="one_player">&lt; Ein Spieler &gt;</string>
     <string name="two_player">&lt; Zwei Spieler &gt;</string>
     <string name="start_game">Spiel Starten</string>
+    <string name="ok">OK</string>
+    <string name="nope">NEIN</string>
     <string name="back">zurück</string>
 
     <string name="game_difficulty_easy">einfach</string>
@@ -51,4 +53,9 @@
 
     <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=com.jcDevelopment.tictactoeadfree</string>
     <string name="different_version_code_error">unterschiedliche Versionen gefunden. Bitte Updaten Sie!</string>
+
+    <string name="opponent_left_info_headline">Der Gegner hat das Spiel verlassen</string>
+
+    <string name="ask_another_game_headline">Gegen %s noch einmal spielen?</string>
+    <string name="ask_another_game_declined">Der Gegner hat die Anfrage abgelehnt</string>
 </resources>

@@ -7,6 +7,8 @@
     <string name="one_player">&lt; One Player &gt;</string>
     <string name="two_player">&lt; Two Player &gt;</string>
     <string name="start_game">Start Game</string>
+    <string name="ok">OK</string>
+    <string name="nope">NEIN</string>
     <string name="back">back</string>
 
     <string name="game_difficulty_easy">easy</string>
@@ -51,4 +53,8 @@
     <string name="bluetooth_playmode_switched">Switched to %s game mode by host</string>
     <string name="different_version_code_error">Different game versions were found. Please update!</string>
 
+    <string name="opponent_left_info_headline">The opponent has left the game</string>
+
+    <string name="ask_another_game_headline">Another round versus %s?</string>
+    <string name="ask_another_game_declined">The opponent declined your question</string>
 </resources>
