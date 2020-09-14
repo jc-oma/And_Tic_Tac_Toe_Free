@@ -57,5 +57,6 @@
     <string name="opponent_left_info_headline">Der Gegner hat das Spiel verlassen</string>
 
     <string name="ask_another_game_headline">Gegen %s noch einmal spielen?</string>
+    <string name="ask_another_game_headline_empty">Noch einmal spielen?</string>
     <string name="ask_another_game_declined">Der Gegner hat die Anfrage abgelehnt</string>
 </resources>

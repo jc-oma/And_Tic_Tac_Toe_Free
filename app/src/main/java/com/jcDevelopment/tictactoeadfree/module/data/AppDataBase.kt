@@ -27,7 +27,7 @@ val roomDatabaseModule = module {
 
 @Database(
     entities = [GameStatistics::class, GameSettings::class, MultiplayerSettings::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class MultiplayerSettings (
     val multiplayerMode: String = MultiplayerMode.NONE.toString(),
     val isHost: Boolean = false,
+    val lastConnectedDeviceName: String? = null,
     @PrimaryKey
     val id: Int = 0
 )

@@ -56,5 +56,6 @@
     <string name="opponent_left_info_headline">The opponent has left the game</string>
 
     <string name="ask_another_game_headline">Another round versus %s?</string>
+    <string name="ask_another_game_headline_empty">Another round?</string>
     <string name="ask_another_game_declined">The opponent declined your question</string>
 </resources>

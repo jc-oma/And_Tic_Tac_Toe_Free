@@ -24,11 +24,10 @@ class AskedForAnotherGameView @JvmOverloads constructor(
     val ackAnotherGameObservable by lazy { asked_for_another_ack_button?.clicks() }
     val declineAnotherGameObservable by lazy { asked_for_another_decline_button?.clicks() }
 
-    fun setHeadline(s:String?){
-        s?.let { opponent_left_info_headline.text = context.getString(R.string.ask_another_game_headline, it)}
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
+    fun setHeadline(s: String?) {
+        opponent_left_info_headline.text = if (s != null) context.getString(
+            R.string.ask_another_game_headline,
+            s
+        ) else context.getString(R.string.ask_another_game_headline_empty)
     }
 }

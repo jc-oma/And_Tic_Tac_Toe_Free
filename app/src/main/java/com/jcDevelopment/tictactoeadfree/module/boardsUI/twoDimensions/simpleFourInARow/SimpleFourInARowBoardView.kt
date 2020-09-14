@@ -38,6 +38,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     val appEventFlowable = appEventProcessor as Flowable<GameEndEvent>
 
     val opponentLeftEvent: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
+    val onOpponentIsTurning: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
 
     private fun initView(context: Context) {
         View.inflate(context, R.layout.view_board_four_in_a_row_simple, this)
@@ -117,17 +118,11 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     }
 
     private fun animateThinkingOpponent() {
-        simple_2d_thinking_frankenstein.alpha = 1f
-        val thinkingAnimation = AnimationUtils.loadAnimation(
-            context,
-            R.anim.thinking_ai_on_board_appear
-        )
-        simple_2d_thinking_frankenstein.startAnimation(thinkingAnimation)
+        onOpponentIsTurning.onNext(true)
     }
 
     private fun clearThinkingOpponentAnimation() {
-        simple_2d_thinking_frankenstein.clearAnimation()
-        simple_2d_thinking_frankenstein.alpha = 0f
+        onOpponentIsTurning.onNext(false)
     }
 
     override fun onGameEnd(wonPlayer: Int, wonPosition: MutableList<Pair<Int, Int>>?) {

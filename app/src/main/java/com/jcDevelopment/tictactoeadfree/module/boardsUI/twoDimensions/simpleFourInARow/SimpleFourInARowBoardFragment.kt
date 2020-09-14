@@ -26,8 +26,8 @@ class SimpleFourInARowBoardFragment : Fragment() {
     private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
 
     private val isOnlineGame = multiplayerSettingsViewModel.getMultiplayerSettings()
-        .last().multiplayerMode != MultiplayerMode.BLUETOOTH.toString() || multiplayerSettingsViewModel.getMultiplayerSettings()
-        .last().multiplayerMode != MultiplayerMode.WIFI.toString()
+        .last().multiplayerMode == MultiplayerMode.BLUETOOTH.toString() || multiplayerSettingsViewModel.getMultiplayerSettings()
+        .last().multiplayerMode == MultiplayerMode.WIFI.toString()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +37,8 @@ class SimpleFourInARowBoardFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_simple_four_in_a_row_board, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
 
         initListener()
     }
@@ -109,5 +109,28 @@ class SimpleFourInARowBoardFragment : Fragment() {
                 whobbleRestartButton(true)
             }, 1200)
         }
+
+        fragment_four_in_a_row_playboard.onOpponentIsTurning.doOnNext {
+            if (it) {
+                animateThinkingOpponent()
+            } else {
+                clearThinkingOpponentAnimation()
+            }
+        }.subscribe()
+    }
+
+
+    private fun animateThinkingOpponent() {
+        simple_2d_thinking_frankenstein.alpha = 1f
+        val thinkingAnimation = AnimationUtils.loadAnimation(
+            context,
+            R.anim.thinking_ai_on_board_appear
+        )
+        simple_2d_thinking_frankenstein.startAnimation(thinkingAnimation)
+    }
+
+    private fun clearThinkingOpponentAnimation() {
+        simple_2d_thinking_frankenstein.clearAnimation()
+        simple_2d_thinking_frankenstein.alpha = 0f
     }
 }

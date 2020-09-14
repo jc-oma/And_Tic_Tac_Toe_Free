@@ -63,8 +63,6 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
     private val multiplayerSettingsViewModel by viewModel<MultiplayerSettingsViewModel>()
 
-    private var connectedDeviceName: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -98,9 +96,12 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         initBluetoothEventListener()
     }
 
+    private fun getMultiplayerSettings(): MultiplayerSettings {
+        return multiplayerSettingsViewModel.getMultiplayerSettings().last()
+    }
+
 
     private fun initBluetoothEventListener() {
-        val multiplayerSettings = multiplayerSettingsViewModel.getMultiplayerSettings().last()
 
         connectionDisposable = BlueToothService.getConnectionObservable()
             .doOnNext { connectionState ->
@@ -113,7 +114,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
                             gson.toJson(
                                 MultiplayerDataPackage(
                                     gameSettings = getGameSettings(),
-                                    multiplayerSettings = multiplayerSettings,
+                                    multiplayerSettings = getMultiplayerSettings(),
                                     gameVersionCode = BuildConfig.VERSION_CODE,
                                     gameVersionName = BuildConfig.VERSION_NAME
                                 )
@@ -127,7 +128,13 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
 
         deviceNameDisposable = BlueToothService.getDeviceNameObservable()
             .doOnNext {
-                connectedDeviceName = it
+                multiplayerSettingsViewModel.updateMultiplayersettings(
+                    MultiplayerSettings(
+                        multiplayerMode = getMultiplayerSettings().multiplayerMode,
+                        isHost = getMultiplayerSettings().isHost,
+                        lastConnectedDeviceName = it
+                    )
+                )
             }.subscribe()
 
         handshakeDisposable = BlueToothService.getMessageObservable()
@@ -138,7 +145,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
                     reader,
                     MultiplayerDataPackage::class.java
                 )
-                if (!multiplayerSettings.isHost) {
+                if (!getMultiplayerSettings().isHost) {
                     gameSettingsComparison.gameVersionName?.let { remoteVersionName ->
                         gameSettingsComparison.gameVersionCode?.let { remoteGameVersion ->
                             if (remoteGameVersion == BuildConfig.VERSION_CODE && remoteVersionName == BuildConfig.VERSION_NAME) {
@@ -167,12 +174,12 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
                                         gson.toJson(MultiplayerDataPackage(handShakeSuccessAck = true))
                                             .toByteArray()
                                     )
-                                } ?: makeToast("GameSettings Empty")
+                                }
                             } else {
                                 makeToast(getString(R.string.different_version_code_error))
                             }
-                        } ?: makeToast("VersionCode Empty")
-                    } ?: makeToast("VersionName Empty")
+                        }
+                    }
                 }
 
 
@@ -180,7 +187,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
                     if (handShakeAck) {
                         openGameFragment()
                     }
-                } ?: makeToast("ack empty")
+                }
 
 
                 gameSettingsComparison.askForGame?.let { askForAnotherGame ->
@@ -188,7 +195,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
                         when (gameSettingsComparison.askForGameAck) {
                             null -> {
                                 home_activity_ask_for_another_game?.isVisible = true
-                                home_activity_ask_for_another_game.setHeadline(connectedDeviceName)
+                                home_activity_ask_for_another_game.setHeadline(getMultiplayerSettings().lastConnectedDeviceName)
                                 home_activity_ask_for_another_game?.declineAnotherGameObservable?.subscribe {
                                     home_activity_ask_for_another_game?.isVisible = false
                                     BlueToothService.write(
@@ -207,7 +214,11 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
 
                                 home_activity_ask_for_another_game?.ackAnotherGameObservable?.subscribe {
                                     multiplayerSettingsViewModel.updateMultiplayersettings(
-                                        MultiplayerSettings(multiplayerMode = MultiplayerMode.BLUETOOTH.toString(), isHost = false))
+                                        MultiplayerSettings(
+                                            multiplayerMode = MultiplayerMode.BLUETOOTH.toString(),
+                                            isHost = false
+                                        )
+                                    )
                                     home_activity_ask_for_another_game?.isVisible = false
                                     BlueToothService.write(
                                         gson.toJson(
@@ -318,8 +329,14 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
     }
 
     override fun onAskForAnotherGame() {
-        multiplayerSettingsViewModel.updateMultiplayersettings(MultiplayerSettings(isHost = true, multiplayerMode = MultiplayerMode.BLUETOOTH.toString()))
+        multiplayerSettingsViewModel.updateMultiplayersettings(
+            MultiplayerSettings(
+                isHost = true,
+                multiplayerMode = MultiplayerMode.BLUETOOTH.toString()
+            )
+        )
         home_activity_ask_for_another_game?.isVisible = true
+        home_activity_ask_for_another_game.setHeadline(getMultiplayerSettings().lastConnectedDeviceName)
         home_activity_ask_for_another_game?.declineAnotherGameObservable?.subscribe {
             home_activity_ask_for_another_game?.isVisible = false
             BlueToothService.stop()
@@ -356,7 +373,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
     }
 
     private fun giveALeaveInfo() {
-        val gameMode = multiplayerSettingsViewModel.getMultiplayerSettings().last().multiplayerMode
+        val gameMode = getMultiplayerSettings().multiplayerMode
         if (gameMode == MultiplayerMode.BLUETOOTH.toString()) {
             BlueToothService.write(
                 Gson().toJson(MultiplayerDataPackage(leaveGame = true)).toByteArray()

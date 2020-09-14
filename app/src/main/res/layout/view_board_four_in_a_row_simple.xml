@@ -109,25 +109,4 @@
         app:layout_constraintBottom_toBottomOf="@id/bord_row_7"
         app:layout_constraintStart_toStartOf="@id/bord_row_1"
         app:layout_constraintTop_toTopOf="@id/bord_row_7" />
-
-    <ImageView
-        android:id="@+id/simple_2d_thinking_frankenstein"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="8:10"
-        android:scaleType="fitXY"
-        android:rotation="-30"
-        android:alpha="0"
-        tools:alpha="1"
-        app:layout_constraintTop_toTopOf="@+id/simple_fiar_fragment_guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_spooky_frankensteinsvg"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/simple_fiar_fragment_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6" />
 </androidx.constraintlayout.widget.ConstraintLayout>
