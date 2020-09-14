@@ -158,6 +158,7 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     }
 
     override fun onOpponentLeftGame() {
+        isGameOver = true
         opponentLeftEvent.onNext(true)
     }
 }

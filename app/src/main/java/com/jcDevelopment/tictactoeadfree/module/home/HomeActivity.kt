@@ -195,7 +195,9 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
                         when (gameSettingsComparison.askForGameAck) {
                             null -> {
                                 home_activity_ask_for_another_game?.isVisible = true
-                                home_activity_ask_for_another_game.setHeadline(getMultiplayerSettings().lastConnectedDeviceName)
+                                home_activity_ask_for_another_game.setHeadline(
+                                    getMultiplayerSettings().lastConnectedDeviceName
+                                )
                                 home_activity_ask_for_another_game?.declineAnotherGameObservable?.subscribe {
                                     home_activity_ask_for_another_game?.isVisible = false
                                     BlueToothService.write(
@@ -219,16 +221,27 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
                                             isHost = false
                                         )
                                     )
-                                    home_activity_ask_for_another_game?.isVisible = false
-                                    BlueToothService.write(
-                                        gson.toJson(
-                                            MultiplayerDataPackage(
-                                                askForGame = true,
-                                                askForGameAck = true
+
+                                    if (gameSettingsComparison.gameSettings != null) {
+                                        val gameSettings = gameSettingsComparison.gameSettings
+                                        gameSettingsViewModel.updateGameSettings(
+                                            GameSettings(
+                                                gameSettings.isSecondPlayerAi,
+                                                gameSettings.gameMode
                                             )
-                                        ).toByteArray()
-                                    )
-                                    openGameFragment()
+                                        )
+
+                                        home_activity_ask_for_another_game?.isVisible = false
+                                        BlueToothService.write(
+                                            gson.toJson(
+                                                MultiplayerDataPackage(
+                                                    askForGame = true,
+                                                    askForGameAck = true
+                                                )
+                                            ).toByteArray()
+                                        )
+                                        openGameFragment()
+                                    } else makeToast(getString(R.string.result_canceled_info))
                                 }
                             }
                             true -> {
@@ -344,7 +357,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         home_activity_ask_for_another_game?.ackAnotherGameObservable?.subscribe {
             home_activity_ask_for_another_game?.isVisible = false
             BlueToothService.write(
-                gson.toJson(MultiplayerDataPackage(askForGame = true)).toByteArray()
+                gson.toJson(MultiplayerDataPackage(gameSettings = getGameSettings(), askForGame = true)).toByteArray()
             )
         }
     }
