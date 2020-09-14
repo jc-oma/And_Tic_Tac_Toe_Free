@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
@@ -16,6 +17,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.processors.PublishProcessor
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
+import kotlinx.android.synthetic.main.fragment_simple_four_in_a_row_board.view.*
 import kotlinx.android.synthetic.main.view_board_four_in_a_row_simple.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -160,5 +162,10 @@ class SimpleFourInARowBoardView @JvmOverloads constructor(
     override fun onOpponentLeftGame() {
         isGameOver = true
         opponentLeftEvent.onNext(true)
+    }
+
+    override fun onRestartGame() {
+        restartBoard()
+        four_in_a_row_game_end_overlay.isVisible = false
     }
 }

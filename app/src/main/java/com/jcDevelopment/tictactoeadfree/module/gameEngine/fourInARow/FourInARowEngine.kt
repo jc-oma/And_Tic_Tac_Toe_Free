@@ -1,6 +1,7 @@
 package com.jcDevelopment.tictactoeadfree.module.gameEngine.fourInARow
 
 import com.google.gson.Gson
+import com.google.gson.stream.JsonReader
 import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
@@ -12,6 +13,7 @@ import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameStatisticsViewMod
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.io.StringReader
 
 class FourInARowEngine internal constructor(
     listener: GameListener
@@ -115,8 +117,10 @@ class FourInARowEngine internal constructor(
 
     fun initMultiplayerListener() {
         BlueToothService.getMessageObservable().doOnNext { multiplayerPackageString ->
+            val reader = JsonReader(StringReader(multiplayerPackageString))
+            reader.isLenient = true
             val packageData = gson.fromJson<MultiplayerDataPackage>(
-                multiplayerPackageString,
+                reader,
                 MultiplayerDataPackage::class.java
             )
 
@@ -128,6 +132,12 @@ class FourInARowEngine internal constructor(
 
             packageData.x?.let { x ->
                 gameTurn(x, isRemoteTurn = true)
+            }
+
+            packageData.restartGame?.let {
+                if (it) {
+                    gameListener.onRestartGame()
+                }
             }
         }.subscribe()
 
@@ -380,5 +390,6 @@ class FourInARowEngine internal constructor(
         )
 
         fun onOpponentLeftGame()
+        fun onRestartGame()
     }
 }

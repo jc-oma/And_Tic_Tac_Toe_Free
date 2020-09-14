@@ -447,6 +447,12 @@ class TicTacToeEngine internal constructor(
                     gameTurn(x, y, isRemoteTurn = true)
                 }
             }
+
+            packageData.restartGame?.let{
+                if (it) {
+                    gameListener.onRestartBoard()
+                }
+            }
         }.subscribe()
 
         BlueToothService.getConnectionObservable().doOnNext {
@@ -472,5 +478,7 @@ class TicTacToeEngine internal constructor(
             positionZ: Int,
             currentPlayer: Int
         )
+
+        fun onRestartBoard()
     }
 }

@@ -151,6 +151,11 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         opponentHasTurned(positionX, positionY, currentPlayer)
     }
 
+    override fun onRestartBoard() {
+        simple_two_dim_tic_game_end_overlay.isVisible = false
+        restartBoard()
+    }
+
     override fun onGameEnd(
         wonPlayer: Int,
         wonPosition: MutableList<Triple<Int, Int, Int>>?

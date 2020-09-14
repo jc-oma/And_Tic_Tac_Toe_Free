@@ -15,5 +15,6 @@ data class MultiplayerDataPackage(
     val handShakeSuccessAck: Boolean? = null,
     val leaveGame: Boolean? = null,
     val askForGame: Boolean? = null,
-    val askForGameAck: Boolean? = null
+    val askForGameAck: Boolean? = null,
+    val restartGame: Boolean? = null
 )

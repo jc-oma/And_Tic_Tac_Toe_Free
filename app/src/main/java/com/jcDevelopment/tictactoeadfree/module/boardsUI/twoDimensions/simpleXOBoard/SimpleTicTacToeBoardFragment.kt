@@ -27,8 +27,9 @@ class SimpleTicTacToeBoardFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_two_dimensions_simple_game, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+
         play_board.prepareBoardStart()
 
         play_board.backPressEvent.subscribe{
