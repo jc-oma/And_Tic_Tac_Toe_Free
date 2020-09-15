@@ -46,6 +46,8 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
     private lateinit var deviceNameDisposable: Disposable
     private lateinit var connectionDisposable: Disposable
 
+    private val gameFragmentTag = "GAME_FRAGMENT_TAG"
+
     private var isTransactionSafe: Boolean = true
     private val activity = this
     private val manager = activity.supportFragmentManager
@@ -93,7 +95,15 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
             BlueToothService.start()
         }
 
+        initClickListener()
+
         initBluetoothEventListener()
+    }
+
+    private fun initClickListener() {
+        home_activity_root_contraint.setOnClickListener {
+            home_activity_bluetooth_list?.visibility = View.GONE
+        }
     }
 
     private fun getMultiplayerSettings(): MultiplayerSettings {
@@ -113,10 +123,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
                         BlueToothService.write(
                             gson.toJson(
                                 MultiplayerDataPackage(
-                                    gameSettings = getGameSettings(),
-                                    multiplayerSettings = getMultiplayerSettings(),
-                                    gameVersionCode = BuildConfig.VERSION_CODE,
-                                    gameVersionName = BuildConfig.VERSION_NAME
+                                    gameSettings = getGameSettings()
                                 )
                             ).toByteArray()
                         )
@@ -357,7 +364,12 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         home_activity_ask_for_another_game?.ackAnotherGameObservable?.subscribe {
             home_activity_ask_for_another_game?.isVisible = false
             BlueToothService.write(
-                gson.toJson(MultiplayerDataPackage(gameSettings = getGameSettings(), askForGame = true)).toByteArray()
+                gson.toJson(
+                    MultiplayerDataPackage(
+                        gameSettings = getGameSettings(),
+                        askForGame = true
+                    )
+                ).toByteArray()
             )
         }
     }
@@ -412,24 +424,27 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
             )
         )
         val bondedDevices = mBluetoothAdapter?.bondedDevices
-        val arrayAdapter = ArrayAdapter<String>(
-            activity,
-            R.layout.recyclerview_used_library,
-            R.id.used_library_headline,
-            bondedDevices!!.map { it.name.toString() + it.name })
-        home_activity_bluetooth_list.adapter = arrayAdapter
-        home_activity_bluetooth_list.setOnItemClickListener { _, _, position, _ ->
-            home_activity_bluetooth_list.isVisible = false
-            val bondedBluetoothAdapter = mBluetoothAdapter?.getRemoteDevice(
-                bondedDevices.elementAt(
-                    position
-                ).address
-            )
 
-            BlueToothService.connect(bondedBluetoothAdapter!!, secure = false)
-        }
+        bondedDevices?.let {notNullBondedDevices ->
+            val arrayAdapter = ArrayAdapter<String>(
+                activity,
+                R.layout.recyclerview_used_library,
+                R.id.used_library_headline,
+                notNullBondedDevices.map { it.name.toString() + it.name })
+            home_activity_bluetooth_list?.adapter = arrayAdapter
+            home_activity_bluetooth_list?.setOnItemClickListener { _, _, position, _ ->
+                home_activity_bluetooth_list?.isVisible = false
+                val bondedBluetoothAdapter = mBluetoothAdapter?.getRemoteDevice(
+                    bondedDevices.elementAt(
+                        position
+                    ).address
+                )
 
-        home_activity_bluetooth_list.visibility = View.VISIBLE
+                BlueToothService.connect(bondedBluetoothAdapter!!, secure = false)
+            }
+
+            home_activity_bluetooth_list?.visibility = View.VISIBLE
+        } ?: makeToast(getString(R.string.no_bounded_devices_found_error))
     }
 
     private fun initToolbar() {
@@ -476,10 +491,13 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         //handshakeDisposable.dispose()
         val gameSettings = getGameSettings()
         val gameMode = GameMode.valueOf(gameSettings.gameMode)
-        if (gameMode == GameMode.TIC_TAC_TOE) {
-            openTwoDimensionalFragment()
-        } else if (gameMode == GameMode.FOUR_IN_A_ROW) {
-            openFourInARowFragment()
+        val last = manager.fragments.last()
+        if (manager.findFragmentByTag(gameFragmentTag) == null) {
+            if (gameMode == GameMode.TIC_TAC_TOE) {
+                openTicTacToeFragment()
+            } else if (gameMode == GameMode.FOUR_IN_A_ROW) {
+                openFourInARowFragment()
+            }
         }
     }
 
@@ -497,13 +515,19 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
 
     private fun openFourInARowFragment() {
         val transaction: FragmentTransaction = manager.beginTransaction()
-        transaction.add(R.id.main_activity_root, SimpleFourInARowBoardFragment.newInstance())
+        transaction.add(
+            R.id.main_activity_root, SimpleFourInARowBoardFragment.newInstance(),
+            gameFragmentTag
+        )
         transaction.commit()
     }
 
-    private fun openTwoDimensionalFragment() {
+    private fun openTicTacToeFragment() {
         val transaction: FragmentTransaction = manager.beginTransaction()
-        transaction.add(R.id.main_activity_root, SimpleTicTacToeBoardFragment.newInstance())
+        transaction.add(
+            R.id.main_activity_root, SimpleTicTacToeBoardFragment.newInstance(),
+            gameFragmentTag
+        )
         transaction.commit()
     }
 

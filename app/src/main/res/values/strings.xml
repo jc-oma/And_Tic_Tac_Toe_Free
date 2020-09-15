@@ -59,4 +59,5 @@
     <string name="ask_another_game_headline">Gegen %s noch einmal spielen?</string>
     <string name="ask_another_game_headline_empty">Noch einmal spielen?</string>
     <string name="ask_another_game_declined">Der Gegner hat die Anfrage abgelehnt</string>
+    <string name="no_bounded_devices_found_error">Keine gekoppelten Geräte gefunden.</string>
 </resources>

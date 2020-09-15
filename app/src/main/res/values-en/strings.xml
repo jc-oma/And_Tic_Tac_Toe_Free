@@ -57,5 +57,6 @@
 
     <string name="ask_another_game_headline">Another round versus %s?</string>
     <string name="ask_another_game_headline_empty">Another round?</string>
-    <string name="ask_another_game_declined">The opponent declined your question</string>
+    <string name="ask_another_game_declined">The opponent declined your question.</string>
+    <string name="no_bounded_devices_found_error">No bounded devices where found.</string>
 </resources>
