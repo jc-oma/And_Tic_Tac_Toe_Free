@@ -29,9 +29,6 @@ class SimpleTicTacToeBoardFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-
-        play_board.prepareBoardStart()
-
         play_board.backPressEvent.subscribe{
             if (it) {
                 this.activity?.onBackPressed()

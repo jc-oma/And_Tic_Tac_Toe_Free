@@ -95,6 +95,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         super.onFinishInflate()
         onInitializeBoard()
         restartBoard()
+        prepareBoardStart()
     }
 
     override fun onSwitchPlayer(playerNumber: Int) {
@@ -102,8 +103,6 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
     }
 
     override fun onInitializeBoard() {
-        game_info.text = context.getString(R.string.get_it_started)
-
         addViewsToHardwareLayer()
 
         simple_two_dim_tic_opponent_left_game_info?.backPressEvent?.subscribe{
@@ -113,7 +112,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         }
     }
 
-    fun prepareBoardStart() {
+    private fun prepareBoardStart() {
         checkIfPlayerIsPlayerOne()
         prepareStartAnimations()
     }
@@ -151,9 +150,9 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         opponentHasTurned(positionX, positionY, currentPlayer)
     }
 
-    override fun onRestartBoard() {
-        simple_two_dim_tic_game_end_overlay.isVisible = false
+    override fun onRestartGame() {
         restartBoard()
+        simple_two_dim_tic_game_end_overlay.isVisible = false
     }
 
     override fun onGameEnd(
@@ -161,6 +160,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         wonPosition: MutableList<Triple<Int, Int, Int>>?
     ) {
         isGameOver = true
+        toe.initializeBoard()
         if (wonPosition != null && wonPosition.isNotEmpty()) {
             val objectAnimatorList: MutableList<ObjectAnimator> =
                 setupObejectAnimatorListForWinAnimation(wonPosition)

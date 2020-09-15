@@ -49,27 +49,27 @@ class SimpleFourInARowBoardFragment : Fragment() {
                 context,
                 R.anim.whobble_animation_little
             )
-            four_in_a_row_button_text.startAnimation(whobbleAnimation)
-            four_in_a_row_button.startAnimation(whobbleAnimation)
+            four_in_a_row_button_text?.startAnimation(whobbleAnimation)
+            four_in_a_row_button?.startAnimation(whobbleAnimation)
         } else {
-            four_in_a_row_button_text.clearAnimation()
-            four_in_a_row_button.clearAnimation()
+            four_in_a_row_button_text?.clearAnimation()
+            four_in_a_row_button?.clearAnimation()
         }
     }
 
     private fun initListener() {
         //listen when opponent left game
-        fragment_four_in_a_row_playboard.opponentLeftEvent.doOnNext { isOpponentGone ->
+        fragment_four_in_a_row_playboard?.opponentLeftEvent?.doOnNext { isOpponentGone ->
             if (isOpponentGone) {
                 four_in_a_row_opponent_left_game_info?.isVisible = true
             }
-        }.subscribe()
+        }?.subscribe()
 
-        four_in_a_row_game_end_overlay.setOnClickListener {
-            four_in_a_row_game_end_overlay.isVisible = false
+        four_in_a_row_game_end_overlay?.setOnClickListener {
+            four_in_a_row_game_end_overlay?.isVisible = false
 
             if (isOnlineGame) {
-                fragment_four_in_a_row_playboard.restartBoard()
+                fragment_four_in_a_row_playboard?.restartBoard()
             }
         }
 
@@ -83,8 +83,8 @@ class SimpleFourInARowBoardFragment : Fragment() {
         val throttleDuration: Long = 5000
 
         if (isOnlineGame) {
-            four_in_a_row_button_text.isVisible = false
-            four_in_a_row_button_text.isClickable = false
+            four_in_a_row_button_text?.isVisible = false
+            four_in_a_row_button_text?.isClickable = false
         } else {
             four_in_a_row_button_text.clicks()
                 .throttleFirst(throttleDuration, java.util.concurrent.TimeUnit.MILLISECONDS)
@@ -93,15 +93,15 @@ class SimpleFourInARowBoardFragment : Fragment() {
                     whobbleRestartButton(false)
                 }
 
-            four_in_a_row_button_text.isVisible = true
-            four_in_a_row_button_text.isClickable = true
+            four_in_a_row_button_text?.isVisible = true
+            four_in_a_row_button_text?.isClickable = true
         }
 
         //check weather game ended
         fragment_four_in_a_row_playboard.appEventFlowable.subscribe {
             Handler().postDelayed({
-                four_in_a_row_game_end_overlay.isVisible = true
-                four_in_a_row_game_end_overlay.onGameWon(
+                four_in_a_row_game_end_overlay?.isVisible = true
+                four_in_a_row_game_end_overlay?.onGameWon(
                     it.wonPlayer,
                     StatisticsUtils(context).getDrawablesPair(GameMode.FOUR_IN_A_ROW),
                     GameMode.FOUR_IN_A_ROW
@@ -110,27 +110,27 @@ class SimpleFourInARowBoardFragment : Fragment() {
             }, 1200)
         }
 
-        fragment_four_in_a_row_playboard.onOpponentIsTurning.doOnNext {
+        fragment_four_in_a_row_playboard?.onOpponentIsTurning?.doOnNext {
             if (it) {
                 animateThinkingOpponent()
             } else {
                 clearThinkingOpponentAnimation()
             }
-        }.subscribe()
+        }?.subscribe()
     }
 
 
     private fun animateThinkingOpponent() {
-        simple_2d_thinking_frankenstein.alpha = 1f
+        simple_2d_thinking_frankenstein?.alpha = 1f
         val thinkingAnimation = AnimationUtils.loadAnimation(
             context,
             R.anim.thinking_ai_on_board_appear
         )
-        simple_2d_thinking_frankenstein.startAnimation(thinkingAnimation)
+        simple_2d_thinking_frankenstein?.startAnimation(thinkingAnimation)
     }
 
     private fun clearThinkingOpponentAnimation() {
-        simple_2d_thinking_frankenstein.clearAnimation()
-        simple_2d_thinking_frankenstein.alpha = 0f
+        simple_2d_thinking_frankenstein?.clearAnimation()
+        simple_2d_thinking_frankenstein?.alpha = 0f
     }
 }

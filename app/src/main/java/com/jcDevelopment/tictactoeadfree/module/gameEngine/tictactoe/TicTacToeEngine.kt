@@ -450,7 +450,7 @@ class TicTacToeEngine internal constructor(
 
             packageData.restartGame?.let{
                 if (it) {
-                    gameListener.onRestartBoard()
+                    gameListener.onRestartGame()
                 }
             }
         }.subscribe()
@@ -479,6 +479,6 @@ class TicTacToeEngine internal constructor(
             currentPlayer: Int
         )
 
-        fun onRestartBoard()
+        fun onRestartGame()
     }
 }
