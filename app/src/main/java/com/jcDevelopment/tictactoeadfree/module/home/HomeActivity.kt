@@ -9,6 +9,7 @@ import android.os.Handler
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
@@ -28,10 +29,13 @@ import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerDataPackage.MultiplayerDataPackage
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerSettings
+import com.jcDevelopment.tictactoeadfree.module.data.soundSettings.SoundSettings
 import com.jcDevelopment.tictactoeadfree.module.gameDificulty.GameDifficultyChooserFragment
+import com.jcDevelopment.tictactoeadfree.module.music.MusicPlayer
 import com.jcDevelopment.tictactoeadfree.module.usedLibraries.UsedLibrariesFragment
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.SoundSettingsViewModel
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_two_player_mode_choser.*
@@ -64,10 +68,19 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
 
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
     private val multiplayerSettingsViewModel by viewModel<MultiplayerSettingsViewModel>()
+    private val soundSettingsViewModel by viewModel<SoundSettingsViewModel>()
+
+    private val musicPlayer by lazy { MusicPlayer(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        musicPlayer.initMediaPlayer()
+
+        if (soundSettingsViewModel.getSoundSettings().last().isMusicPlaying) {
+            musicPlayer.resumeMusic()
+        }
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
@@ -90,7 +103,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         // Performing this check in onResume() covers the case in which BT was
         // not enabled during onStart(), so we were paused to enable it...
         // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
-        if (BlueToothService.getState() == BlueToothService.STATE_NONE) {
+        if (BlueToothService.getState() == BlueToothService.STATE_NONE && mBluetoothAdapter!!.isEnabled) {
             // Start the Bluetooth chat services
             BlueToothService.start()
         }
@@ -98,6 +111,21 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         initClickListener()
 
         initBluetoothEventListener()
+
+        soundOnResume()
+    }
+
+    private fun soundOnResume() {
+        if (soundSettingsViewModel.getSoundSettings().last().isMusicPlaying) {
+            musicPlayer.resumeMusic()
+        }
+        if (soundSettingsViewModel.getSoundSettings().last().isMusicPlaying) {
+            home_toolbar.menu[2].icon =
+                ContextCompat.getDrawable(this, R.drawable.ic_music_note_24px)
+        } else {
+            home_toolbar.menu[2].icon =
+                ContextCompat.getDrawable(this, R.drawable.ic_music_off_24px)
+        }
     }
 
     private fun initClickListener() {
@@ -281,6 +309,8 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         super.onPause()
         isTransactionSafe = false
 
+        musicPlayer.pauseMusic()
+
         /*handshakeDisposable?.dispose()
         deviceNameDisposable?.dispose()
         connectionDisposable?.dispose()*/
@@ -425,7 +455,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         )
         val bondedDevices = mBluetoothAdapter?.bondedDevices
 
-        bondedDevices?.let {notNullBondedDevices ->
+        bondedDevices?.let { notNullBondedDevices ->
             val arrayAdapter = ArrayAdapter<String>(
                 activity,
                 R.layout.recyclerview_used_library,
@@ -459,6 +489,21 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
 
         home_toolbar.menu[1].setOnMenuItemClickListener {
             sharePlayStoreLink()
+            return@setOnMenuItemClickListener true
+        }
+
+        home_toolbar.menu[2].setOnMenuItemClickListener {
+            if (soundSettingsViewModel.getSoundSettings().last().isMusicPlaying) {
+                soundSettingsViewModel.updateSoundSettings(SoundSettings(isMusicPlaying = false))
+                musicPlayer.pauseMusic()
+                home_toolbar.menu[2].icon =
+                    ContextCompat.getDrawable(this, R.drawable.ic_music_off_24px)
+            } else {
+                soundSettingsViewModel.updateSoundSettings(SoundSettings(isMusicPlaying = true))
+                musicPlayer.resumeMusic()
+                home_toolbar.menu[2].icon =
+                    ContextCompat.getDrawable(this, R.drawable.ic_music_note_24px)
+            }
             return@setOnMenuItemClickListener true
         }
     }

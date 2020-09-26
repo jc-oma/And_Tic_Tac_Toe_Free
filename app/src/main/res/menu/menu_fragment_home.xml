@@ -10,8 +10,14 @@
 
     <item
         android:title="@string/share_with_friends"
-        android:id="@+id/share_with_friends_item"
+        android:id="@+id/action_share_with_friends_item"
         android:orderInCategory="9"
         android:icon="@drawable/ic_share_24_white"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_music"
+        android:orderInCategory="9"
+        android:icon="@drawable/ic_music_note_24px"
+        app:showAsAction="ifRoom" />
 </menu>

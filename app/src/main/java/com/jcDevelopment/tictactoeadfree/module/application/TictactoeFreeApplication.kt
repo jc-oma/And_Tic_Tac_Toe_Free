@@ -5,6 +5,7 @@ import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.gameSettingsMo
 import com.jcDevelopment.tictactoeadfree.module.data.gameStatistics.gameStatisticsModule
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.multiplayerSettingsModule
 import com.jcDevelopment.tictactoeadfree.module.data.roomDatabaseModule
+import com.jcDevelopment.tictactoeadfree.module.data.soundSettings.soundSettingsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -15,7 +16,7 @@ class TictactoeFreeApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@TictactoeFreeApplication)
-            modules(listOf(roomDatabaseModule, gameStatisticsModule, gameSettingsModule, multiplayerSettingsModule))
+            modules(listOf(roomDatabaseModule, gameStatisticsModule, gameSettingsModule, multiplayerSettingsModule, soundSettingsModule))
         }
     }
 }
