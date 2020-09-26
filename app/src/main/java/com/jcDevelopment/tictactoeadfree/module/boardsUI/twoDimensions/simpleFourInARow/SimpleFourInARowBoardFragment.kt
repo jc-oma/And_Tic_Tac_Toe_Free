@@ -12,10 +12,12 @@ import com.jakewharton.rxbinding4.view.clicks
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
+import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import kotlinx.android.synthetic.main.fragment_simple_four_in_a_row_board.*
 import org.koin.android.ext.android.inject
+
 
 class SimpleFourInARowBoardFragment : Fragment() {
     companion object {
@@ -73,7 +75,7 @@ class SimpleFourInARowBoardFragment : Fragment() {
             }
         }
 
-        four_in_a_row_opponent_left_game_info?.backPressEvent?.subscribe{
+        four_in_a_row_opponent_left_game_info?.backPressEvent?.subscribe {
             if (it) {
                 this.activity?.onBackPressed()
             }
@@ -113,12 +115,16 @@ class SimpleFourInARowBoardFragment : Fragment() {
         fragment_four_in_a_row_playboard?.onOpponentIsTurning?.doOnNext {
             if (it) {
                 animateThinkingOpponent()
+                playThinkingOpponentSound()
             } else {
                 clearThinkingOpponentAnimation()
             }
         }?.subscribe()
     }
 
+    private fun playThinkingOpponentSound() {
+        SoundPlayer(context).playSound(R.raw.mp3_frankenstein_thinking)
+    }
 
     private fun animateThinkingOpponent() {
         simple_2d_thinking_frankenstein?.alpha = 1f

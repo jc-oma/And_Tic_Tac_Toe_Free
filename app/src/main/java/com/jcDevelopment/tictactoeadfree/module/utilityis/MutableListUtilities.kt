@@ -1,4 +1,4 @@
-package com.jcDevelopment.tictactoeadfree.module.Utilityis
+package com.jcDevelopment.tictactoeadfree.module.utilityis
 
 
     typealias I<E> = MutableList<E>

@@ -1,6 +1,6 @@
 package com.jcDevelopment.tictactoeadfree.module.gameEngine.fourInARow
 
-import com.jcDevelopment.tictactoeadfree.module.Utilityis.deepCopy2
+import com.jcDevelopment.tictactoeadfree.module.utilityis.deepCopy2
 
 object FourInARowAi {
     private const val rowAmountToWin = 4
