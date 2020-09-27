@@ -88,7 +88,7 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
         createdPlaystones.add(createNewPlayStoneView(currentPlayer))
         //from bounceinterpolator
         val bounceHitTimings = listOf(0.3535, 0.7408, 0.9644, 1.0)
-        val soundPlayer = SoundPlayer(context)
+        val soundPlayer = SoundPlayer.getInstance(context)
         val x = playGroundViewColumnPositionList[toRow].first
         val y = playGroundViewColumnPositionList[toRow].second
         val stoneAnimation = createdPlaystones.last().animate().withLayer()
@@ -103,12 +103,14 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
             override fun onAnimationEnd(animation: Animator?) {
                 stoneAnimation.setListener(null)
             }
+
             override fun onAnimationCancel(animation: Animator?) {}
             override fun onAnimationRepeat(animation: Animator?) {}
             override fun onAnimationStart(animation: Animator?) {
                 for (timing in bounceHitTimings) {
                     Handler().postDelayed({
                         soundPlayer.playLoadedSound(
+                            SoundPlayer.SoundList.FIAR_STONE_DROP.value,
                             1f - timing.toFloat() + bounceHitTimings.first().toFloat()
                         )
                     }, (duration * timing).toLong())

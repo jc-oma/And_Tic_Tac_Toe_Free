@@ -32,6 +32,7 @@ import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.Multipl
 import com.jcDevelopment.tictactoeadfree.module.data.soundSettings.SoundSettings
 import com.jcDevelopment.tictactoeadfree.module.gameDificulty.GameDifficultyChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.music.MusicPlayer
+import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.usedLibraries.UsedLibrariesFragment
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel

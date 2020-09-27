@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
+import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import kotlinx.android.synthetic.main.view_game_choser.view.*
 import org.koin.core.KoinComponent
@@ -32,6 +33,8 @@ class GameChoserView @JvmOverloads constructor(
     ) }
 
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
+
+    private val soundPlayer by lazy { SoundPlayer.getInstance(context) }
 
     init {
         initView(context)
@@ -57,10 +60,12 @@ class GameChoserView @JvmOverloads constructor(
 
     private fun initClickListener() {
         game_choser_game_one.setOnClickListener {
+            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK.value)
             choseGame(GameMode.TIC_TAC_TOE)
         }
 
         game_choser_game_two.setOnClickListener {
+            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK.value)
             choseGame(GameMode.FOUR_IN_A_ROW)
         }
     }

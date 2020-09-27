@@ -81,11 +81,12 @@ class SimpleFourInARowBoardFragment : Fragment() {
 
     private fun initListener() {
         //listen when opponent left game
-        oponentLeftDisposable = fragment_four_in_a_row_playboard?.opponentLeftEvent?.doOnNext { isOpponentGone ->
-            if (isOpponentGone) {
-                four_in_a_row_opponent_left_game_info?.isVisible = true
-            }
-        }?.subscribe()
+        oponentLeftDisposable =
+            fragment_four_in_a_row_playboard?.opponentLeftEvent?.doOnNext { isOpponentGone ->
+                if (isOpponentGone) {
+                    four_in_a_row_opponent_left_game_info?.isVisible = true
+                }
+            }?.subscribe()
 
         four_in_a_row_game_end_overlay?.setOnClickListener {
             four_in_a_row_game_end_overlay?.isVisible = false
@@ -132,18 +133,21 @@ class SimpleFourInARowBoardFragment : Fragment() {
             }, 1200)
         }
 
-        opponentIsTurningDisposable = fragment_four_in_a_row_playboard?.onOpponentIsTurning?.doOnNext {
-            if (it) {
-                animateThinkingOpponent()
-                playThinkingOpponentSound()
-            } else {
-                clearThinkingOpponentAnimation()
-            }
-        }?.subscribe()
+        opponentIsTurningDisposable =
+            fragment_four_in_a_row_playboard?.onOpponentIsTurning?.doOnNext {
+                if (it) {
+                    animateThinkingOpponent()
+                    playThinkingOpponentSound()
+                } else {
+                    clearThinkingOpponentAnimation()
+                }
+            }?.subscribe()
     }
 
     private fun playThinkingOpponentSound() {
-        SoundPlayer(context).playSound(R.raw.mp3_frankenstein_thinking)
+        context?.let {
+            SoundPlayer.getInstance(it).playSound(R.raw.mp3_frankenstein_thinking)
+        }
     }
 
     private fun animateThinkingOpponent() {
