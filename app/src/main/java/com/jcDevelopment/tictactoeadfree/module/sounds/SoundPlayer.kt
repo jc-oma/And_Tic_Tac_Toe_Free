@@ -10,6 +10,8 @@ class SoundPlayer(val context: Context?) {
         private var soundPool: SoundPool? = SoundPool(5, AudioManager.STREAM_MUSIC, 0)
     }
 
+    private val fiarStoneDropSound by lazy { soundPool?.load(context, R.raw.mp3_stone_drop_raw, 1) }
+
     init {
         soundPool?.setOnLoadCompleteListener { soundPool, sampleId, _ ->
             soundPool.play(sampleId, 1f, 1f, 0, 0, 1f)
@@ -18,5 +20,11 @@ class SoundPlayer(val context: Context?) {
 
     fun playSound(id: Int) {
         soundPool?.load(context, id, 1)
+    }
+
+    fun playLoadedSound(volume: Float) {
+        fiarStoneDropSound?.let {
+            soundPool?.play(it, volume, volume, 0, 0, 1f)
+        }
     }
 }
