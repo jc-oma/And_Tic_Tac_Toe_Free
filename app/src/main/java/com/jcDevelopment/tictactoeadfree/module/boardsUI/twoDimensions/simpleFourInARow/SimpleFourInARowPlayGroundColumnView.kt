@@ -19,7 +19,6 @@ import com.jakewharton.rxbinding4.view.clicks
 import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.view_four_in_a_row_column.view.*
-import kotlin.concurrent.timer
 import kotlin.math.sqrt
 import kotlin.random.Random.Default.nextBoolean
 
@@ -59,7 +58,7 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
     fun restartBoard() {
         var offset = 100L
         for (stone in createdPlaystones) {
-            val animation = stone.animate()
+            val animation = stone.animate().withLayer()
             animation.y(0f)
             animation.alpha(0.5f)
             animation.duration = 200
@@ -88,31 +87,35 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
     fun animatePlayStoneDrop(toRow: Int, currentPlayer: Int) {
         createdPlaystones.add(createNewPlayStoneView(currentPlayer))
         //from bounceinterpolator
-        val bounceHitTimings = listOf( 0.3535, 0.7408, 0.9644, 1.0)
+        val bounceHitTimings = listOf(0.3535, 0.7408, 0.9644, 1.0)
         val soundPlayer = SoundPlayer(context)
         val x = playGroundViewColumnPositionList[toRow].first
         val y = playGroundViewColumnPositionList[toRow].second
-        val animation = createdPlaystones.last().animate().withLayer()
+        val stoneAnimation = createdPlaystones.last().animate().withLayer()
         val randomRotationDegree = Math.random() * 360f
         val randomRotationDirection = if (nextBoolean()) 1 else -1
         val duration = 400L * (sqrt(toRow.toDouble()).toLong() + 1)
-        animation.duration = duration
-        animation.interpolator = BounceInterpolator()
-        animation.rotationBy((randomRotationDegree * randomRotationDirection).toFloat())
-        animation.x(x).y(y)
-        animation.setListener(object : Animator.AnimatorListener{
-            override fun onAnimationEnd(animation: Animator?) {}
+        stoneAnimation.duration = duration
+        stoneAnimation.interpolator = BounceInterpolator()
+        stoneAnimation.rotationBy((randomRotationDegree * randomRotationDirection).toFloat())
+        stoneAnimation.x(x).y(y)
+        stoneAnimation.setListener(object : Animator.AnimatorListener {
+            override fun onAnimationEnd(animation: Animator?) {
+                stoneAnimation.setListener(null)
+            }
             override fun onAnimationCancel(animation: Animator?) {}
             override fun onAnimationRepeat(animation: Animator?) {}
             override fun onAnimationStart(animation: Animator?) {
                 for (timing in bounceHitTimings) {
                     Handler().postDelayed({
-                        soundPlayer.playLoadedSound(1f - timing.toFloat() + bounceHitTimings.first().toFloat())
+                        soundPlayer.playLoadedSound(
+                            1f - timing.toFloat() + bounceHitTimings.first().toFloat()
+                        )
                     }, (duration * timing).toLong())
                 }
             }
         })
-        animation.start()
+        stoneAnimation.start()
     }
 
     private fun initView(context: Context) {
