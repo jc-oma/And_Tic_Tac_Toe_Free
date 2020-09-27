@@ -15,6 +15,8 @@ import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.Multipl
 import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
+import io.reactivex.rxjava3.annotations.NonNull
+import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_simple_four_in_a_row_board.*
 import org.koin.android.ext.android.inject
 
@@ -25,6 +27,11 @@ class SimpleFourInARowBoardFragment : Fragment() {
         fun newInstance() = SimpleFourInARowBoardFragment()
     }
 
+    private var opponentIsTurningDisposable: Disposable? = null
+    private var gameEndDisposable: Disposable? = null
+    private var restartDisposable: Disposable? = null
+    private var backpressedDisposable: Disposable? = null
+    private var oponentLeftDisposable: Disposable? = null
     private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
 
     private val isOnlineGame = multiplayerSettingsViewModel.getMultiplayerSettings()
@@ -45,6 +52,19 @@ class SimpleFourInARowBoardFragment : Fragment() {
         initListener()
     }
 
+    override fun onPause() {
+        super.onPause()
+        disposeOnPause()
+    }
+
+    private fun disposeOnPause() {
+        opponentIsTurningDisposable?.dispose()
+        gameEndDisposable?.dispose()
+        restartDisposable?.dispose()
+        backpressedDisposable?.dispose()
+        oponentLeftDisposable?.dispose()
+    }
+
     private fun whobbleRestartButton(isWhobbling: Boolean) {
         if (isWhobbling) {
             val whobbleAnimation = AnimationUtils.loadAnimation(
@@ -61,7 +81,7 @@ class SimpleFourInARowBoardFragment : Fragment() {
 
     private fun initListener() {
         //listen when opponent left game
-        fragment_four_in_a_row_playboard?.opponentLeftEvent?.doOnNext { isOpponentGone ->
+        oponentLeftDisposable = fragment_four_in_a_row_playboard?.opponentLeftEvent?.doOnNext { isOpponentGone ->
             if (isOpponentGone) {
                 four_in_a_row_opponent_left_game_info?.isVisible = true
             }
@@ -75,7 +95,7 @@ class SimpleFourInARowBoardFragment : Fragment() {
             }
         }
 
-        four_in_a_row_opponent_left_game_info?.backPressEvent?.subscribe {
+        backpressedDisposable = four_in_a_row_opponent_left_game_info?.backPressEvent?.subscribe {
             if (it) {
                 this.activity?.onBackPressed()
             }
@@ -88,7 +108,7 @@ class SimpleFourInARowBoardFragment : Fragment() {
             four_in_a_row_button_text?.isVisible = false
             four_in_a_row_button_text?.isClickable = false
         } else {
-            four_in_a_row_button_text.clicks()
+            restartDisposable = four_in_a_row_button_text.clicks()
                 .throttleFirst(throttleDuration, java.util.concurrent.TimeUnit.MILLISECONDS)
                 .subscribe {
                     fragment_four_in_a_row_playboard.restartBoard()
@@ -100,7 +120,7 @@ class SimpleFourInARowBoardFragment : Fragment() {
         }
 
         //check weather game ended
-        fragment_four_in_a_row_playboard.appEventFlowable.subscribe {
+        gameEndDisposable = fragment_four_in_a_row_playboard.appEventFlowable.subscribe {
             Handler().postDelayed({
                 four_in_a_row_game_end_overlay?.isVisible = true
                 four_in_a_row_game_end_overlay?.onGameWon(
@@ -112,7 +132,7 @@ class SimpleFourInARowBoardFragment : Fragment() {
             }, 1200)
         }
 
-        fragment_four_in_a_row_playboard?.onOpponentIsTurning?.doOnNext {
+        opponentIsTurningDisposable = fragment_four_in_a_row_playboard?.onOpponentIsTurning?.doOnNext {
             if (it) {
                 animateThinkingOpponent()
                 playThinkingOpponentSound()

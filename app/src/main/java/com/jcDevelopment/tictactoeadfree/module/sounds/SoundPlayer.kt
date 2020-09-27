@@ -11,12 +11,12 @@ class SoundPlayer(val context: Context?) {
     }
 
     init {
-        soundPool!!.setOnLoadCompleteListener { soundPool, sampleId, _ ->
+        soundPool?.setOnLoadCompleteListener { soundPool, sampleId, _ ->
             soundPool.play(sampleId, 1f, 1f, 0, 0, 1f)
         }
     }
 
     fun playSound(id: Int) {
-        val soundId: Int? = soundPool!!.load(context, id, 1)
+        soundPool?.load(context, id, 1)
     }
 }
