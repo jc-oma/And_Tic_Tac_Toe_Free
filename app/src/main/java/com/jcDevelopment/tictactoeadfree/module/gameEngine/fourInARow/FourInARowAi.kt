@@ -130,7 +130,9 @@ object FourInARowAi {
                     wonPositions.clear()
                 }
                 if (rowAmountToWin == playStoneCounterInYAxisStraight-1) {
-                    points += getPoints(currentPlayer, turnMultiplier, tripleWarner = true)
+                    points += getPoints(
+                        currentPlayer = currentPlayer,
+                        turnMultiplier = turnMultiplier, tripleWarner = true)
                 }
                 if (rowAmountToWin == playStoneCounterInYAxisStraight) {
                     points += getPoints(currentPlayer, turnMultiplier)

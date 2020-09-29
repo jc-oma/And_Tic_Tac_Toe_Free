@@ -22,13 +22,16 @@ class SoundPlayer(val context: Context?) {
         listOf(
             soundPool?.load(context, R.raw.mp3_fiar_stone_drop, 1),
             soundPool?.load(context, R.raw.mp3_click_feedback, 1),
-            soundPool?.load(context, R.raw.mp3_frankenstein_thinking, 1)
+            soundPool?.load(context, R.raw.mp3_frankenstein_thinking, 1),
+            soundPool?.load(context, R.raw.mp3_witch_laughing, 1)
         )
     }
 
     enum class SoundList(val value: Int) {
         FIAR_STONE_DROP(0),
-        CLICK_FEED_BACK(1)
+        CLICK_FEED_BACK(1),
+        FRANKENSTEIN_THINKING(2),
+        WITCH_LAUGHING(3)
     }
 
     fun playSound(id: Int) {

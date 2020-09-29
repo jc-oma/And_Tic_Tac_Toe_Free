@@ -9,14 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.constraintlayout.motion.widget.MotionLayout
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseFragment
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.google.android.gms.ads.AdRequest
+import com.jakewharton.rxbinding4.view.clicks
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerSettings
+import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
+import io.reactivex.rxjava3.annotations.NonNull
+import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
 
@@ -28,6 +33,7 @@ class HomeFragment : BaseFragment() {
             HomeFragment()
     }
 
+    private var backgroundClickDisposable: Disposable? = null
     private var listener: Listener? = null
 
     private val settingViewModel by inject<GameSettingsViewModel>()
@@ -67,6 +73,11 @@ class HomeFragment : BaseFragment() {
 
         initSettings()
         initSettingsPresentation()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        backgroundClickDisposable?.dispose()
     }
 
     private fun initSettings() {
@@ -153,6 +164,15 @@ class HomeFragment : BaseFragment() {
         Handler().postDelayed({
             home_spooky_house_imageview?.performClick()
         }, 6000)
+
+        home_fragment_root.setTransitionListener(object : MotionLayout.TransitionListener {
+            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
+                context?.let { SoundPlayer.getInstance(it).playSound(R.raw.mp3_witch_laughing) }
+            }
+            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {}
+            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {}
+            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
+        })
 
         home_player_toggle_text_switcher.setOnClickListener {
             switchViewCount++

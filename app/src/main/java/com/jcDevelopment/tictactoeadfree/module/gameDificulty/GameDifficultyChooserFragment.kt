@@ -11,6 +11,7 @@ import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.home.HomeFragment
+import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import kotlinx.android.synthetic.main.fragment_game_difficulty_choser.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,6 +34,8 @@ class GameDifficultyChooserFragment : Fragment() {
             difficult_fragment_hard_frame_check
         )
     }
+
+    private val soundPlayer by lazy { SoundPlayer.getInstance(context!!) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -107,16 +110,22 @@ class GameDifficultyChooserFragment : Fragment() {
         difficult_fragment_easy_frame_constraint.setOnClickListener {
             gameSettingsViewModel.updateGameSettings(getGameSettings(GameDifficulty.EASY))
             setCheckIconOnPositionVisible(0)
+
+            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK.value)
         }
 
         difficult_fragment_mid_frame_constraint.setOnClickListener {
             gameSettingsViewModel.updateGameSettings(getGameSettings(GameDifficulty.MEDIUM))
             setCheckIconOnPositionVisible(1)
+
+            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK.value)
         }
 
         difficult_fragment_hard_frame_constraint.setOnClickListener {
             gameSettingsViewModel.updateGameSettings(getGameSettings(GameDifficulty.HARD))
             setCheckIconOnPositionVisible(2)
+
+            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK.value)
         }
     }
 
