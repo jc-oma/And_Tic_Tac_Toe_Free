@@ -6,19 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.jakewharton.rxbinding4.view.clicks
 import com.jcDevelopment.tictactoeadfree.R
+import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
+import com.jcDevelopment.tictactoeadfree.module.gameDificulty.GameOpponentUtils
 import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_simple_four_in_a_row_board.*
+import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 import org.koin.android.ext.android.inject
+import org.koin.core.inject
 
 
 class SimpleFourInARowBoardFragment : Fragment() {
@@ -33,6 +39,7 @@ class SimpleFourInARowBoardFragment : Fragment() {
     private var backpressedDisposable: Disposable? = null
     private var oponentLeftDisposable: Disposable? = null
     private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
+    private val gameSettingsViewModel by inject<GameSettingsViewModel>()
 
     private val isOnlineGame = multiplayerSettingsViewModel.getMultiplayerSettings()
         .last().multiplayerMode == MultiplayerMode.BLUETOOTH.toString() || multiplayerSettingsViewModel.getMultiplayerSettings()
@@ -50,6 +57,13 @@ class SimpleFourInARowBoardFragment : Fragment() {
         super.onResume()
 
         initListener()
+
+        initDifficulty()
+    }
+
+    private fun initDifficulty() {
+        val difficulty = GameDifficulty.valueOf(gameSettingsViewModel.getGameSettings().last().difficulty)
+        simple_2d_thinking_frankenstein.setImageDrawable(ContextCompat.getDrawable(context!!, GameOpponentUtils.getAiOpponentList(difficulty)))
     }
 
     override fun onPause() {

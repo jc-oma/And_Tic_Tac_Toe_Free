@@ -26,6 +26,14 @@ class GameDifficultyChooserFragment : Fragment() {
 
     private var listener: Listener? = null
 
+    private val checkIconsList by lazy {
+        listOf(
+            difficult_fragment_easy_frame_check,
+            difficult_fragment_mid_frame_check,
+            difficult_fragment_hard_frame_check
+        )
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is Listener) {
@@ -47,29 +55,68 @@ class GameDifficultyChooserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (gameSettingsViewModel.getGameSettings().last().gameMode == GameMode.FOUR_IN_A_ROW.toString()) {
-            difficulty_fragment_hard_button.visibility = View.GONE
-        } else {
-            difficulty_fragment_hard_button.visibility = View.VISIBLE
-        }
+        checkIfHardModeAvailable()
 
         initListener()
+
+        showLastChosenDiff()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        showLastChosenDiff()
+    }
+
+    private fun showLastChosenDiff() {
+        val lastDiffSetting = GameDifficulty.valueOf(gameSettingsViewModel.getGameSettings()
+            .last().difficulty)
+
+        when (lastDiffSetting) {
+            GameDifficulty.EASY -> setCheckIconOnPositionVisible(0)
+            GameDifficulty.MEDIUM -> setCheckIconOnPositionVisible(1)
+            GameDifficulty.HARD -> setCheckIconOnPositionVisible(2)
+        }
+    }
+
+    private fun setCheckIconOnPositionVisible(i: Int) {
+        for ((index, icon) in checkIconsList.withIndex()) {
+            if (index == i) {
+                icon.visibility = View.VISIBLE
+            } else {
+                icon.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun checkIfHardModeAvailable() {
+        if (gameSettingsViewModel.getGameSettings()
+                .last().gameMode == GameMode.FOUR_IN_A_ROW.toString()
+        ) {
+            difficult_fragment_hard_frame_constraint.visibility = View.GONE
+        } else {
+            difficult_fragment_hard_frame_constraint.visibility = View.VISIBLE
+        }
     }
 
     private fun initListener() {
-        difficulty_fragment_easy_button.setOnClickListener {
+        difficulty_fragment_start_button.setOnClickListener {
+            listener?.onAiDifficultyChosen()
+        }
+
+        difficult_fragment_easy_frame_constraint.setOnClickListener {
             gameSettingsViewModel.updateGameSettings(getGameSettings(GameDifficulty.EASY))
-            listener?.onAiDifficultyChosen()
+            setCheckIconOnPositionVisible(0)
         }
 
-        difficulty_fragment_medium_button.setOnClickListener {
+        difficult_fragment_mid_frame_constraint.setOnClickListener {
             gameSettingsViewModel.updateGameSettings(getGameSettings(GameDifficulty.MEDIUM))
-            listener?.onAiDifficultyChosen()
+            setCheckIconOnPositionVisible(1)
         }
 
-        difficulty_fragment_hard_button.setOnClickListener {
+        difficult_fragment_hard_frame_constraint.setOnClickListener {
             gameSettingsViewModel.updateGameSettings(getGameSettings(GameDifficulty.HARD))
-            listener?.onAiDifficultyChosen()
+            setCheckIconOnPositionVisible(2)
         }
     }
 

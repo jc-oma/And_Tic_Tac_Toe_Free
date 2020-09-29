@@ -14,6 +14,7 @@
     <string name="game_difficulty_easy">einfach</string>
     <string name="game_difficulty_medium">mittel</string>
     <string name="game_difficulty_hard">schwer</string>
+    <string name="chose_your_opponent">Suche dir deinen Mitspieler aus</string>
 
     <string name="won">Sieg!</string>
     <string name="draw">Unentschieden!</string>

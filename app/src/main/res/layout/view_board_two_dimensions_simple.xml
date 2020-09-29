@@ -200,6 +200,6 @@
         app:layout_constraintTop_toBottomOf="@id/three_three"
         app:layout_constraintStart_toStartOf="@id/three_two"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_thinking_witch"
+        android:src="@drawable/ic_spooky_thinking_witch"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

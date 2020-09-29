@@ -14,6 +14,7 @@
     <string name="game_difficulty_easy">easy</string>
     <string name="game_difficulty_medium">medium</string>
     <string name="game_difficulty_hard">hard</string>
+    <string name="chose_your_opponent">Chose your opponent</string>
 
     <string name="won">You won!</string>
     <string name="draw">Draw!</string>

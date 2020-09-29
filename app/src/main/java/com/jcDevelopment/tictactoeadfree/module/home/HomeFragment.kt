@@ -187,8 +187,9 @@ class HomeFragment : BaseFragment() {
             val lastGameSettings = getLastGameSettings()
             settingViewModel.updateGameSettings(
                 GameSettings(
-                    isSecondPlayerAi,
-                    lastGameSettings.gameMode
+                    isSecondPlayerAi = isSecondPlayerAi,
+                    gameMode = lastGameSettings.gameMode,
+                    difficulty = lastGameSettings.difficulty
                 )
             )
 

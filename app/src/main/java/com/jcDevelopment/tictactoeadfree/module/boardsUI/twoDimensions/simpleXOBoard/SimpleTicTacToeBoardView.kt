@@ -15,8 +15,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.jcDevelopment.tictactoeadfree.R
+import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
+import com.jcDevelopment.tictactoeadfree.module.gameDificulty.GameOpponentUtils
 import com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe.TicTacToeEngine
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
@@ -38,6 +40,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
     val backPressEvent: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
 
     private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
+    private val gameSettingsViewModel by inject<GameSettingsViewModel>()
 
     private val oImgPlayerStone =
         ContextCompat.getDrawable(context, R.drawable.blender_o_play_stone)
@@ -103,6 +106,9 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
     }
 
     override fun onInitializeBoard() {
+        val difficulty = GameDifficulty.valueOf(gameSettingsViewModel.getGameSettings().last().difficulty)
+        simple_2d_thinking_witch.setImageDrawable(ContextCompat.getDrawable(context, GameOpponentUtils.getAiOpponentList(difficulty)))
+
         addViewsToHardwareLayer()
 
         simple_two_dim_tic_opponent_left_game_info?.backPressEvent?.subscribe{

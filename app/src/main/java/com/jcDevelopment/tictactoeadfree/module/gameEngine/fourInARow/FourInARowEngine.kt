@@ -158,7 +158,6 @@ class FourInARowEngine internal constructor(
             aiTurnX = nextAiTurnX?.second
         }
 
-        //TODO i bit more than random turns
         while (isPositionDataNullOrOnATakenPosition(aiTurnX)) {
             aiTurnX = (Math.random() * gridX).toInt()
         }

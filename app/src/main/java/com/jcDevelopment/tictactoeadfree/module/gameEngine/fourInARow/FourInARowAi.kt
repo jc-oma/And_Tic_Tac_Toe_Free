@@ -20,6 +20,10 @@ object FourInARowAi {
 
         // first turn test by AI
         for (aiXTurn in 0 until 7) {
+            if (getNextFreeYPosition(aiXTurn, playGround) == null){
+                break
+            }
+
             testBoard = playGround.deepCopy2 { it }
             bestScoreTest = 0
 

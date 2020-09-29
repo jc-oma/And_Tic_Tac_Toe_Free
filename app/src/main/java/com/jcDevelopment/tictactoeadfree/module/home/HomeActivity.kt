@@ -104,9 +104,11 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         // Performing this check in onResume() covers the case in which BT was
         // not enabled during onStart(), so we were paused to enable it...
         // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
-        if (BlueToothService.getState() == BlueToothService.STATE_NONE && mBluetoothAdapter!!.isEnabled) {
-            // Start the Bluetooth chat services
-            BlueToothService.start()
+        if (mBluetoothAdapter != null) {
+            if (BlueToothService.getState() == BlueToothService.STATE_NONE && mBluetoothAdapter!!.isEnabled) {
+                // Start the Bluetooth chat services
+                BlueToothService.start()
+            }
         }
 
         initClickListener()
@@ -141,155 +143,156 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
 
 
     private fun initBluetoothEventListener() {
+        if (mBluetoothAdapter != null) {
+            connectionDisposable = BlueToothService.getConnectionObservable()
+                .doOnNext { connectionState ->
+                    when (connectionState) {
+                        BlueToothService.STATE_CONNECTED -> {
+                            two_player_game_mode_bluetooth_waiting_for_player_overlay?.visibility =
+                                View.GONE
 
-        connectionDisposable = BlueToothService.getConnectionObservable()
-            .doOnNext { connectionState ->
-                when (connectionState) {
-                    BlueToothService.STATE_CONNECTED -> {
-                        two_player_game_mode_bluetooth_waiting_for_player_overlay?.visibility =
-                            View.GONE
-
-                        BlueToothService.write(
-                            gson.toJson(
-                                MultiplayerDataPackage(
-                                    gameSettings = getGameSettings()
-                                )
-                            ).toByteArray()
-                        )
-                    }
-                }
-            }
-            .doOnError { makeToast(getString(R.string.result_canceled_info)) }
-            .subscribe()
-
-        deviceNameDisposable = BlueToothService.getDeviceNameObservable()
-            .doOnNext {
-                multiplayerSettingsViewModel.updateMultiplayersettings(
-                    MultiplayerSettings(
-                        multiplayerMode = getMultiplayerSettings().multiplayerMode,
-                        isHost = getMultiplayerSettings().isHost,
-                        lastConnectedDeviceName = it
-                    )
-                )
-            }.subscribe()
-
-        handshakeDisposable = BlueToothService.getMessageObservable()
-            .doOnNext {
-                val reader = JsonReader(StringReader(it))
-                reader.isLenient = true
-                val gameSettingsComparison = gson.fromJson<MultiplayerDataPackage>(
-                    reader,
-                    MultiplayerDataPackage::class.java
-                )
-                if (!getMultiplayerSettings().isHost) {
-                    gameSettingsComparison.gameVersionName?.let { remoteVersionName ->
-                        gameSettingsComparison.gameVersionCode?.let { remoteGameVersion ->
-                            if (remoteGameVersion == BuildConfig.VERSION_CODE && remoteVersionName == BuildConfig.VERSION_NAME) {
-                                gameSettingsComparison.gameSettings?.let { remoteGameSettings ->
-
-                                    if (remoteGameSettings.gameMode == gameSettingsViewModel.getGameSettings()
-                                            .last().gameMode
-                                    ) {
-                                        openGameFragment()
-                                    } else {
-                                        makeToast(
-                                            getString(
-                                                R.string.bluetooth_playmode_switched,
-                                                remoteGameSettings.gameMode
-                                            )
-                                        )
-                                        gameSettingsViewModel.updateGameSettings(
-                                            GameSettings(
-                                                gameMode = remoteGameSettings.gameMode
-                                            )
-                                        )
-                                        openGameFragment()
-                                    }
-
-                                    BlueToothService.write(
-                                        gson.toJson(MultiplayerDataPackage(handShakeSuccessAck = true))
-                                            .toByteArray()
+                            BlueToothService.write(
+                                gson.toJson(
+                                    MultiplayerDataPackage(
+                                        gameSettings = getGameSettings()
                                     )
-                                }
-                            } else {
-                                makeToast(getString(R.string.different_version_code_error))
-                            }
+                                ).toByteArray()
+                            )
                         }
                     }
                 }
+                .doOnError { makeToast(getString(R.string.result_canceled_info)) }
+                .subscribe()
 
+            deviceNameDisposable = BlueToothService.getDeviceNameObservable()
+                .doOnNext {
+                    multiplayerSettingsViewModel.updateMultiplayersettings(
+                        MultiplayerSettings(
+                            multiplayerMode = getMultiplayerSettings().multiplayerMode,
+                            isHost = getMultiplayerSettings().isHost,
+                            lastConnectedDeviceName = it
+                        )
+                    )
+                }.subscribe()
 
-                gameSettingsComparison.handShakeSuccessAck?.let { handShakeAck ->
-                    if (handShakeAck) {
-                        openGameFragment()
-                    }
-                }
+            handshakeDisposable = BlueToothService.getMessageObservable()
+                .doOnNext {
+                    val reader = JsonReader(StringReader(it))
+                    reader.isLenient = true
+                    val gameSettingsComparison = gson.fromJson<MultiplayerDataPackage>(
+                        reader,
+                        MultiplayerDataPackage::class.java
+                    )
+                    if (!getMultiplayerSettings().isHost) {
+                        gameSettingsComparison.gameVersionName?.let { remoteVersionName ->
+                            gameSettingsComparison.gameVersionCode?.let { remoteGameVersion ->
+                                if (remoteGameVersion == BuildConfig.VERSION_CODE && remoteVersionName == BuildConfig.VERSION_NAME) {
+                                    gameSettingsComparison.gameSettings?.let { remoteGameSettings ->
 
-
-                gameSettingsComparison.askForGame?.let { askForAnotherGame ->
-                    if (askForAnotherGame) {
-                        when (gameSettingsComparison.askForGameAck) {
-                            null -> {
-                                home_activity_ask_for_another_game?.isVisible = true
-                                home_activity_ask_for_another_game.setHeadline(
-                                    getMultiplayerSettings().lastConnectedDeviceName
-                                )
-                                home_activity_ask_for_another_game?.declineAnotherGameObservable?.subscribe {
-                                    home_activity_ask_for_another_game?.isVisible = false
-                                    BlueToothService.write(
-                                        gson.toJson(
-                                            MultiplayerDataPackage(
-                                                askForGame = false,
-                                                askForGameAck = false
+                                        if (remoteGameSettings.gameMode == gameSettingsViewModel.getGameSettings()
+                                                .last().gameMode
+                                        ) {
+                                            openGameFragment()
+                                        } else {
+                                            makeToast(
+                                                getString(
+                                                    R.string.bluetooth_playmode_switched,
+                                                    remoteGameSettings.gameMode
+                                                )
                                             )
-                                        ).toByteArray()
-                                    )
+                                            gameSettingsViewModel.updateGameSettings(
+                                                GameSettings(
+                                                    gameMode = remoteGameSettings.gameMode
+                                                )
+                                            )
+                                            openGameFragment()
+                                        }
 
-                                    Handler().postDelayed({
-                                        BlueToothService.stop()
-                                    }, 1000)
+                                        BlueToothService.write(
+                                            gson.toJson(MultiplayerDataPackage(handShakeSuccessAck = true))
+                                                .toByteArray()
+                                        )
+                                    }
+                                } else {
+                                    makeToast(getString(R.string.different_version_code_error))
                                 }
+                            }
+                        }
+                    }
 
-                                home_activity_ask_for_another_game?.ackAnotherGameObservable?.subscribe {
-                                    multiplayerSettingsViewModel.updateMultiplayersettings(
-                                        MultiplayerSettings(
-                                            multiplayerMode = MultiplayerMode.BLUETOOTH.toString(),
-                                            isHost = false
-                                        )
+
+                    gameSettingsComparison.handShakeSuccessAck?.let { handShakeAck ->
+                        if (handShakeAck) {
+                            openGameFragment()
+                        }
+                    }
+
+
+                    gameSettingsComparison.askForGame?.let { askForAnotherGame ->
+                        if (askForAnotherGame) {
+                            when (gameSettingsComparison.askForGameAck) {
+                                null -> {
+                                    home_activity_ask_for_another_game?.isVisible = true
+                                    home_activity_ask_for_another_game.setHeadline(
+                                        getMultiplayerSettings().lastConnectedDeviceName
                                     )
-
-                                    if (gameSettingsComparison.gameSettings != null) {
-                                        val gameSettings = gameSettingsComparison.gameSettings
-                                        gameSettingsViewModel.updateGameSettings(
-                                            GameSettings(
-                                                gameSettings.isSecondPlayerAi,
-                                                gameSettings.gameMode
-                                            )
-                                        )
-
+                                    home_activity_ask_for_another_game?.declineAnotherGameObservable?.subscribe {
                                         home_activity_ask_for_another_game?.isVisible = false
                                         BlueToothService.write(
                                             gson.toJson(
                                                 MultiplayerDataPackage(
-                                                    askForGame = true,
-                                                    askForGameAck = true
+                                                    askForGame = false,
+                                                    askForGameAck = false
                                                 )
                                             ).toByteArray()
                                         )
-                                        openGameFragment()
-                                    } else makeToast(getString(R.string.result_canceled_info))
+
+                                        Handler().postDelayed({
+                                            BlueToothService.stop()
+                                        }, 1000)
+                                    }
+
+                                    home_activity_ask_for_another_game?.ackAnotherGameObservable?.subscribe {
+                                        multiplayerSettingsViewModel.updateMultiplayersettings(
+                                            MultiplayerSettings(
+                                                multiplayerMode = MultiplayerMode.BLUETOOTH.toString(),
+                                                isHost = false
+                                            )
+                                        )
+
+                                        if (gameSettingsComparison.gameSettings != null) {
+                                            val gameSettings = gameSettingsComparison.gameSettings
+                                            gameSettingsViewModel.updateGameSettings(
+                                                GameSettings(
+                                                    gameSettings.isSecondPlayerAi,
+                                                    gameSettings.gameMode
+                                                )
+                                            )
+
+                                            home_activity_ask_for_another_game?.isVisible = false
+                                            BlueToothService.write(
+                                                gson.toJson(
+                                                    MultiplayerDataPackage(
+                                                        askForGame = true,
+                                                        askForGameAck = true
+                                                    )
+                                                ).toByteArray()
+                                            )
+                                            openGameFragment()
+                                        } else makeToast(getString(R.string.result_canceled_info))
+                                    }
                                 }
-                            }
-                            true -> {
-                                openGameFragment()
-                            }
-                            false -> {
-                                makeToast(getString(R.string.ask_another_game_declined))
+                                true -> {
+                                    openGameFragment()
+                                }
+                                false -> {
+                                    makeToast(getString(R.string.ask_another_game_declined))
+                                }
                             }
                         }
                     }
-                }
-            }.subscribe()
+                }.subscribe()
+        }
     }
 
     private fun makeToast(s: String) {
