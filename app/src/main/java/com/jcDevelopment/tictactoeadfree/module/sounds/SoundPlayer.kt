@@ -34,16 +34,8 @@ class SoundPlayer(val context: Context?) {
         WITCH_LAUGHING(3)
     }
 
-    fun playSound(id: Int) {
-        soundPool?.load(context, id, 1)
-        soundPool?.setOnLoadCompleteListener { soundPool, sampleId, _ ->
-            soundPool.play(sampleId, 1f, 1f, 0, 0, 1f)
-            soundPool?.setOnLoadCompleteListener { _, _, _ -> }
-        }
-    }
-
-    fun playLoadedSound(id: Int, volume: Float = 1f) {
-        fiarStoneDropSound[id]?.let {
+    fun playLoadedSound(id: SoundList, volume: Float = 1f) {
+        fiarStoneDropSound[id.value]?.let {
             soundPool?.play(it, volume, volume, 0, 0, 1f)
         }
     }

@@ -167,7 +167,7 @@ class HomeFragment : BaseFragment() {
 
         home_fragment_root.setTransitionListener(object : MotionLayout.TransitionListener {
             override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-                context?.let { SoundPlayer.getInstance(it).playSound(R.raw.mp3_witch_laughing) }
+                context?.let { SoundPlayer.getInstance(it).playLoadedSound(SoundPlayer.SoundList.WITCH_LAUGHING) }
             }
             override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {}
             override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {}

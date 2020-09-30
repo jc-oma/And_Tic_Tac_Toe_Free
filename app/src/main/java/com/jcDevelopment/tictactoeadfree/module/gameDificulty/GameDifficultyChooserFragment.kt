@@ -111,21 +111,21 @@ class GameDifficultyChooserFragment : Fragment() {
             gameSettingsViewModel.updateGameSettings(getGameSettings(GameDifficulty.EASY))
             setCheckIconOnPositionVisible(0)
 
-            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK.value)
+            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK)
         }
 
         difficult_fragment_mid_frame_constraint.setOnClickListener {
             gameSettingsViewModel.updateGameSettings(getGameSettings(GameDifficulty.MEDIUM))
             setCheckIconOnPositionVisible(1)
 
-            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK.value)
+            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK)
         }
 
         difficult_fragment_hard_frame_constraint.setOnClickListener {
             gameSettingsViewModel.updateGameSettings(getGameSettings(GameDifficulty.HARD))
             setCheckIconOnPositionVisible(2)
 
-            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK.value)
+            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK)
         }
     }
 

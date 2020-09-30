@@ -60,12 +60,12 @@ class GameChoserView @JvmOverloads constructor(
 
     private fun initClickListener() {
         game_choser_game_one.setOnClickListener {
-            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK.value)
+            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK)
             choseGame(GameMode.TIC_TAC_TOE)
         }
 
         game_choser_game_two.setOnClickListener {
-            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK.value)
+            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK)
             choseGame(GameMode.FOUR_IN_A_ROW)
         }
     }

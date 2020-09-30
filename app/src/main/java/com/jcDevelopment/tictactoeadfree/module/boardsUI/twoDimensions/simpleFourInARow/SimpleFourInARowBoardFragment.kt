@@ -160,7 +160,7 @@ class SimpleFourInARowBoardFragment : Fragment() {
 
     private fun playThinkingOpponentSound() {
         context?.let {
-            SoundPlayer.getInstance(it).playSound(R.raw.mp3_frankenstein_thinking)
+            SoundPlayer.getInstance(it).playLoadedSound(SoundPlayer.SoundList.FRANKENSTEIN_THINKING)
         }
     }
 

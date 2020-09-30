@@ -110,7 +110,7 @@ class SimpleFourInARowPlayGroundColumnView @JvmOverloads constructor(
                 for (timing in bounceHitTimings) {
                     Handler().postDelayed({
                         soundPlayer.playLoadedSound(
-                            SoundPlayer.SoundList.FIAR_STONE_DROP.value,
+                            SoundPlayer.SoundList.FIAR_STONE_DROP,
                             1f - timing.toFloat() + bounceHitTimings.first().toFloat()
                         )
                     }, (duration * timing).toLong())
