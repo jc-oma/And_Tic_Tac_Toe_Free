@@ -62,8 +62,14 @@ class SimpleFourInARowBoardFragment : Fragment() {
     }
 
     private fun initDifficulty() {
-        val difficulty = GameDifficulty.valueOf(gameSettingsViewModel.getGameSettings().last().difficulty)
-        simple_2d_thinking_frankenstein.setImageDrawable(ContextCompat.getDrawable(context!!, GameOpponentUtils.getAiOpponentList(difficulty)))
+        val difficulty =
+            GameDifficulty.valueOf(gameSettingsViewModel.getGameSettings().last().difficulty)
+        simple_2d_thinking_frankenstein.setImageDrawable(
+            ContextCompat.getDrawable(
+                context!!,
+                GameOpponentUtils.getAiOpponentList(difficulty)
+            )
+        )
     }
 
     override fun onPause() {
@@ -160,7 +166,13 @@ class SimpleFourInARowBoardFragment : Fragment() {
 
     private fun playThinkingOpponentSound() {
         context?.let {
-            SoundPlayer.getInstance(it).playLoadedSound(SoundPlayer.SoundList.FRANKENSTEIN_THINKING)
+            val difficulty =
+                GameDifficulty.valueOf(gameSettingsViewModel.getGameSettings().last().difficulty)
+            SoundPlayer.getInstance(it).playLoadedSound(
+                GameOpponentUtils.getOpponentSoundId(
+                    difficulty
+                )
+            )
         }
     }
 

@@ -121,10 +121,12 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
     private fun soundOnResume() {
         SoundPlayer.getInstance(this).playLoadedSound(SoundPlayer.SoundList.INIT_SOUND)
 
-        if (soundSettingsViewModel.getSoundSettings().last().isMusicPlaying) {
+        val isMusicPlaying = soundSettingsViewModel.getSoundSettings().last().isMusicPlaying
+
+        if (isMusicPlaying) {
             musicPlayer.resumeMusic()
         }
-        if (soundSettingsViewModel.getSoundSettings().last().isMusicPlaying) {
+        if (isMusicPlaying) {
             home_toolbar.menu[2].icon =
                 ContextCompat.getDrawable(this, R.drawable.ic_music_note_24px)
         } else {

@@ -20,6 +20,7 @@ import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
 import com.jcDevelopment.tictactoeadfree.module.gameDificulty.GameOpponentUtils
 import com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe.TicTacToeEngine
+import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
@@ -404,6 +405,20 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
             R.anim.thinking_ai_on_board_appear
         )
         simple_2d_thinking_witch.startAnimation(thinkingAnimation)
+
+        playThinkingOpponentSound()
+    }
+
+    private fun playThinkingOpponentSound() {
+        context?.let {
+            val difficulty =
+                GameDifficulty.valueOf(gameSettingsViewModel.getGameSettings().last().difficulty)
+            SoundPlayer.getInstance(it).playLoadedSound(
+                GameOpponentUtils.getOpponentSoundId(
+                    difficulty
+                )
+            )
+        }
     }
 
     private fun clearThinkingOpponentAnimation() {
