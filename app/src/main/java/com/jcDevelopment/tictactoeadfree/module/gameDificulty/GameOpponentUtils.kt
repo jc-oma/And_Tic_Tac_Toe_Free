@@ -21,7 +21,7 @@ object GameOpponentUtils {
 
     fun getOpponentSoundId(difficulty: GameDifficulty): SoundPlayer.SoundList {
         return when (difficulty) {
-            GameDifficulty.EASY -> SoundPlayer.SoundList.FRANKENSTEIN_THINKING
+            GameDifficulty.EASY -> SoundPlayer.SoundList.SPIDER_THINKING
             GameDifficulty.MEDIUM -> SoundPlayer.SoundList.FRANKENSTEIN_THINKING
             GameDifficulty.HARD -> SoundPlayer.SoundList.WITCH_THINKING
         }

@@ -25,7 +25,8 @@ class SoundPlayer(val context: Context?) {
             soundPool?.load(context, R.raw.mp3_frankenstein_thinking, 1),
             soundPool?.load(context, R.raw.mp3_witch_laughing, 1),
             soundPool?.load(context, R.raw.mp3_init_sound, 1),
-            soundPool?.load(context, R.raw.mp3_witch_thinking, 1)
+            soundPool?.load(context, R.raw.mp3_witch_thinking, 1),
+            soundPool?.load(context, R.raw.mp3_spider_thinking, 1)
         )
     }
 
@@ -35,7 +36,8 @@ class SoundPlayer(val context: Context?) {
         FRANKENSTEIN_THINKING(2),
         WITCH_LAUGHING(3),
         INIT_SOUND(4),
-        WITCH_THINKING(5)
+        WITCH_THINKING(5),
+        SPIDER_THINKING(6)
     }
 
     fun playLoadedSound(id: SoundList, volume: Float = 1f) {
