@@ -119,6 +119,8 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
     }
 
     private fun soundOnResume() {
+        SoundPlayer.getInstance(this).playLoadedSound(SoundPlayer.SoundList.INIT_SOUND)
+
         if (soundSettingsViewModel.getSoundSettings().last().isMusicPlaying) {
             musicPlayer.resumeMusic()
         }
