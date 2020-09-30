@@ -61,8 +61,6 @@ class GameDifficultyChooserFragment : Fragment() {
         checkIfHardModeAvailable()
 
         initListener()
-
-        showLastChosenDiff()
     }
 
     override fun onResume() {
@@ -72,13 +70,20 @@ class GameDifficultyChooserFragment : Fragment() {
     }
 
     private fun showLastChosenDiff() {
-        val lastDiffSetting = GameDifficulty.valueOf(gameSettingsViewModel.getGameSettings()
-            .last().difficulty)
+        val lastDiffSetting = GameDifficulty.valueOf(
+            gameSettingsViewModel.getGameSettings()
+                .last().difficulty
+        )
 
         when (lastDiffSetting) {
             GameDifficulty.EASY -> setCheckIconOnPositionVisible(0)
             GameDifficulty.MEDIUM -> setCheckIconOnPositionVisible(1)
-            GameDifficulty.HARD -> setCheckIconOnPositionVisible(2)
+            GameDifficulty.HARD -> {
+                setCheckIconOnPositionVisible(2)
+                difficult_fragment_horizontalScrollView.scrollTo(
+                    difficult_fragment_horizontalScrollView.right,0
+                )
+            }
         }
     }
 
@@ -111,6 +116,10 @@ class GameDifficultyChooserFragment : Fragment() {
             gameSettingsViewModel.updateGameSettings(getGameSettings(GameDifficulty.EASY))
             setCheckIconOnPositionVisible(0)
 
+            difficult_fragment_horizontalScrollView.scrollTo(
+                difficult_fragment_horizontalScrollView.left,0
+            )
+
             soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK)
         }
 
@@ -124,6 +133,10 @@ class GameDifficultyChooserFragment : Fragment() {
         difficult_fragment_hard_frame_constraint.setOnClickListener {
             gameSettingsViewModel.updateGameSettings(getGameSettings(GameDifficulty.HARD))
             setCheckIconOnPositionVisible(2)
+
+            difficult_fragment_horizontalScrollView.scrollTo(
+                difficult_fragment_horizontalScrollView.right,0
+            )
 
             soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK)
         }

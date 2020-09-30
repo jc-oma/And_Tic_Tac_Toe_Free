@@ -4,26 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/blue_background"
     tools:context=".module.gameDificulty.GameDifficultyChooserFragment">
 
     <TextView
         android:id="@+id/difficult_fragment_headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/berkshire_swash_regular"
         android:text="@string/chose_your_opponent"
+        android:textColor="@color/spooky_green"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+        app:layout_constraintBottom_toTopOf="@+id/difficult_fragment_horizontalScrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
+        android:id="@+id/difficult_fragment_horizontalScrollView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/difficulty_fragment_start_button"
@@ -49,6 +50,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
+                    android:background="@drawable/shape_diff_chooser_background_oval"
+                    android:padding="16dp"
                     android:src="@drawable/ic_rahmen_easy"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -71,6 +74,7 @@
                     android:fontFamily="@font/berkshire_swash_regular"
                     android:paddingBottom="16dp"
                     android:text="@string/game_difficulty_easy"
+                    android:textColor="@color/spooky_green"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@id/difficult_fragment_easy_frame"
@@ -92,6 +96,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
+                    android:background="@drawable/shape_diff_chooser_background_oval"
+                    android:padding="16dp"
                     android:src="@drawable/ic_rahmen_mid"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -114,6 +120,7 @@
                     android:fontFamily="@font/berkshire_swash_regular"
                     android:paddingBottom="16dp"
                     android:text="@string/game_difficulty_medium"
+                    android:textColor="@color/spooky_green"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@id/difficult_fragment_medium_frame"
@@ -136,6 +143,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
+                    android:background="@drawable/shape_diff_chooser_background_oval"
+                    android:padding="16dp"
                     android:src="@drawable/ic_rahmen_hard"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -158,6 +167,7 @@
                     android:fontFamily="@font/berkshire_swash_regular"
                     android:paddingBottom="16dp"
                     android:text="@string/game_difficulty_hard"
+                    android:textColor="@color/spooky_green"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@id/difficult_fragment_hard_frame"
@@ -183,6 +193,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/difficult_fragment_horizontalScrollView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
