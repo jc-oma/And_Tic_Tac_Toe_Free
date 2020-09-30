@@ -42,6 +42,8 @@ class HomeFragment : BaseFragment() {
     private var switchViewCount = 0
     private var isSecondPlayerAi = true
 
+    private var isSoundAlreadyPlaying = false
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is Listener) {
@@ -167,8 +169,18 @@ class HomeFragment : BaseFragment() {
 
         home_fragment_root.setTransitionListener(object : MotionLayout.TransitionListener {
             override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-                context?.let { SoundPlayer.getInstance(it).playLoadedSound(SoundPlayer.SoundList.WITCH_LAUGHING) }
+                if (!isSoundAlreadyPlaying) {
+                    context?.let {
+                        SoundPlayer.getInstance(it)
+                            .playLoadedSound(SoundPlayer.SoundList.WITCH_LAUGHING)
+                    }
+                    isSoundAlreadyPlaying = true
+                    Handler().postDelayed({
+                        isSoundAlreadyPlaying = false
+                    }, 2500)
+                }
             }
+
             override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {}
             override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {}
             override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
