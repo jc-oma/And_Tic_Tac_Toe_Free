@@ -126,6 +126,7 @@
                 android:id="@+id/difficult_fragment_hard_frame_constraint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingEnd="8dp"
                 app:layout_constraintStart_toEndOf="@+id/difficult_fragment_mid_frame_constraint"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -135,7 +136,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_rahmen_hard"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

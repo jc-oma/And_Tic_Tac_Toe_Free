@@ -15,12 +15,10 @@ import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseFragment
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.google.android.gms.ads.AdRequest
-import com.jakewharton.rxbinding4.view.clicks
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerSettings
 import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
-import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
@@ -121,8 +119,9 @@ class HomeFragment : BaseFragment() {
             it.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         }
 
-        val animation = home_lightning_sequence.background as AnimationDrawable
-        animation.start()
+        val lightningAnimation = home_lightning_sequence.background as AnimationDrawable
+        lightningAnimation.start()
+        context?.let { SoundPlayer.getInstance(it).playLoadedSound(SoundPlayer.SoundList.HOME_THUNDER) }
 
         val startOffsetBegin: Long = 1000
         val introAnimationBackGround = AnimationUtils.loadAnimation(
