@@ -1,6 +1,7 @@
 package com.jcDevelopment.tictactoeadfree.module.gameChoser
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -22,19 +23,43 @@ class GameChoserView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), KoinComponent {
 
-    private val loadAnimation = AnimationUtils.loadAnimation(
-        context,
-        R.anim.choser_check_appear
-    )
-
-    private val toBeHardwareAcceleratedViews by lazy { listOf<View>(
-        game_choser_game_one_check,
-        game_choser_game_two_check
-    ) }
+    private val toBeHardwareAcceleratedViews by lazy {
+        listOf<View>(
+            game_choser_game_one_check,
+            game_choser_game_two_check
+        )
+    }
 
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
 
     private val soundPlayer by lazy { SoundPlayer.getInstance(context) }
+
+    private val drawable: Drawable? by lazy {
+        ContextCompat.getDrawable(
+            context, R.drawable.spooky_fiarchooser_not_chosen_small
+        )
+    }
+
+    private val drawable1: Drawable?
+            by lazy {
+                ContextCompat.getDrawable(
+                    context, R.drawable.spooky_fiarchooser_small
+                )
+            }
+
+    private val drawable2: Drawable?
+            by lazy {
+                ContextCompat.getDrawable(
+                    context, R.drawable.spooky_tictactoechooser_small
+                )
+            }
+
+    private val drawable3: Drawable?
+            by lazy {
+                ContextCompat.getDrawable(
+                    context, R.drawable.spooky_tictactoechooser_not_chosen_small
+                )
+            }
 
     init {
         initView(context)
@@ -87,39 +112,28 @@ class GameChoserView @JvmOverloads constructor(
 
     //TODO Refactor
     private fun presentChosenGame(gameMode: GameMode) {
-        loadAnimation.interpolator = OvershootInterpolator()
-
         game_choser_game_two_image_view.setImageDrawable(
-            ContextCompat.getDrawable(
-                context,
-                when (gameMode) {
-                    GameMode.TIC_TAC_TOE -> R.drawable.spooky_fourinarowchooser_unchosen
-                    GameMode.FOUR_IN_A_ROW -> R.drawable.spooky_fourinarowchooser
-                }
-            )
+            when (gameMode) {
+                GameMode.TIC_TAC_TOE -> drawable
+                GameMode.FOUR_IN_A_ROW -> drawable1
+            }
         )
 
         game_choser_game_one_image_view.setImageDrawable(
-            ContextCompat.getDrawable(
-                context,
-                when (gameMode) {
-                    GameMode.TIC_TAC_TOE -> R.drawable.spooky_tictactoe_game_chooser
-                    GameMode.FOUR_IN_A_ROW -> R.drawable.spooky_tictactoe_game_chooser_unchosen
-                }
-            )
+            when (gameMode) {
+                GameMode.TIC_TAC_TOE -> drawable2
+                GameMode.FOUR_IN_A_ROW -> drawable3
+            }
         )
 
-        val duration = 150L
-        when(gameMode) {
+        when (gameMode) {
             GameMode.TIC_TAC_TOE -> {
-                game_choser_game_one_check.alpha = 1f
-                game_choser_game_one_check.startAnimation(loadAnimation)
-                game_choser_game_two_check.alpha = 0f
+                game_choser_game_one_check.visibility = View.VISIBLE
+                game_choser_game_two_check.visibility = View.GONE
             }
             GameMode.FOUR_IN_A_ROW -> {
-                game_choser_game_one_check.alpha = 0f
-                game_choser_game_two_check.alpha = 1f
-                game_choser_game_two_check.startAnimation(loadAnimation)
+                game_choser_game_one_check.visibility = View.GONE
+                game_choser_game_two_check.visibility = View.VISIBLE
             }
         }
     }

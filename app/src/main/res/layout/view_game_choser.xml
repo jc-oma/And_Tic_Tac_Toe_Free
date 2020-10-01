@@ -24,7 +24,7 @@
             android:id="@+id/game_choser_game_one_image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:src="@drawable/spooky_tictactoe_game_chooser" />
+            tools:src="@drawable/spooky_tictactoechooser_small" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -45,7 +45,7 @@
             android:id="@+id/game_choser_game_two_image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:src="@drawable/spooky_fourinarowchooser" />
+            tools:src="@drawable/spooky_fiarchooser_small" />
     </androidx.cardview.widget.CardView>
 
     <TextView

@@ -8,9 +8,11 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import kotlinx.android.synthetic.main.view_overlay_two_dimension_simple_overlay.view.*
+import nl.dionsegijn.konfetti.ParticleSystem
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
 
@@ -20,8 +22,28 @@ class GameEndedOverlay @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    private var particleSystem: ParticleSystem? = null
+
     init {
         initView(context)
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
+        particleSystem = ended_game_konfetti_view.build()
+            //TODO theme colors
+            .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+            .setDirection(0.0, 359.0)
+            .setSpeed(1f, 30f)
+            .setFadeOutEnabled(true)
+            .setTimeToLive(2000L)
+            .addShapes(Shape.DrawableShape(ContextCompat.getDrawable(context, R.drawable.ic_spooky_bat)!!))
+            .addSizes(Size(80))
+            .setPosition(
+                ended_game_headline.x + ended_game_headline.width / 2,
+                ended_game_headline.y - ended_game_headline.width / 2
+            )
     }
 
     private fun initView(context: Context) {
@@ -88,19 +110,6 @@ class GameEndedOverlay @JvmOverloads constructor(
     }
 
     private fun setupKonfettiView() {
-        ended_game_konfetti_view.build()
-            //TODO theme colors
-            .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
-            .setDirection(0.0, 359.0)
-            .setSpeed(1f, 30f)
-            .setFadeOutEnabled(true)
-            .setTimeToLive(2000L)
-            .addShapes(Shape.DrawableShape(context.getDrawable(R.drawable.ic_spooky_bat)!!))
-            .addSizes(Size(80))
-            .setPosition(
-                ended_game_headline.x + ended_game_headline.width / 2,
-                ended_game_headline.y - ended_game_headline.width / 2
-            )
-            .burst(40)
+        particleSystem?.burst(40)
     }
 }
