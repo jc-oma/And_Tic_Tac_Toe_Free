@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
+import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import kotlinx.android.synthetic.main.view_overlay_two_dimension_simple_overlay.view.*
 import nl.dionsegijn.konfetti.ParticleSystem
 import nl.dionsegijn.konfetti.models.Shape
@@ -110,6 +111,7 @@ class GameEndedOverlay @JvmOverloads constructor(
     }
 
     private fun setupKonfettiView() {
+        SoundPlayer.getInstance(context).playLoadedSound(SoundPlayer.SoundList.FIREWORKS)
         particleSystem?.burst(40)
     }
 }
