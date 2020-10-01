@@ -117,6 +117,8 @@ class GameChoserView @JvmOverloads constructor(
 
     //TODO Refactor
     private fun presentChosenGame(gameMode: GameMode) {
+        loadAnimation.interpolator = OvershootInterpolator()
+        
         game_choser_game_two_image_view.setImageDrawable(
             when (gameMode) {
                 GameMode.TIC_TAC_TOE -> drawable
