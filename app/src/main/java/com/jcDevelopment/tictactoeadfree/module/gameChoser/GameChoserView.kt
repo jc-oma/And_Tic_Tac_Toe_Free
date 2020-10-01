@@ -23,6 +23,11 @@ class GameChoserView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), KoinComponent {
 
+    private val loadAnimation = AnimationUtils.loadAnimation(
+        context,
+        R.anim.choser_check_appear
+    )
+
     private val toBeHardwareAcceleratedViews by lazy {
         listOf<View>(
             game_choser_game_one_check,
@@ -126,14 +131,16 @@ class GameChoserView @JvmOverloads constructor(
             }
         )
 
-        when (gameMode) {
+        when(gameMode) {
             GameMode.TIC_TAC_TOE -> {
-                game_choser_game_one_check.visibility = View.VISIBLE
-                game_choser_game_two_check.visibility = View.GONE
+                game_choser_game_one_check.alpha = 1f
+                game_choser_game_one_check.startAnimation(loadAnimation)
+                game_choser_game_two_check.alpha = 0f
             }
             GameMode.FOUR_IN_A_ROW -> {
-                game_choser_game_one_check.visibility = View.GONE
-                game_choser_game_two_check.visibility = View.VISIBLE
+                game_choser_game_one_check.alpha = 0f
+                game_choser_game_two_check.alpha = 1f
+                game_choser_game_two_check.startAnimation(loadAnimation)
             }
         }
     }
