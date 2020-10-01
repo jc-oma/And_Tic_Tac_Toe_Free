@@ -8,7 +8,7 @@ object FourInARowAi {
 
     fun getBestMove(playGround: MutableList<MutableList<Int>>): Int {
         //init on left -> index 0
-        var bestScore:Int? = null
+        var bestScore: Int? = null
         var bestScoreTest = 0
         var bestMove = 0
         var isChangedMove = false
@@ -20,7 +20,7 @@ object FourInARowAi {
 
         // first turn test by AI
         for (aiXTurn in 0 until 7) {
-            if (getNextFreeYPosition(aiXTurn, playGround) == null){
+            if (getNextFreeYPosition(aiXTurn, playGround) == null) {
                 break
             }
 
@@ -65,7 +65,16 @@ object FourInARowAi {
                 bestMove = aiXTurn
             }
         }
-        return if (isChangedMove) bestMove else (Math.random() * 7).toInt()
+        return if (isChangedMove) bestMove else getRandomMove(playGround)
+    }
+
+    private fun getRandomMove(playGround: MutableList<MutableList<Int>>): Int {
+        val testBoard = playGround.deepCopy2 { it }
+        var randomMove: Int? = null
+        while (randomMove == null || getNextFreeYPosition(randomMove, testBoard) == null) {
+            randomMove = (Math.random() * 7).toInt()
+        }
+        return randomMove
     }
 
 
@@ -111,7 +120,7 @@ object FourInARowAi {
                     playStoneCounterInXAxisStraight = 0
                     wonPositions.clear()
                 }
-                if (rowAmountToWin == playStoneCounterInXAxisStraight-1) {
+                if (rowAmountToWin == playStoneCounterInXAxisStraight - 1) {
                     points += getPoints(currentPlayer, turnMultiplier, tripleWarner = true)
                 }
                 if (rowAmountToWin == playStoneCounterInXAxisStraight) {
@@ -129,10 +138,11 @@ object FourInARowAi {
                     playStoneCounterInYAxisStraight = 0
                     wonPositions.clear()
                 }
-                if (rowAmountToWin == playStoneCounterInYAxisStraight-1) {
+                if (rowAmountToWin == playStoneCounterInYAxisStraight - 1) {
                     points += getPoints(
                         currentPlayer = currentPlayer,
-                        turnMultiplier = turnMultiplier, tripleWarner = true)
+                        turnMultiplier = turnMultiplier, tripleWarner = true
+                    )
                 }
                 if (rowAmountToWin == playStoneCounterInYAxisStraight) {
                     points += getPoints(currentPlayer, turnMultiplier)
@@ -166,7 +176,7 @@ object FourInARowAi {
                 x++
                 y++
             }
-            if (rowAmountToWin == playStoneCounterIsDiagonal-1) {
+            if (rowAmountToWin == playStoneCounterIsDiagonal - 1) {
                 points += getPoints(currentPlayer, turnMultiplier, tripleWarner = true)
             }
             if (rowAmountToWin == playStoneCounterIsDiagonal) {
@@ -202,7 +212,7 @@ object FourInARowAi {
                 x++
                 y--
             }
-            if (rowAmountToWin == playStoneCounterIsDiagonal-1) {
+            if (rowAmountToWin == playStoneCounterIsDiagonal - 1) {
                 points += getPoints(currentPlayer, turnMultiplier, tripleWarner = true)
             }
             if (rowAmountToWin == playStoneCounterIsDiagonal) {
@@ -241,7 +251,11 @@ object FourInARowAi {
         return points
     }
 
-    private fun getPoints(currentPlayer: Int, turnMultiplier: Int, tripleWarner: Boolean = false): Int {
+    private fun getPoints(
+        currentPlayer: Int,
+        turnMultiplier: Int,
+        tripleWarner: Boolean = false
+    ): Int {
         val lossPoints = -10
         val winPoints = 11
         val tripleLossPoints = -3
