@@ -341,14 +341,21 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
 
     override fun onHomeFragmentGameStartButtonClick() {
         if (!getGameSettings().isSecondPlayerAi && isBluetoothAvailable()) {
-            val transaction: FragmentTransaction = manager.beginTransaction()
-            transaction.add(R.id.main_activity_root, TwoPlayerModeChooserFragment.newInstance())
-            transaction.commit()
+            //TODO finish Bluetooth
+            // openTwoPlayerModeChoserFragment()
+
+            openGameFragment()
         } else if (getGameSettings().isSecondPlayerAi) {
             openAiDifficultyChooserFragment()
         } else {
             openGameFragment()
         }
+    }
+
+    private fun openTwoPlayerModeChoserFragment() {
+        val transaction: FragmentTransaction = manager.beginTransaction()
+        transaction.add(R.id.main_activity_root, TwoPlayerModeChooserFragment.newInstance())
+        transaction.commit()
     }
 
     private fun openAiDifficultyChooserFragment() {
