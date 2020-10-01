@@ -19,12 +19,9 @@ import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
-import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_simple_four_in_a_row_board.*
-import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
 import org.koin.android.ext.android.inject
-import org.koin.core.inject
 
 
 class SimpleFourInARowBoardFragment : Fragment() {
@@ -40,6 +37,12 @@ class SimpleFourInARowBoardFragment : Fragment() {
     private var oponentLeftDisposable: Disposable? = null
     private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
+    private val thinkingAnimation by lazy {
+        AnimationUtils.loadAnimation(
+            context,
+            R.anim.thinking_ai_on_board_appear
+        )
+    }
 
     private val isOnlineGame = multiplayerSettingsViewModel.getMultiplayerSettings()
         .last().multiplayerMode == MultiplayerMode.BLUETOOTH.toString() || multiplayerSettingsViewModel.getMultiplayerSettings()
@@ -64,7 +67,7 @@ class SimpleFourInARowBoardFragment : Fragment() {
     private fun initDifficulty() {
         val difficulty =
             GameDifficulty.valueOf(gameSettingsViewModel.getGameSettings().last().difficulty)
-        simple_2d_thinking_frankenstein.setImageDrawable(
+        simple_2d_thinking_opponent.setImageDrawable(
             ContextCompat.getDrawable(
                 context!!,
                 GameOpponentUtils.getAiOpponentList(difficulty)
@@ -177,16 +180,12 @@ class SimpleFourInARowBoardFragment : Fragment() {
     }
 
     private fun animateThinkingOpponent() {
-        simple_2d_thinking_frankenstein?.alpha = 1f
-        val thinkingAnimation = AnimationUtils.loadAnimation(
-            context,
-            R.anim.thinking_ai_on_board_appear
-        )
-        simple_2d_thinking_frankenstein?.startAnimation(thinkingAnimation)
+        simple_2d_thinking_opponent?.alpha = 1f
+        simple_2d_thinking_opponent?.startAnimation(thinkingAnimation)
     }
 
     private fun clearThinkingOpponentAnimation() {
-        simple_2d_thinking_frankenstein?.clearAnimation()
-        simple_2d_thinking_frankenstein?.alpha = 0f
+        simple_2d_thinking_opponent?.clearAnimation()
+        simple_2d_thinking_opponent?.alpha = 0f
     }
 }
