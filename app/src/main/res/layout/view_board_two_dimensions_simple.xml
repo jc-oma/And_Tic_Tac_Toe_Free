@@ -201,11 +201,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:alpha="0"
+        android:elevation="2dp"
         android:rotation="-30"
         android:src="@drawable/ic_spooky_thinking_witch"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/three_two"
         app:layout_constraintTop_toBottomOf="@id/three_three"
-        tools:alpha="0" />
+        tools:alpha="1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

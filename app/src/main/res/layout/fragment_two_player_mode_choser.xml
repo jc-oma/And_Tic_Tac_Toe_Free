@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
-    android:background="@color/blue_background"
+    android:background="@color/purple_background"
     tools:context=".module.bluetoothSetUpUI.TwoPlayerModeChooserFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout

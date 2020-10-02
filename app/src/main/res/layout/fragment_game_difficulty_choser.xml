@@ -4,10 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_background"
+    android:background="@color/purple_background"
     android:clickable="true"
     android:focusable="true"
     tools:context=".module.gameDificulty.GameDifficultyChooserFragment">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/shape_diffbackground"
+        app:layout_constraintBottom_toTopOf="@id/difficult_fragment_horizontalScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:rotation="180"
+        android:scaleType="fitXY"
+        android:src="@drawable/shape_diffbackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/difficult_fragment_horizontalScrollView" />
 
     <TextView
         android:id="@+id/difficult_fragment_headline"
@@ -16,7 +37,7 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/berkshire_swash_regular"
         android:text="@string/chose_your_opponent"
-        android:textColor="@color/spooky_green"
+        android:textColor="@color/colorAccent"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/difficult_fragment_horizontalScrollView"
@@ -28,6 +49,7 @@
     <HorizontalScrollView
         android:id="@+id/difficult_fragment_horizontalScrollView"
         android:layout_width="0dp"
+        android:elevation="20dp"
         android:layout_height="wrap_content"
         android:background="@color/black_35_opacity"
         app:layout_constraintBottom_toTopOf="@+id/difficulty_fragment_start_button"
