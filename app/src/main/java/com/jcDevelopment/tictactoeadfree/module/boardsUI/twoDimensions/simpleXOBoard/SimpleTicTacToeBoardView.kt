@@ -167,7 +167,6 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         wonPosition: MutableList<Triple<Int, Int, Int>>?
     ) {
         isGameOver = true
-        toe.initializeBoard()
         if (wonPosition != null && wonPosition.isNotEmpty()) {
             val objectAnimatorList: MutableList<ObjectAnimator> =
                 setupObejectAnimatorListForWinAnimation(wonPosition)
