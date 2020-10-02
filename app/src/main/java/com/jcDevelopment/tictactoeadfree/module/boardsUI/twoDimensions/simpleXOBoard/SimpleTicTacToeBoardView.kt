@@ -48,6 +48,13 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
     private val xImgPlayerStone =
         ContextCompat.getDrawable(context, R.drawable.blender_x_play_stone)
 
+    private val whobbleAnimation by lazy {
+        AnimationUtils.loadAnimation(
+            context,
+            R.anim.whobble_animation_little
+        )
+    }
+
     private fun initView(context: Context) {
         View.inflate(context, R.layout.view_board_two_dimensions_simple, this)
     }
@@ -107,12 +114,18 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
     }
 
     override fun onInitializeBoard() {
-        val difficulty = GameDifficulty.valueOf(gameSettingsViewModel.getGameSettings().last().difficulty)
-        simple_2d_thinking_witch.setImageDrawable(ContextCompat.getDrawable(context, GameOpponentUtils.getAiOpponentList(difficulty)))
+        val difficulty =
+            GameDifficulty.valueOf(gameSettingsViewModel.getGameSettings().last().difficulty)
+        simple_2d_thinking_witch.setImageDrawable(
+            ContextCompat.getDrawable(
+                context,
+                GameOpponentUtils.getAiOpponentList(difficulty)
+            )
+        )
 
         addViewsToHardwareLayer()
 
-        simple_two_dim_tic_opponent_left_game_info?.backPressEvent?.subscribe{
+        simple_two_dim_tic_opponent_left_game_info?.backPressEvent?.subscribe {
             if (it) {
                 backPressEvent.onNext(true)
             }
@@ -216,10 +229,6 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         var delayTimer: Long = 0
         val delayRange = 400
         playGroundViewGrid.forEach { cell ->
-            val whobbleAnimation = AnimationUtils.loadAnimation(
-                context,
-                R.anim.whobble_animation_little
-            )
             val fallDownAnimation = AnimationUtils.loadAnimation(
                 context,
                 R.anim.grid_fall_down_animation
@@ -258,19 +267,14 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
             initializeClickListenerForPlayerTurn(cellView, index)
         }
 
-        restart_game_button.whobbleAnimation(false)
+        restart_game_button.clearAnimation()
 
-        restart_game_button.setOnTouchListener { view, motionEvent ->
-            restart_game_button.changeStyleOnTouchEvent(motionEvent)
-            if (motionEvent.action == MotionEvent.ACTION_UP) {
-                view.performClick()
-                restartBoard()
-                toe.initializeBoard()
-                for (cellView in playGroundViewGrid) {
-                    cellView.setImageDrawable(placeHolderDrawable)
-                }
+        restart_game_button.setOnClickListener {
+            restartBoard()
+            toe.initializeBoard()
+            for (cellView in playGroundViewGrid) {
+                cellView.setImageDrawable(placeHolderDrawable)
             }
-            return@setOnTouchListener true
         }
 
         val multiplayerMode =
@@ -337,7 +341,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
             cellView.clearAnimation()
         }
         simple_two_dim_tic_game_end_overlay.isVisible = true
-        restart_game_button.whobbleAnimation(true)
+        restart_game_button.startAnimation(whobbleAnimation)
         deleteBoardListener()
     }
 

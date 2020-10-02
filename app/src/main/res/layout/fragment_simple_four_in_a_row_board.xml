@@ -4,18 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
-    android:background="@color/white"
     tools:context=".module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardFragment">
 
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/white"
         android:scaleType="centerCrop"
         android:scaleY="1.1"
-        android:src="@drawable/spooky_house_background_diffuse"
+        android:src="@drawable/spooky_house_background_diffuse_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,34 +24,26 @@
         android:id="@+id/fragment_four_in_a_row_playboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        app:layout_constraintBottom_toTopOf="@+id/four_in_a_row_restart_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/four_in_a_row_button"
-        android:layout_width="0dp"
+    <Button
+        android:id="@+id/four_in_a_row_restart_button"
+        android:layout_width="258dp"
         android:layout_height="0dp"
-        android:background="@drawable/spooky_blender_button"
-        app:layout_constraintEnd_toEndOf="@id/four_in_a_row_button_text"
-        app:layout_constraintStart_toStartOf="@id/four_in_a_row_button_text"
-        app:layout_constraintTop_toTopOf="@+id/four_in_a_row_button_text"
-        app:layout_constraintBottom_toBottomOf="@id/four_in_a_row_button_text"/>
-
-    <TextView
-        android:id="@+id/four_in_a_row_button_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/berk_shire"
-        android:text="@string/restart_game"
-        android:paddingStart="40dp"
-        android:paddingEnd="40dp"
-        android:paddingBottom="40dp"
-        android:textSize="22sp"
-        android:paddingTop="40dp"
         android:layout_marginTop="18dp"
+        android:background="@drawable/button_spooky_edged"
+        android:fontFamily="@font/berkshire_swash_regular"
+        android:text="@string/restart_game"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="256:100"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_four_in_a_row_playboard" />
 
@@ -60,14 +51,15 @@
         android:id="@+id/simple_2d_thinking_opponent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        android:rotation="-30"
         android:alpha="0"
-        tools:alpha="1"
-        app:layout_constraintTop_toTopOf="@+id/simple_fiar_fragment_guideline"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="20dp"
+        android:rotation="-30"
         android:src="@drawable/ic_spooky_frankenstein"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/simple_fiar_fragment_guideline"
+        tools:alpha="1" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/simple_fiar_fragment_guideline"
@@ -81,7 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:translationZ="40dp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.GameEndedOverlay
         android:id="@+id/four_in_a_row_game_end_overlay"

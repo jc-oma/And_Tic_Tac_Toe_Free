@@ -94,11 +94,9 @@ class SimpleFourInARowBoardFragment : Fragment() {
                 context,
                 R.anim.whobble_animation_little
             )
-            four_in_a_row_button_text?.startAnimation(whobbleAnimation)
-            four_in_a_row_button?.startAnimation(whobbleAnimation)
+            four_in_a_row_restart_button?.startAnimation(whobbleAnimation)
         } else {
-            four_in_a_row_button_text?.clearAnimation()
-            four_in_a_row_button?.clearAnimation()
+            four_in_a_row_restart_button?.clearAnimation()
         }
     }
 
@@ -129,18 +127,16 @@ class SimpleFourInARowBoardFragment : Fragment() {
         val throttleDuration: Long = 5000
 
         if (isOnlineGame) {
-            four_in_a_row_button_text?.isVisible = false
-            four_in_a_row_button_text?.isClickable = false
+            four_in_a_row_restart_button?.isVisible = false
         } else {
-            restartDisposable = four_in_a_row_button_text.clicks()
+            restartDisposable = four_in_a_row_restart_button.clicks()
                 .throttleFirst(throttleDuration, java.util.concurrent.TimeUnit.MILLISECONDS)
                 .subscribe {
                     fragment_four_in_a_row_playboard.restartBoard()
                     whobbleRestartButton(false)
                 }
 
-            four_in_a_row_button_text?.isVisible = true
-            four_in_a_row_button_text?.isClickable = true
+            four_in_a_row_restart_button?.isVisible = true
         }
 
         //check weather game ended
