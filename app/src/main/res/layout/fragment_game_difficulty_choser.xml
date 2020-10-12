@@ -58,6 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/difficult_fragment_headline">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/difficult_fragment_horizontalScrollView_child_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -106,6 +107,27 @@
                     app:layout_constraintTop_toBottomOf="@id/difficult_fragment_easy_frame" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/difficult_fragment_easy_to_mid_arrows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:src="@drawable/ic_fast_forward_black_selfmade_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/difficult_fragment_easy_frame_constraint"
+                app:layout_constraintStart_toStartOf="@id/difficult_fragment_mid_frame_constraint"/>
+
+            <ImageView
+                android:id="@+id/difficult_fragment_mid_to_hard_arrows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:src="@drawable/ic_fast_forward_black_selfmade_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/difficult_fragment_mid_frame_constraint"
+                app:layout_constraintStart_toStartOf="@id/difficult_fragment_hard_frame_constraint"/>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/difficult_fragment_mid_frame_constraint"

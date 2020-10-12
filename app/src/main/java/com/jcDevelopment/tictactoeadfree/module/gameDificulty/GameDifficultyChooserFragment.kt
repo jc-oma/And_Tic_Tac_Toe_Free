@@ -10,7 +10,6 @@ import com.jcDevelopment.tictactoeadfree.R
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameSettings
-import com.jcDevelopment.tictactoeadfree.module.home.HomeFragment
 import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
 import kotlinx.android.synthetic.main.fragment_game_difficulty_choser.*
@@ -60,8 +59,30 @@ class GameDifficultyChooserFragment : Fragment() {
 
         checkIfHardModeAvailable()
 
+        //checkIfHorizontalViewIsScrollable()
+
         initListener()
     }
+
+    /*private fun checkIfHorizontalViewIsScrollable() {
+        var scrollViewWidth: Int?
+        var childViewWidth: Int?
+        difficult_fragment_horizontalScrollView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                scrollViewWidth = difficult_fragment_horizontalScrollView?.width
+                childViewWidth = difficult_fragment_horizontalScrollView_child_view?.width
+
+                scrollViewWidth?.let { sv -> childViewWidth?.let { child ->
+                    if (sv < child) {
+                        Toast.makeText(context, "scrollable", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(context, "not scrollable", Toast.LENGTH_LONG).show()
+                    }
+                    difficult_fragment_horizontalScrollView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+                } }
+            }
+        })
+    }*/
 
     override fun onResume() {
         super.onResume()
@@ -81,7 +102,7 @@ class GameDifficultyChooserFragment : Fragment() {
             GameDifficulty.HARD -> {
                 setCheckIconOnPositionVisible(2)
                 difficult_fragment_horizontalScrollView.scrollTo(
-                    difficult_fragment_horizontalScrollView.right,0
+                    difficult_fragment_horizontalScrollView.right, 0
                 )
             }
         }
@@ -102,8 +123,10 @@ class GameDifficultyChooserFragment : Fragment() {
                 .last().gameMode == GameMode.FOUR_IN_A_ROW.toString()
         ) {
             difficult_fragment_hard_frame_constraint.visibility = View.GONE
+            difficult_fragment_mid_to_hard_arrows.visibility = View.GONE
         } else {
             difficult_fragment_hard_frame_constraint.visibility = View.VISIBLE
+            difficult_fragment_mid_to_hard_arrows.visibility = View.VISIBLE
         }
     }
 
@@ -117,7 +140,7 @@ class GameDifficultyChooserFragment : Fragment() {
             setCheckIconOnPositionVisible(0)
 
             difficult_fragment_horizontalScrollView.scrollTo(
-                difficult_fragment_horizontalScrollView.left,0
+                difficult_fragment_horizontalScrollView.left, 0
             )
 
             soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK)
@@ -135,7 +158,7 @@ class GameDifficultyChooserFragment : Fragment() {
             setCheckIconOnPositionVisible(2)
 
             difficult_fragment_horizontalScrollView.scrollTo(
-                difficult_fragment_horizontalScrollView.right,0
+                difficult_fragment_horizontalScrollView.right, 0
             )
 
             soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK)
