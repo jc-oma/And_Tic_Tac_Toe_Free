@@ -9,14 +9,14 @@ object FourInARowAi {
     fun getBestMove(playGround: MutableList<MutableList<Int>>): Int {
         //init on left -> index 0
         var bestScore: Int? = null
-        var bestScoreTest = 0
+        var bestScoreTest: Int
         var bestMove = 0
         var isChangedMove = false
 
-        var testBoard: MutableList<MutableList<Int>> = mutableListOf()
-        var testBoard2: MutableList<MutableList<Int>> = mutableListOf()
-        var testBoard3: MutableList<MutableList<Int>> = mutableListOf()
-        var testBoard4: MutableList<MutableList<Int>> = mutableListOf()
+        var testBoard: MutableList<MutableList<Int>>
+        var testBoard2: MutableList<MutableList<Int>>
+        var testBoard3: MutableList<MutableList<Int>>
+        var testBoard4: MutableList<MutableList<Int>>
 
         // first turn test by AI
         for (aiXTurn in 0 until 7) {

@@ -110,6 +110,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         MobileAds.initialize(this) {}
 
         mInterstitialAd = InterstitialAd(this)
+        //TODO change to ca-app-pub-5121116206728666/2913789055
         mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
         mInterstitialAd.adListener = object : AdListener() {
             override fun onAdLoaded() {
@@ -513,7 +514,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
                 multiplayerMode = MultiplayerMode.BLUETOOTH.toString()
             )
         )
-        BlueToothService?.start()
+        BlueToothService.start()
     }
 
     private fun getBluetoothlist() {
@@ -606,7 +607,6 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         //handshakeDisposable.dispose()
         val gameSettings = getGameSettings()
         val gameMode = GameMode.valueOf(gameSettings.gameMode)
-        val last = manager.fragments.last()
         if (manager.findFragmentByTag(gameFragmentTag) == null) {
             if (gameMode == GameMode.TIC_TAC_TOE) {
                 openTicTacToeFragment()
