@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -13,7 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
-import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.*
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.jcDevelopment.tictactoeadfree.BuildConfig
@@ -46,7 +47,8 @@ import java.io.StringReader
 
 
 class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.Listener,
-    TwoPlayerModeChooserFragment.Listener, GameDifficultyChooserFragment.Listener {
+    TwoPlayerModeChooserFragment.Listener, GameDifficultyChooserFragment.Listener,
+    SimpleFourInARowBoardFragment.Listener, SimpleTicTacToeBoardFragment.Listener {
     private lateinit var handshakeDisposable: Disposable
     private lateinit var deviceNameDisposable: Disposable
     private lateinit var connectionDisposable: Disposable
@@ -73,25 +75,70 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
 
     private val musicPlayer by lazy { MusicPlayer(this) }
 
+    private lateinit var mInterstitialAd: InterstitialAd
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        musicPlayer.initMediaPlayer()
-
-        if (soundSettingsViewModel.getSoundSettings().last().isMusicPlaying) {
-            musicPlayer.resumeMusic()
-        }
+        initSounds()
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
         openLogoFragment()
 
-        MobileAds.initialize(this) {}
+        initAds()
 
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_NOSENSOR
+        initOrientation()
 
         initToolbar()
+    }
+
+    private fun initSounds() {
+        musicPlayer.initMediaPlayer()
+
+        if (soundSettingsViewModel.getSoundSettings().last().isMusicPlaying) {
+            musicPlayer.resumeMusic()
+        }
+    }
+
+    private fun initOrientation() {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_NOSENSOR
+    }
+
+    private fun initAds() {
+        MobileAds.initialize(this) {}
+
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
+        mInterstitialAd.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                // Code to be executed when an ad request fails.
+            }
+
+            override fun onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            override fun onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            override fun onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            override fun onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                mInterstitialAd.loadAd(AdRequest.Builder().build())
+            }
+        }
+
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
     }
 
     override fun onResume() {
@@ -333,6 +380,14 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         } else if (resultCode == Activity.RESULT_CANCELED) {
             Toast.makeText(this, getString(R.string.result_canceled_info), Toast.LENGTH_LONG).show()
         }
+    }
+
+    override fun onFIARInterstitialAd() {
+        showInterstitialAd()
+    }
+
+    override fun onTicTacToeInterstitialAd() {
+        showInterstitialAd()
     }
 
     override fun onLogoFragmentLoaded() {
@@ -597,6 +652,14 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
             val transaction: FragmentTransaction = manager.beginTransaction()
             transaction.replace(R.id.main_activity_root, HomeFragment.newInstance())
             transaction.commit()
+        }
+    }
+
+    private fun showInterstitialAd() {
+        if (mInterstitialAd.isLoaded) {
+            mInterstitialAd.show()
+        } else {
+            Log.d("TAG", "The interstitial wasn't loaded yet.")
         }
     }
 }

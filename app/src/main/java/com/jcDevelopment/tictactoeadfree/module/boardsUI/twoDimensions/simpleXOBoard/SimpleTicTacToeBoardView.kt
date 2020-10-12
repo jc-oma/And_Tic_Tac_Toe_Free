@@ -23,6 +23,7 @@ import com.jcDevelopment.tictactoeadfree.module.gameEngine.tictactoe.TicTacToeEn
 import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_board_two_dimensions_simple.view.*
@@ -39,9 +40,12 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
     }
 
     val backPressEvent: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
+    val showInterstitialAd: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
+    val isGameEnded: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
 
     private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
+    private val statisticsViewModel by inject<GameStatisticsViewModel>()
 
     private val oImgPlayerStone =
         ContextCompat.getDrawable(context, R.drawable.blender_o_play_stone)
@@ -173,6 +177,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
     override fun onRestartGame() {
         restartBoard()
         simple_two_dim_tic_game_end_overlay.isVisible = false
+        isGameEnded.onNext(false)
     }
 
     override fun onGameEnd(
@@ -257,6 +262,8 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
 
     private val groupIds = board_view_group.referencedIds
 
+    private val playedGamesToInterstitialAd = 3
+
     private fun restartBoard() {
         isGameOver = false
         toe.initializeBoard()
@@ -282,14 +289,28 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
         if (multiplayerMode == MultiplayerMode.BLUETOOTH.toString() || multiplayerMode == MultiplayerMode.WIFI.toString()) {
             restart_game_button.isVisible = false
             simple_two_dim_tic_game_end_overlay.setOnClickListener {
+
+                showInterstitialAd()
+
                 simple_two_dim_tic_game_end_overlay.isVisible = false
+                isGameEnded.onNext(false)
                 restartBoard()
             }
         } else {
             restart_game_button.isVisible = true
             simple_two_dim_tic_game_end_overlay.setOnClickListener {
+                showInterstitialAd()
+
                 simple_two_dim_tic_game_end_overlay.isVisible = false
+                isGameEnded.onNext(false)
             }
+        }
+    }
+
+    private fun showInterstitialAd() {
+        val playedGames = statisticsViewModel.getGameStatisticsList().size
+        if (playedGames % playedGamesToInterstitialAd == 0) {
+            showInterstitialAd.onNext(true)
         }
     }
 
@@ -341,6 +362,7 @@ class SimpleTicTacToeBoardView @JvmOverloads constructor(
             cellView.clearAnimation()
         }
         simple_two_dim_tic_game_end_overlay.isVisible = true
+        isGameEnded.onNext(true)
         restart_game_button.startAnimation(whobbleAnimation)
         deleteBoardListener()
     }

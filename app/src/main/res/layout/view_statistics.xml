@@ -22,10 +22,10 @@
         android:layout_height="48dp"
         android:layout_marginTop="18dp"
         android:elevation="8dp"
-        tools:src ="@drawable/ic_spooky_kurbis_v3_3d_tinted"
         app:layout_constraintEnd_toEndOf="@id/statistics_play1_image"
         app:layout_constraintStart_toStartOf="@id/statistics_play1_image"
-        app:layout_constraintTop_toTopOf="@id/statistics_play1_image" />
+        app:layout_constraintTop_toTopOf="@id/statistics_play1_image"
+        tools:src="@drawable/ic_spooky_kurbis_v3_3d_tinted" />
 
     <TextView
         android:id="@+id/statistics_won_games_head"
@@ -82,6 +82,7 @@
         android:fontFamily="@font/berkshire_swash_regular"
         android:text="@string/average_needed_time"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/statistics_play1_image"
         app:layout_constraintTop_toBottomOf="@id/statistics_needed_turns_head" />
 
@@ -92,6 +93,7 @@
         android:layout_marginEnd="48dp"
         android:fontFamily="@font/berkshire_swash_regular"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/statistics_play1_image"
         app:layout_constraintTop_toTopOf="@id/statistics_needed_time_head"
         tools:text="200 s" />

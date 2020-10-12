@@ -1,5 +1,6 @@
 package com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -11,24 +12,31 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.jakewharton.rxbinding4.view.clicks
 import com.jcDevelopment.tictactoeadfree.R
+import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseFragment
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameDifficulty
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
 import com.jcDevelopment.tictactoeadfree.module.data.multiplayerSettings.MultiplayerMode
+import com.jcDevelopment.tictactoeadfree.module.gameDificulty.GameDifficultyChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.gameDificulty.GameOpponentUtils
 import com.jcDevelopment.tictactoeadfree.module.sounds.SoundPlayer
 import com.jcDevelopment.tictactoeadfree.module.statistics.StatisticsUtils
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameSettingsViewModel
+import com.jcDevelopment.tictactoeadfree.module.viewmodels.GameStatisticsViewModel
 import com.jcDevelopment.tictactoeadfree.module.viewmodels.MultiplayerSettingsViewModel
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_simple_four_in_a_row_board.*
 import org.koin.android.ext.android.inject
 
 
-class SimpleFourInARowBoardFragment : Fragment() {
+class SimpleFourInARowBoardFragment : BaseFragment() {
     companion object {
         @JvmStatic
         fun newInstance() = SimpleFourInARowBoardFragment()
     }
+
+    private var listener: Listener? = null
+
+    private var isGameEnded = false
 
     private var opponentIsTurningDisposable: Disposable? = null
     private var gameEndDisposable: Disposable? = null
@@ -37,6 +45,7 @@ class SimpleFourInARowBoardFragment : Fragment() {
     private var oponentLeftDisposable: Disposable? = null
     private val multiplayerSettingsViewModel by inject<MultiplayerSettingsViewModel>()
     private val gameSettingsViewModel by inject<GameSettingsViewModel>()
+    private val gameStatisticsViewModel by inject<GameStatisticsViewModel>()
     private val thinkingAnimation by lazy {
         AnimationUtils.loadAnimation(
             context,
@@ -47,6 +56,8 @@ class SimpleFourInARowBoardFragment : Fragment() {
     private val isOnlineGame = multiplayerSettingsViewModel.getMultiplayerSettings()
         .last().multiplayerMode == MultiplayerMode.BLUETOOTH.toString() || multiplayerSettingsViewModel.getMultiplayerSettings()
         .last().multiplayerMode == MultiplayerMode.WIFI.toString()
+
+    private val playedGamesToInterstitialAd = 2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +73,23 @@ class SimpleFourInARowBoardFragment : Fragment() {
         initListener()
 
         initDifficulty()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is Listener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString())
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val playedGames = gameStatisticsViewModel.getGameStatisticsList().size
+        if (isGameEnded && playedGames % playedGamesToInterstitialAd == 0)  {
+            listener?.onFIARInterstitialAd()
+        }
     }
 
     private fun initDifficulty() {
@@ -110,7 +138,14 @@ class SimpleFourInARowBoardFragment : Fragment() {
             }?.subscribe()
 
         four_in_a_row_game_end_overlay?.setOnClickListener {
+            val playedGames = gameStatisticsViewModel.getGameStatisticsList().size
+            if (playedGames % playedGamesToInterstitialAd == 0) {
+                listener?.onFIARInterstitialAd()
+            }
+
             four_in_a_row_game_end_overlay?.isVisible = false
+
+            isGameEnded = false
 
             if (isOnlineGame) {
                 fragment_four_in_a_row_playboard?.restartBoard()
@@ -143,6 +178,7 @@ class SimpleFourInARowBoardFragment : Fragment() {
         gameEndDisposable = fragment_four_in_a_row_playboard.appEventFlowable.subscribe {
             Handler().postDelayed({
                 four_in_a_row_game_end_overlay?.isVisible = true
+                isGameEnded = true
                 four_in_a_row_game_end_overlay?.onGameWon(
                     it.wonPlayer,
                     StatisticsUtils(context).getDrawablesPair(GameMode.FOUR_IN_A_ROW),
@@ -183,5 +219,9 @@ class SimpleFourInARowBoardFragment : Fragment() {
     private fun clearThinkingOpponentAnimation() {
         simple_2d_thinking_opponent?.clearAnimation()
         simple_2d_thinking_opponent?.alpha = 0f
+    }
+
+    interface Listener {
+        fun onFIARInterstitialAd()
     }
 }
