@@ -15,6 +15,8 @@ import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.jcDevelopment.tictactoeadfree.BuildConfig
@@ -75,7 +77,7 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
 
     private val musicPlayer by lazy { MusicPlayer(this) }
 
-    private lateinit var mInterstitialAd: InterstitialAd
+    private var mInterstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,37 +111,19 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
     private fun initAds() {
         MobileAds.initialize(this) {}
 
-        mInterstitialAd = InterstitialAd(this)
+        val adRequest = AdRequest.Builder().build()
         //TODO change to ca-app-pub-5121116206728666/2913789055
-        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
-        mInterstitialAd.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
+        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
-                // Code to be executed when an ad request fails.
+                Log.d(gameFragmentTag, adError.message)
+                mInterstitialAd = null
             }
 
-            override fun onAdOpened() {
-                // Code to be executed when the ad is displayed.
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                Log.d(gameFragmentTag, "Ad was loaded.")
+                mInterstitialAd = interstitialAd
             }
-
-            override fun onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            override fun onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            override fun onAdClosed() {
-                // Code to be executed when the interstitial ad is closed.
-                mInterstitialAd.loadAd(AdRequest.Builder().build())
-            }
-        }
-
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
+        })
     }
 
     override fun onResume() {
@@ -656,10 +640,10 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
     }
 
     private fun showInterstitialAd() {
-        if (mInterstitialAd.isLoaded) {
-            mInterstitialAd.show()
+        if (mInterstitialAd != null) {
+            mInterstitialAd?.show(this)
         } else {
-            Log.d("TAG", "The interstitial wasn't loaded yet.")
+            Log.d("TAG", "The interstitial ad wasn't ready yet.")
         }
     }
 }
