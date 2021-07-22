@@ -3,13 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
-        //TODO Rename here and in Firebase
         applicationId "com.jcDevelopment.tictactoeadfree"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 10
         versionName "1.0"
 
