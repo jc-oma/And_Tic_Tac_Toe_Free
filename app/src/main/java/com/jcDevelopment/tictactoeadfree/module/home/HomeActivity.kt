@@ -642,9 +642,9 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
     private fun showInterstitialAd() {
         if (mInterstitialAd != null) {
             mInterstitialAd?.show(this)
-            initAds()
         } else {
             Log.d("TAG", "The interstitial ad wasn't ready yet.")
         }
+        initAds()
     }
 }

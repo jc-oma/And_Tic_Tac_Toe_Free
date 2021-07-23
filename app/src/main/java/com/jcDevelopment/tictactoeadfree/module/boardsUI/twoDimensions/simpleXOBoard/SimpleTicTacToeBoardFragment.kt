@@ -32,7 +32,7 @@ class SimpleTicTacToeBoardFragment : BaseFragment() {
     override fun onDestroy() {
         super.onDestroy()
         val playedGames = gameStatisticsViewModel.getGameStatisticsList().size
-        if (isGameEnded && playedGames % 3 == 0)  {
+        if (isGameEnded && playedGames % 2 == 0)  {
             listener?.onTicTacToeInterstitialAd()
         }
     }
