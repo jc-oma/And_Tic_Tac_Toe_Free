@@ -39,30 +39,44 @@ class GameChoserView @JvmOverloads constructor(
 
     private val soundPlayer by lazy { SoundPlayer.getInstance(context) }
 
-    private val drawable: Drawable? by lazy {
+    private val fiarNotChoosenDrawable: Drawable? by lazy {
         ContextCompat.getDrawable(
             context, R.drawable.spooky_fiarchooser_not_chosen_small
         )
     }
 
-    private val drawable1: Drawable?
+    private val fiarChoosenDrawable: Drawable?
             by lazy {
                 ContextCompat.getDrawable(
                     context, R.drawable.spooky_fiarchooser_small
                 )
             }
 
-    private val drawable2: Drawable?
+    private val ticTacToeChoosenDrawable: Drawable?
             by lazy {
                 ContextCompat.getDrawable(
                     context, R.drawable.spooky_tictactoechooser_small
                 )
             }
 
-    private val drawable3: Drawable?
+    private val ticTacToeNotChoosenDrawable: Drawable?
             by lazy {
                 ContextCompat.getDrawable(
                     context, R.drawable.spooky_tictactoechooser_not_chosen_small
+                )
+            }
+
+    private val goChoosenDrawable: Drawable?
+            by lazy {
+                ContextCompat.getDrawable(
+                    context, R.drawable.go_middle_square
+                )
+            }
+
+    private val goNotChoosenDrawable: Drawable?
+            by lazy {
+                ContextCompat.getDrawable(
+                    context, R.drawable.go_middle_square
                 )
             }
 
@@ -98,6 +112,11 @@ class GameChoserView @JvmOverloads constructor(
             soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK)
             choseGame(GameMode.FOUR_IN_A_ROW)
         }
+
+        game_choser_game_three.setOnClickListener {
+            soundPlayer.playLoadedSound(SoundPlayer.SoundList.CLICK_FEED_BACK)
+            choseGame(GameMode.GO)
+        }
     }
 
     private fun choseGame(gameMode: GameMode) {
@@ -121,15 +140,25 @@ class GameChoserView @JvmOverloads constructor(
 
         game_choser_game_two_image_view.setImageDrawable(
             when (gameMode) {
-                GameMode.TIC_TAC_TOE -> drawable
-                GameMode.FOUR_IN_A_ROW -> drawable1
+                GameMode.TIC_TAC_TOE -> fiarNotChoosenDrawable
+                GameMode.FOUR_IN_A_ROW -> fiarChoosenDrawable
+                GameMode.GO -> fiarNotChoosenDrawable
             }
         )
 
         game_choser_game_one_image_view.setImageDrawable(
             when (gameMode) {
-                GameMode.TIC_TAC_TOE -> drawable2
-                GameMode.FOUR_IN_A_ROW -> drawable3
+                GameMode.TIC_TAC_TOE -> ticTacToeChoosenDrawable
+                GameMode.FOUR_IN_A_ROW -> ticTacToeNotChoosenDrawable
+                GameMode.GO -> ticTacToeNotChoosenDrawable
+            }
+        )
+
+        game_choser_game_three_image_view.setImageDrawable(
+            when (gameMode) {
+                GameMode.TIC_TAC_TOE -> goNotChoosenDrawable
+                GameMode.FOUR_IN_A_ROW -> goNotChoosenDrawable
+                GameMode.GO -> goChoosenDrawable
             }
         )
 
@@ -138,11 +167,19 @@ class GameChoserView @JvmOverloads constructor(
                 game_choser_game_one_check.alpha = 1f
                 game_choser_game_one_check.startAnimation(loadAnimation)
                 game_choser_game_two_check.alpha = 0f
+                game_choser_game_three_check.alpha = 0f
             }
             GameMode.FOUR_IN_A_ROW -> {
                 game_choser_game_one_check.alpha = 0f
                 game_choser_game_two_check.alpha = 1f
+                game_choser_game_three_check.alpha = 0f
                 game_choser_game_two_check.startAnimation(loadAnimation)
+            }
+            GameMode.GO -> {
+                game_choser_game_one_check.alpha = 0f
+                game_choser_game_two_check.alpha = 0f
+                game_choser_game_three_check.alpha = 1f
+                game_choser_game_three_check.startAnimation(loadAnimation)
             }
         }
     }

@@ -14,7 +14,8 @@ data class GameSettings (
 
 enum class GameMode {
     TIC_TAC_TOE,
-    FOUR_IN_A_ROW
+    FOUR_IN_A_ROW,
+    GO
 }
 
 enum class GameDifficulty{

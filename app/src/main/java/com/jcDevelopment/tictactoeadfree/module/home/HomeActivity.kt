@@ -25,6 +25,7 @@ import com.jcDevelopment.tictactoeadfree.module.baseClasses.BaseActivity
 import com.jcDevelopment.tictactoeadfree.module.blueToothService.BlueToothService
 import com.jcDevelopment.tictactoeadfree.module.bluetoothSetUpUI.TwoPlayerModeChooserFragment
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleFourInARow.SimpleFourInARowBoardFragment
+import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleGoBoard.SimpleGoFragment
 import com.jcDevelopment.tictactoeadfree.module.boardsUI.twoDimensions.simpleXOBoard.SimpleTicTacToeBoardFragment
 import com.jcDevelopment.tictactoeadfree.module.companyLogo.CompanyLogoFragment
 import com.jcDevelopment.tictactoeadfree.module.data.gameSettings.GameMode
@@ -592,10 +593,16 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         val gameSettings = getGameSettings()
         val gameMode = GameMode.valueOf(gameSettings.gameMode)
         if (manager.findFragmentByTag(gameFragmentTag) == null) {
-            if (gameMode == GameMode.TIC_TAC_TOE) {
-                openTicTacToeFragment()
-            } else if (gameMode == GameMode.FOUR_IN_A_ROW) {
-                openFourInARowFragment()
+            when (gameMode) {
+                GameMode.TIC_TAC_TOE -> {
+                    openTicTacToeFragment()
+                }
+                GameMode.FOUR_IN_A_ROW -> {
+                    openFourInARowFragment()
+                }
+                GameMode.GO -> {
+                    openGoFragment()
+                }
             }
         }
     }
@@ -625,6 +632,15 @@ class HomeActivity : BaseActivity(), HomeFragment.Listener, CompanyLogoFragment.
         val transaction: FragmentTransaction = manager.beginTransaction()
         transaction.add(
             R.id.main_activity_root, SimpleTicTacToeBoardFragment.newInstance(),
+            gameFragmentTag
+        )
+        transaction.commit()
+    }
+
+    private fun openGoFragment() {
+        val transaction: FragmentTransaction = manager.beginTransaction()
+        transaction.add(
+            R.id.main_activity_root, SimpleGoFragment.newInstance(),
             gameFragmentTag
         )
         transaction.commit()
