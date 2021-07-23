@@ -61,4 +61,7 @@
     <string name="ask_another_game_headline_empty">Noch einmal spielen?</string>
     <string name="ask_another_game_declined">Der Gegner hat die Anfrage abgelehnt</string>
     <string name="no_bounded_devices_found_error">Keine gekoppelten Geräte gefunden.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="square">Square</string>
 </resources>
